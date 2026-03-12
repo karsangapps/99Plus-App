@@ -51,6 +51,7 @@ function computeAge(dobIso: string) {
 
 export async function POST(req: Request) {
   try {
+    console.log('[Signup API] Received /api/auth/signup request')
     const body = (await req.json()) as Body
 
     const fullName = String(body.fullName || '').trim()
@@ -72,6 +73,12 @@ export async function POST(req: Request) {
       : []
 
     if (!fullName || !email || !dob || !password) {
+      console.log('[Signup API] Missing required fields', {
+        fullName: !!fullName,
+        email: !!email,
+        dob: !!dob,
+        password: !!password
+      })
       return NextResponse.json(
         { ok: false, error: 'Missing required fields.' },
         { status: 400 }
@@ -84,18 +91,24 @@ export async function POST(req: Request) {
       )
     }
     if (!class12Stream || !boardName) {
+      console.log('[Signup API] Missing class12Stream/boardName', {
+        class12Stream,
+        boardName
+      })
       return NextResponse.json(
         { ok: false, error: 'Class 12 stream and board are required.' },
         { status: 400 }
       )
     }
     if (!termsAccepted) {
+      console.log('[Signup API] Terms not accepted')
       return NextResponse.json(
         { ok: false, error: 'You must accept the Terms and Privacy Policy.' },
         { status: 400 }
       )
     }
     if (!targetUniversities.length) {
+      console.log('[Signup API] No target universities selected')
       return NextResponse.json(
         { ok: false, error: 'Pick at least one target university.' },
         { status: 400 }
@@ -114,15 +127,33 @@ export async function POST(req: Request) {
     const { baseUrl, key } = getProjectConfig()
     const insforge = createClient({ baseUrl, anonKey: key })
 
-    const signUpRes = await insforge.auth.signUp({ email, password })
-    if (signUpRes.error || !signUpRes.data?.user?.id) {
+    console.log('[Signup API] Step 1: auth.signUp for', email)
+    const signUpRes = await insforge.auth.signUp({ email, password, name: fullName })
+    if (signUpRes.error) {
+      console.error('[Signup API] auth.signUp failed:', signUpRes.error)
       return NextResponse.json(
         { ok: false, error: signUpRes.error?.message || 'Signup failed.' },
         { status: 500 }
       )
     }
 
-    const authUserId = signUpRes.data.user.id as string
+    // requireEmailVerification is disabled in project config.
+    // If it were enabled, data.requireEmailVerification would be true
+    // and data.user.id would still be present but no accessToken.
+    if (signUpRes.data?.requireEmailVerification) {
+      console.error('[Signup API] Email verification unexpectedly required — disable it in InsForge auth config.')
+      return NextResponse.json(
+        { ok: false, error: 'Email verification is enabled on the server. Contact support.' },
+        { status: 500 }
+      )
+    }
+
+    const authUserId = signUpRes.data?.user?.id as string | undefined
+    if (!authUserId) {
+      console.error('[Signup API] signUp returned no user id', signUpRes.data)
+      return NextResponse.json({ ok: false, error: 'Signup failed: no user id.' }, { status: 500 })
+    }
+    console.log('[Signup API] Step 2: insert users row for', authUserId)
 
     // Public users row
     const userInsert = await insforge.database
@@ -139,12 +170,14 @@ export async function POST(req: Request) {
       .select('id')
 
     if (userInsert.error) {
+      console.error('[Signup API] users insert failed:', userInsert.error)
       return NextResponse.json(
         { ok: false, error: userInsert.error.message || 'Failed to create user.' },
         { status: 500 }
       )
     }
 
+    console.log('[Signup API] Step 3: insert student_profiles')
     // Student profile
     const accountState = isMinor ? 'guardian_pending' : 'registered'
     const guardianRequired = isMinor
@@ -169,6 +202,7 @@ export async function POST(req: Request) {
       .select('id')
 
     if (profileInsert.error || !profileInsert.data?.[0]?.id) {
+      console.error('[Signup API] student_profiles insert failed:', profileInsert.error)
       return NextResponse.json(
         {
           ok: false,
@@ -179,7 +213,13 @@ export async function POST(req: Request) {
     }
 
     const studentProfileId = profileInsert.data[0].id as string
+    console.log('[Signup API] Created student profile', {
+      authUserId,
+      studentProfileId,
+      accountState
+    })
 
+    console.log('[Signup API] Step 4: insert user_targets (best-effort)')
     // Provisional target universities (best-effort)
     const uniLookup = await insforge.database
       .from('universities')
@@ -212,6 +252,7 @@ export async function POST(req: Request) {
       if (rows.length) {
         const targetsInsert = await insforge.database.from('user_targets').insert(rows)
         if (targetsInsert.error) {
+          console.error('[Signup API] user_targets insert failed:', targetsInsert.error)
           return NextResponse.json(
             {
               ok: false,
@@ -223,10 +264,12 @@ export async function POST(req: Request) {
       }
     }
 
+    console.log('[Signup API] Step 5: insert consent_logs')
     // DPDP notice log (pending)
-    const h = headers()
+    const h = await headers()
     const ua = h.get('user-agent')
-    const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || null
+    const rawIp = h.get('x-forwarded-for')?.split(',')[0]?.trim()
+    const ip = rawIp && rawIp.length > 0 ? rawIp : null
 
     const noticeInsert = await insforge.database.from('consent_logs').insert([
       {
@@ -248,25 +291,36 @@ export async function POST(req: Request) {
     ])
 
     if (noticeInsert.error) {
+      console.error('[Signup API] consent_logs insert failed:', noticeInsert.error)
       return NextResponse.json(
         { ok: false, error: noticeInsert.error.message || 'Failed to log consent.' },
         { status: 500 }
       )
     }
 
-    // Set session cookie (simple UID cookie for now)
-    cookies().set(uidCookieName(), authUserId, {
+    console.log('[Signup API] Step 6: set uid cookie')
+    // Set session cookie (Next.js 15+ requires awaiting cookies())
+    const cookieStore = await cookies()
+    cookieStore.set(uidCookieName(), authUserId, {
       httpOnly: true,
       sameSite: 'lax',
       secure: false,
       path: '/'
     })
 
+    const next = isMinor ? '/guardian/consent' : '/onboarding'
+    console.log('[Signup API] Completed signup', {
+      authUserId,
+      isMinor,
+      next
+    })
+
     return NextResponse.json({
       ok: true,
-      next: isMinor ? '/guardian/consent' : '/onboarding'
+      next
     })
   } catch (e) {
+    console.error('[Signup API] CRASH:', e)
     const msg = e instanceof Error ? e.message : 'Unknown error'
     return NextResponse.json({ ok: false, error: msg }, { status: 500 })
   }

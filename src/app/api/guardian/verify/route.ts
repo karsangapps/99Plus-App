@@ -132,6 +132,18 @@ export async function POST(req: Request) {
       )
     }
 
+    const verifiedGuardianId =
+      (verifyRes.data?.[0] as { guardian_profile_id?: string } | undefined)
+        ?.guardian_profile_id || null
+
+    if (verifiedGuardianId) {
+      await insforge.database
+        .from('guardian_links')
+        .update({ verified_at: new Date().toISOString() })
+        .eq('student_profile_id', studentProfileId)
+        .eq('guardian_profile_id', verifiedGuardianId)
+    }
+
     return NextResponse.json({ ok: true, next: '/onboarding' })
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error'

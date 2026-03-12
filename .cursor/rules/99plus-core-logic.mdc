@@ -26,3 +26,5 @@ You are the Lead Full-Stack Architect for 99Plus. Your goal is to build a produc
 - After every successful feature, ask the CEO to "Commit to GitHub."---
 alwaysApply: true
 ---
+
+Use **Type-Safe** logic for all database transactions. Always verify that auth.users and public.student_profiles are updated in a single transaction to prevent data corruption.

@@ -38,6 +38,7 @@ export async function POST(req: Request) {
 
     const body = (await req.json()) as Body
     const guardianName = String(body.guardianName || '').trim()
+    const relationship = body.relationship ? String(body.relationship).trim() : null
     const channel = body.channel === 'email' ? 'email' : 'sms'
     const contact = String(body.contact || '').trim()
     const communicationAlertsOptIn = Boolean(body.communicationAlertsOptIn)
@@ -67,6 +68,67 @@ export async function POST(req: Request) {
 
     const studentProfileId = profileRes.data[0].id as string
 
+    // Create or reuse guardian profile, then link to student.
+    const guardianLookup = await insforge.database
+      .from('guardian_profiles')
+      .select('id')
+      .or(
+        channel === 'email'
+          ? `email.eq.${contact}`
+          : `phone.eq.${contact}`
+      )
+      .limit(1)
+
+    let guardianProfileId =
+      (guardianLookup.data?.[0] as { id?: string } | undefined)?.id || null
+
+    if (!guardianProfileId) {
+      const guardianInsert = await insforge.database
+        .from('guardian_profiles')
+        .insert([
+          {
+            user_id: null,
+            full_name: guardianName,
+            phone: channel === 'sms' ? contact : null,
+            email: channel === 'email' ? contact : null,
+            relationship_to_student: relationship
+          }
+        ])
+        .select('id')
+
+      if (guardianInsert.error || !guardianInsert.data?.[0]?.id) {
+        return NextResponse.json(
+          {
+            ok: false,
+            error:
+              guardianInsert.error?.message ||
+              'Failed to create guardian profile.'
+          },
+          { status: 500 }
+        )
+      }
+
+      guardianProfileId = guardianInsert.data[0].id as string
+    }
+
+    const linkLookup = await insforge.database
+      .from('guardian_links')
+      .select('id')
+      .eq('student_profile_id', studentProfileId)
+      .eq('guardian_profile_id', guardianProfileId)
+      .limit(1)
+
+    if (!linkLookup.error && !linkLookup.data?.[0]?.id) {
+      await insforge.database.from('guardian_links').insert([
+        {
+          student_profile_id: studentProfileId,
+          guardian_profile_id: guardianProfileId,
+          is_primary: true,
+          verified_at: null
+        }
+      ])
+    }
+
     const otp = randomOtp()
     const otpReference = `otp_${crypto.randomUUID()}`
     const tokenHash = await sha256Hex(`${otpReference}:${otp}`)
@@ -78,7 +140,7 @@ export async function POST(req: Request) {
     const insertRes = await insforge.database.from('consent_logs').insert([
       {
         student_profile_id: studentProfileId,
-        guardian_profile_id: null,
+        guardian_profile_id: guardianProfileId,
         notice_version: 'dpdp_v1',
         status: 'otp_sent',
         consent_purpose: 'dpdp_minor_processing',

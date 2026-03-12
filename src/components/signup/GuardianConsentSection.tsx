@@ -47,10 +47,10 @@ export function GuardianConsentSection(props: GuardianConsentProps) {
           type="button"
           onClick={() => onConsentMethodChange('sms')}
           className={[
-            'h-11 rounded-xl border text-sm font-semibold transition-all',
+            'h-11 rounded-xl border text-sm font-semibold transition-all cursor-pointer select-none',
             consentMethod === 'sms'
-              ? 'border-[#6366F1] bg-white text-[#0F172A]'
-              : 'border-[#E5E7EB] bg-transparent text-[#64748B]'
+              ? 'border-[#6366F1] bg-white text-[#0F172A] shadow-sm'
+              : 'border-[#E5E7EB] bg-[#F1F5F9] text-[#64748B] hover:border-[#6366F1]/40 hover:bg-white'
           ].join(' ')}
         >
           Parent&apos;s SMS OTP
@@ -59,10 +59,10 @@ export function GuardianConsentSection(props: GuardianConsentProps) {
           type="button"
           onClick={() => onConsentMethodChange('email')}
           className={[
-            'h-11 rounded-xl border text-sm font-semibold transition-all',
+            'h-11 rounded-xl border text-sm font-semibold transition-all cursor-pointer select-none',
             consentMethod === 'email'
-              ? 'border-[#6366F1] bg-white text-[#0F172A]'
-              : 'border-[#E5E7EB] bg-transparent text-[#64748B]'
+              ? 'border-[#6366F1] bg-white text-[#0F172A] shadow-sm'
+              : 'border-[#E5E7EB] bg-[#F1F5F9] text-[#64748B] hover:border-[#6366F1]/40 hover:bg-white'
           ].join(' ')}
         >
           Parent&apos;s Email

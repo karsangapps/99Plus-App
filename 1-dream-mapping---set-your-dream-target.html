@@ -1,0 +1,330 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  body { background: #F8FAFC; margin-left: 256px; }
+  @media (max-width: 1024px) {
+    body { margin-left: 0; }
+    .fixed.left-0 { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .fixed.left-0.active { transform: translateX(0); }
+  }
+  .select-card { transition: all 0.2s ease; }
+  .select-card:hover { border-color: #6366F1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .select-card:focus-within { border-color: #6366F1; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+  .cta-btn { transition: all 0.25s cubic-bezier(0.4,0,0.2,1); }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.35); }
+  .cta-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(99,102,241,0.25); }
+  .step-dot { transition: all 0.3s ease; }
+  .float-anim { animation: floatUp 3s ease-in-out infinite alternate; }
+  @keyframes floatUp { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
+  @keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  .fade-in-1 { animation: fadeInUp 0.5s ease forwards; }
+  .fade-in-2 { animation: fadeInUp 0.5s ease 0.1s forwards; opacity:0; }
+  .fade-in-3 { animation: fadeInUp 0.5s ease 0.2s forwards; opacity:0; }
+  .fade-in-4 { animation: fadeInUp 0.5s ease 0.3s forwards; opacity:0; }
+  .fade-in-5 { animation: fadeInUp 0.5s ease 0.4s forwards; opacity:0; }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239CA3AF' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+  .pattern-bg { background-image: radial-gradient(circle at 1px 1px, rgba(99,102,241,0.04) 1px, transparent 0); background-size: 32px 32px; }
+</style>
+
+<!-- GLOBAL:SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E5E7EB] flex flex-col shadow-sm z-50" style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#EEF2FF] flex items-center justify-center">
+        <i class="fa-solid fa-square-check text-[#6366F1] text-lg"></i>
+      </div>
+      <span class="text-sm font-bold text-[#0F172A]">99Plus</span>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2">
+    <a href="#screen1" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#0F172A] bg-[#6366F1] bg-opacity-10 border border-[#6366F1] border-opacity-30 hover:bg-opacity-20 transition-all" aria-current="page">
+      <i class="fa-regular fa-compass text-[#6366F1]"></i>
+      <span>Command Center</span>
+    </a>
+    <a href="#screen2" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-clipboard text-[#9CA3AF]"></i>
+      <span>Pre-Test</span>
+    </a>
+    <a href="#screen3" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-rectangle-list text-[#9CA3AF]"></i>
+      <span>NTA Test</span>
+    </a>
+    <a href="#screen4" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-file-lines text-[#9CA3AF]"></i>
+      <span>Diagnosis</span>
+    </a>
+    <a href="#screen5" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-circle-dot text-[#9CA3AF]"></i>
+      <span>Surgical Drill</span>
+    </a>
+    <a href="#screen6" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-chart-bar text-[#9CA3AF]"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="#screen7" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-building text-[#9CA3AF]"></i>
+      <span>Selection Hub</span>
+    </a>
+    <a href="#screen8" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-pen-to-square text-[#9CA3AF]"></i>
+      <span>Settings</span>
+    </a>
+    <div class="pt-4 mt-auto">
+      <div class="border-t border-[#E5E7EB] mb-4"></div>
+      <a href="#screen9" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+        <i class="fa-regular fa-credit-card text-[#9CA3AF]"></i>
+        <span>99Plus Store</span>
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#6366F1]/30 hover:bg-white transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center shrink-0">
+        <span class="text-white text-sm font-bold">A</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-1.5">
+          <p class="text-xs font-semibold text-[#0F172A] truncate">Arjun Mehta</p>
+        </div>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+      <button class="w-7 h-7 rounded-full hover:bg-[#E5E7EB] flex items-center justify-center transition-colors shrink-0">
+        <i class="fa-solid fa-ellipsis-vertical text-[#9CA3AF] text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content" class="min-h-screen pattern-bg">
+  <!-- Top Bar -->
+  <div id="header-dream-mapping" class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button class="lg:hidden w-9 h-9 rounded-[12px] border border-[#E5E7EB] flex items-center justify-center text-[#0F172A] hover:bg-[#F8FAFC]">
+          <i class="fa-solid fa-bars text-sm"></i>
+        </button>
+        <div>
+          <h1 class="text-lg font-bold text-[#0F172A] tracking-tight">Command Center</h1>
+          <p class="text-xs text-[#9CA3AF]">Set your surgical target — Step 1 of 3</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-medium text-[#9CA3AF] hidden sm:inline">CUET 2026</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#059669]/10 text-[#059669] text-xs font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse"></span>
+          Live
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-8 overflow-y-auto" style="scrollbar-width: thin;">
+
+    <!-- Progress Stepper -->
+    <div id="section-progress-stepper" class="fade-in-1 mb-10">
+      <div class="flex items-center justify-center gap-0">
+        <!-- Step 1 - Active -->
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-[#6366F1] flex items-center justify-center shadow-md" style="box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
+            <span class="text-white text-xs font-bold">1</span>
+          </div>
+          <span class="text-sm font-semibold text-[#0F172A] hidden sm:inline">Dream Target</span>
+        </div>
+        <div class="w-12 sm:w-20 h-0.5 bg-[#E5E7EB] mx-2 rounded-full overflow-hidden">
+          <div class="w-0 h-full bg-[#6366F1] rounded-full"></div>
+        </div>
+        <!-- Step 2 -->
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-[#E5E7EB] flex items-center justify-center">
+            <span class="text-[#9CA3AF] text-xs font-bold">2</span>
+          </div>
+          <span class="text-sm font-medium text-[#9CA3AF] hidden sm:inline">Eligibility</span>
+        </div>
+        <div class="w-12 sm:w-20 h-0.5 bg-[#E5E7EB] mx-2 rounded-full"></div>
+        <!-- Step 3 -->
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-[#E5E7EB] flex items-center justify-center">
+            <span class="text-[#9CA3AF] text-xs font-bold">3</span>
+          </div>
+          <span class="text-sm font-medium text-[#9CA3AF] hidden sm:inline">Confirm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="section-hero" class="fade-in-2 text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6366F1]/5 border border-[#6366F1]/15 mb-5">
+        <i class="fa-solid fa-crosshairs text-[#6366F1] text-xs"></i>
+        <span class="text-xs font-semibold text-[#6366F1] tracking-wide uppercase">Surgical Selection Engine</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight leading-tight mb-3">
+        Where do you want to <span class="text-[#6366F1]">study</span>?
+      </h2>
+      <p class="text-sm sm:text-base text-[#9CA3AF] max-w-lg mx-auto leading-relaxed">
+        Define your dream college and course. We'll reverse-engineer the exact score you need and build your surgical prep path.
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div id="card-dream-form" class="fade-in-3 bg-white rounded-[12px] border border-[#E5E7EB] p-6 sm:p-8 mb-6" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.06);">
+
+      <!-- Class 12 Stream -->
+      <div id="block-stream-select" class="mb-7">
+        <label class="flex items-center gap-2 text-sm font-semibold text-[#0F172A] mb-3">
+          <span class="w-6 h-6 rounded-md bg-[#6366F1]/10 flex items-center justify-center">
+            <i class="fa-solid fa-graduation-cap text-[#6366F1] text-xs"></i>
+          </span>
+          Class 12 Stream
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label class="select-card cursor-pointer rounded-[12px] border-2 border-[#6366F1] bg-[#6366F1]/5 p-4 flex items-center gap-3">
+            <input type="radio" name="stream" class="sr-only" checked>
+            <div class="w-10 h-10 rounded-[10px] bg-[#6366F1] flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-flask text-white text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#0F172A]">Science</p>
+              <p class="text-xs text-[#9CA3AF]">PCM / PCB</p>
+            </div>
+            <i class="fa-solid fa-circle-check text-[#6366F1] ml-auto"></i>
+          </label>
+          <label class="select-card cursor-pointer rounded-[12px] border-2 border-[#E5E7EB] bg-white p-4 flex items-center gap-3 hover:border-[#6366F1]">
+            <input type="radio" name="stream" class="sr-only">
+            <div class="w-10 h-10 rounded-[10px] bg-[#059669]/10 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-chart-line text-[#059669] text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#0F172A]">Commerce</p>
+              <p class="text-xs text-[#9CA3AF]">Accounts / Eco</p>
+            </div>
+          </label>
+          <label class="select-card cursor-pointer rounded-[12px] border-2 border-[#E5E7EB] bg-white p-4 flex items-center gap-3 hover:border-[#6366F1]">
+            <input type="radio" name="stream" class="sr-only">
+            <div class="w-10 h-10 rounded-[10px] bg-[#FACC15]/15 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-book-open text-[#D97706] text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#0F172A]">Humanities</p>
+              <p class="text-xs text-[#9CA3AF]">History / Pol Sci</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="border-t border-dashed border-[#E5E7EB] my-7"></div>
+
+      <!-- Target University -->
+      <div id="block-university-select" class="mb-7">
+        <label class="flex items-center gap-2 text-sm font-semibold text-[#0F172A] mb-3">
+          <span class="w-6 h-6 rounded-md bg-[#059669]/10 flex items-center justify-center">
+            <i class="fa-solid fa-building-columns text-[#059669] text-xs"></i>
+          </span>
+          Target University
+        </label>
+        <div class="relative">
+          <select class="w-full rounded-[12px] border-2 border-[#E5E7EB] bg-white px-4 py-3.5 pr-10 text-sm text-[#0F172A] font-medium focus:outline-none focus:border-[#6366F1] focus:ring-3 focus:ring-[#6366F1]/10 transition-all cursor-pointer">
+            <option value="" disabled>Select your target university...</option>
+            <option selected>University of Delhi (DU)</option>
+            <option>Jawaharlal Nehru University (JNU)</option>
+            <option>Banaras Hindu University (BHU)</option>
+            <option>Jamia Millia Islamia</option>
+            <option>Aligarh Muslim University (AMU)</option>
+            <option>Allahabad University</option>
+            <option>Central University of Hyderabad</option>
+          </select>
+        </div>
+        <div class="mt-2.5 flex items-center gap-2 px-1">
+          <i class="fa-solid fa-circle-info text-[#6366F1] text-xs"></i>
+          <span class="text-xs text-[#9CA3AF]">North Campus colleges require higher CUET percentiles</span>
+        </div>
+      </div>
+
+      <!-- Dream College & Course -->
+      <div id="block-college-course" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label class="flex items-center gap-2 text-sm font-semibold text-[#0F172A] mb-3">
+            <span class="w-6 h-6 rounded-md bg-[#FACC15]/15 flex items-center justify-center">
+              <i class="fa-solid fa-landmark text-[#D97706] text-xs"></i>
+            </span>
+            Dream College
+          </label>
+          <select class="w-full rounded-[12px] border-2 border-[#E5E7EB] bg-white px-4 py-3.5 pr-10 text-sm text-[#0F172A] font-medium focus:outline-none focus:border-[#6366F1] focus:ring-3 focus:ring-[#6366F1]/10 transition-all cursor-pointer">
+            <option value="" disabled selected>Choose college...</option>
+            <option>Hindu College</option>
+            <option>St. Stephen's College</option>
+            <option>Miranda House</option>
+            <option>Shri Ram College of Commerce</option>
+            <option>Lady Shri Ram College</option>
+            <option>Hansraj College</option>
+            <option>Kirori Mal College</option>
+            <option>Ramjas College</option>
+          </select>
+        </div>
+        <div>
+          <label class="flex items-center gap-2 text-sm font-semibold text-[#0F172A] mb-3">
+            <span class="w-6 h-6 rounded-md bg-[#EF4444]/10 flex items-center justify-center">
+              <i class="fa-solid fa-scroll text-[#EF4444] text-xs"></i>
+            </span>
+            Dream Course
+          </label>
+          <select class="w-full rounded-[12px] border-2 border-[#E5E7EB] bg-white px-4 py-3.5 pr-10 text-sm text-[#0F172A] font-medium focus:outline-none focus:border-[#6366F1] focus:ring-3 focus:ring-[#6366F1]/10 transition-all cursor-pointer">
+            <option value="" disabled selected>Choose course...</option>
+            <option>B.Sc (Hons.) Physics</option>
+            <option>B.Sc (Hons.) Chemistry</option>
+            <option>B.Sc (Hons.) Mathematics</option>
+            <option>B.A (Hons.) Economics</option>
+            <option>B.A (Hons.) English</option>
+            <option>B.Com (Hons.)</option>
+            <option>B.A (Hons.) Political Science</option>
+            <option>B.A (Hons.) History</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insight Card -->
+    <div id="card-insight" class="fade-in-4 bg-gradient-to-r from-[#6366F1]/5 via-[#6366F1]/3 to-transparent rounded-[12px] border border-[#6366F1]/15 p-5 mb-8 flex items-start gap-4">
+      <div class="w-10 h-10 rounded-[10px] bg-[#6366F1]/10 flex items-center justify-center shrink-0 float-anim">
+        <i class="fa-solid fa-bullseye text-[#6366F1]"></i>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-[#0F172A] mb-1">Why does this matter?</p>
+        <p class="text-xs text-[#64748B] leading-relaxed">Your dream target determines the <strong class="text-[#0F172A]">exact CUET score</strong> you need. We'll calculate your required percentile, map the subjects, and build a surgical prep plan — no wasted effort.</p>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div id="section-cta" class="fade-in-5 flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+      <p class="text-xs text-[#9CA3AF] flex items-center gap-1.5">
+        <i class="fa-solid fa-lock text-[10px]"></i>
+        Your data stays private. We never share it.
+      </p>
+      <button class="cta-btn w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-[12px] bg-[#6366F1] text-white text-sm font-bold tracking-wide shadow-lg hover:bg-[#4F46E5] focus:outline-none focus:ring-4 focus:ring-[#6366F1]/25 active:bg-[#4338CA]" style="box-shadow: 0 4px 14px rgba(99,102,241,0.3);">
+        <span>Map My Journey</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
+
+    <!-- Bottom Stats -->
+    <div id="section-social-proof" class="grid grid-cols-3 gap-4 mb-8">
+      <div class="text-center p-4 rounded-[12px] bg-white border border-[#E5E7EB]" style="box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+        <p class="text-xl font-extrabold text-[#6366F1]">12K+</p>
+        <p class="text-xs text-[#9CA3AF] mt-1">Aspirants Mapped</p>
+      </div>
+      <div class="text-center p-4 rounded-[12px] bg-white border border-[#E5E7EB]" style="box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+        <p class="text-xl font-extrabold text-[#059669]">94%</p>
+        <p class="text-xs text-[#9CA3AF] mt-1">Target Accuracy</p>
+      </div>
+      <div class="text-center p-4 rounded-[12px] bg-white border border-[#E5E7EB]" style="box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+        <p class="text-xl font-extrabold text-[#D97706]">45+</p>
+        <p class="text-xs text-[#9CA3AF] mt-1">Universities</p>
+      </div>
+    </div>
+
+  </div>
+</div>

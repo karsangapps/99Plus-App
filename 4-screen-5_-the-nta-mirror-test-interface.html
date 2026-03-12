@@ -1,0 +1,274 @@
+<!-- Main Content Area -->
+<div id="main-content" class="ml-0 min-h-screen bg-[#F8FAFC] flex flex-col w-full">
+
+  <!-- NTA Top Header Bar -->
+  <div id="header-nta-topbar" class="bg-[#303F9F] text-white flex items-center justify-between px-0 h-[54px] shadow-md relative z-40">
+    <!-- Left: Logo + Exam Title -->
+    <div class="flex items-center h-full">
+      <div class="bg-[#283593] h-full flex items-center px-4 gap-2 border-r border-[#3949AB]">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" fill="#fff" opacity="0.15"/><circle cx="16" cy="16" r="10" fill="#FACC15"/><text x="16" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#303F9F">N</text></svg>
+        <div class="flex flex-col leading-tight">
+          <span class="text-[11px] font-bold tracking-wide uppercase">National Testing Agency</span>
+          <span class="text-[9px] opacity-80">CUET (UG) - 2026</span>
+        </div>
+      </div>
+      <div class="px-5 flex items-center gap-2">
+        <i class="fa-solid fa-book-open text-[#FACC15] text-sm"></i>
+        <span class="text-sm font-semibold">Mathematics</span>
+        <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full ml-1">Section A</span>
+      </div>
+    </div>
+    <!-- Center: Timer -->
+    <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+      <i class="fa-solid fa-clock text-[#FACC15] text-sm animate-pulse"></i>
+      <div class="bg-[#1A237E] px-4 py-1.5 rounded-md border border-[#5C6BC0]">
+        <span class="text-xs text-[#9CA3AF] mr-1">Remaining Time:</span>
+        <span class="font-mono font-bold text-base tracking-widest text-[#FACC15]">00:42:17</span>
+      </div>
+    </div>
+    <!-- Right: Candidate Info -->
+    <div class="flex items-center gap-3 pr-5">
+      <div class="text-right leading-tight">
+        <p class="text-xs font-semibold">Arjun Mehta</p>
+        <p class="text-[10px] opacity-70">Roll No: 2026CUET08431</p>
+      </div>
+      <div class="w-9 h-9 rounded-full border-2 border-[#FACC15] overflow-hidden bg-white">
+        <img src="https://i.pravatar.cc/150?u=arjun-nta" alt="Candidate" class="w-full h-full object-cover"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub Header: Section Tabs -->
+  <div id="header-section-tabs" class="bg-[#E8EAF6] border-b border-[#C5CAE9] flex items-center px-5 h-[38px] gap-1">
+    <button class="px-4 py-1.5 text-xs font-semibold bg-[#303F9F] text-white rounded-t-md border border-b-0 border-[#303F9F] -mb-px relative z-10">Section A (Compulsory)</button>
+    <button class="px-4 py-1.5 text-xs font-medium text-[#303F9F] bg-[#C5CAE9] rounded-t-md border border-b-0 border-[#9FA8DA] -mb-px hover:bg-[#B0BEC5] transition-colors">Section B (Optional)</button>
+    <div class="flex-1"></div>
+    <span class="text-[10px] text-[#5C6BC0] font-medium"><i class="fa-solid fa-info-circle mr-1"></i>50 Questions | 250 Marks | Negative Marking: -1</span>
+  </div>
+
+  <!-- Main Test Body -->
+  <div class="flex flex-1 overflow-hidden" style="height: calc(100vh - 54px - 38px);">
+
+    <!-- Question Area -->
+    <div id="section-question-area" class="flex-1 flex flex-col bg-white" style="scrollbar-width: thin;">
+
+      <!-- Question Header -->
+      <div class="bg-[#F1F3F8] border-b border-[#E5E7EB] px-6 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <span class="bg-[#303F9F] text-white text-xs font-bold px-3 py-1 rounded-[6px]">Question No. 17</span>
+          <span class="text-xs text-[#5C6BC0] font-medium">Single Choice</span>
+          <span class="text-[10px] bg-[#E8F5E9] text-[#059669] px-2 py-0.5 rounded-[6px] font-semibold">+5 Marks</span>
+          <span class="text-[10px] bg-[#FFF3E0] text-[#E65100] px-2 py-0.5 rounded-[6px] font-semibold">-1 Negative</span>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-[#9CA3AF]">
+          <i class="fa-solid fa-tag"></i>
+          <span>Continuity & Differentiability</span>
+        </div>
+      </div>
+
+      <!-- Question Content -->
+      <div class="flex-1 overflow-y-auto px-8 py-6" style="scrollbar-width: thin;">
+        <div class="mb-5">
+          <p class="text-[15px] text-[#0F172A] leading-relaxed font-medium font-['Inter',sans-serif]">
+            If <span class="font-mono bg-[#F1F3F8] px-2 py-0.5 rounded text-[#303F9F] text-sm">f(x) = |x - 1| + |x - 3|</span>, then which of the following statements is correct about the differentiability of f(x)?
+          </p>
+          <p class="text-sm text-[#64748B] mt-3 leading-relaxed font-['Inter',sans-serif]">
+            Consider the function defined above and analyze its behavior at the critical points. Determine where the function fails to be differentiable and select the most appropriate answer from the options given below.
+          </p>
+        </div>
+
+        <!-- Options -->
+        <div class="space-y-3 max-w-2xl font-['Inter',sans-serif]">
+          <!-- Option 1 -->
+          <label class="flex items-center gap-4 p-4 rounded-[12px] border-2 border-[#E5E7EB] bg-[#FAFBFC] cursor-pointer hover:border-[#303F9F] hover:bg-[#EEF0FF] transition-all duration-200 group">
+            <input type="radio" name="q17" class="mt-0.5 w-4 h-4 accent-[#303F9F]"/>
+            <div class="flex items-center gap-3">
+              <span class="flex-shrink-0 w-7 h-7 rounded-[8px] bg-[#E8EAF6] text-[#303F9F] text-xs font-bold flex items-center justify-center group-hover:bg-[#303F9F] group-hover:text-white transition-colors">1</span>
+              <span class="text-sm text-[#0F172A]">f(x) is differentiable everywhere on <span class="font-mono text-[#303F9F]">ℝ</span></span>
+            </div>
+          </label>
+
+          <!-- Option 2 (Selected) -->
+          <label class="flex items-center gap-4 p-4 rounded-[12px] border-2 border-[#303F9F] bg-[#EEF0FF] cursor-pointer transition-all duration-200 group ring-2 ring-[#303F9F]/20">
+            <input type="radio" name="q17" checked class="mt-0.5 w-4 h-4 accent-[#303F9F]"/>
+            <div class="flex items-center gap-3">
+              <span class="flex-shrink-0 w-7 h-7 rounded-[8px] bg-[#303F9F] text-white text-xs font-bold flex items-center justify-center">2</span>
+              <span class="text-sm text-[#0F172A] font-medium">f(x) is not differentiable at <span class="font-mono text-[#303F9F]">x = 1</span> and <span class="font-mono text-[#303F9F]">x = 3</span></span>
+            </div>
+          </label>
+
+          <!-- Option 3 -->
+          <label class="flex items-center gap-4 p-4 rounded-[12px] border-2 border-[#E5E7EB] bg-[#FAFBFC] cursor-pointer hover:border-[#303F9F] hover:bg-[#EEF0FF] transition-all duration-200 group">
+            <input type="radio" name="q17" class="mt-0.5 w-4 h-4 accent-[#303F9F]"/>
+            <div class="flex items-center gap-3">
+              <span class="flex-shrink-0 w-7 h-7 rounded-[8px] bg-[#E8EAF6] text-[#303F9F] text-xs font-bold flex items-center justify-center group-hover:bg-[#303F9F] group-hover:text-white transition-colors">3</span>
+              <span class="text-sm text-[#0F172A]">f(x) is not differentiable only at <span class="font-mono text-[#303F9F]">x = 1</span></span>
+            </div>
+          </label>
+
+          <!-- Option 4 -->
+          <label class="flex items-center gap-4 p-4 rounded-[12px] border-2 border-[#E5E7EB] bg-[#FAFBFC] cursor-pointer hover:border-[#303F9F] hover:bg-[#EEF0FF] transition-all duration-200 group">
+            <input type="radio" name="q17" class="mt-0.5 w-4 h-4 accent-[#303F9F]"/>
+            <div class="flex items-center gap-3">
+              <span class="flex-shrink-0 w-7 h-7 rounded-[8px] bg-[#E8EAF6] text-[#303F9F] text-xs font-bold flex items-center justify-center group-hover:bg-[#303F9F] group-hover:text-white transition-colors">4</span>
+              <span class="text-sm text-[#0F172A]">f(x) is continuous but not differentiable at <span class="font-mono text-[#303F9F]">x = 2</span></span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Footer Navigation Bar (inside question area) -->
+      <div id="block-footer-nav" class="h-[52px] bg-white border-t-2 border-[#E5E7EB] flex items-center justify-between px-5 flex-shrink-0 shadow-[0_-2px_8px_rgba(0,0,0,0.04)]">
+        <div class="flex items-center gap-2">
+          <button class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#059669] border border-[#047857] rounded-[8px] hover:bg-[#047857] transition-all duration-200 active:scale-95 shadow-sm shadow-[#059669]/20">
+            <i class="fa-solid fa-check"></i>
+            Save & Next
+          </button>
+          <button class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-[#64748B] bg-[#F1F3F8] border border-[#D1D5DB] rounded-[8px] hover:bg-[#E5E7EB] hover:text-[#374151] transition-all duration-200 active:scale-95">
+            <i class="fa-solid fa-eraser"></i>
+            Clear Response
+          </button>
+          <button class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#6366F1] border border-[#4F46E5] rounded-[8px] hover:bg-[#4F46E5] transition-all duration-200 active:scale-95 shadow-sm">
+            <i class="fa-solid fa-bookmark"></i>
+            Save & Mark for Review
+          </button>
+          <button class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#7C3AED] border border-[#6D28D9] rounded-[8px] hover:bg-[#6D28D9] transition-all duration-200 active:scale-95 shadow-sm">
+            <i class="fa-solid fa-forward"></i>
+            Mark for Review & Next
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="w-8 h-8 rounded-[8px] bg-[#E8EAF6] text-[#303F9F] flex items-center justify-center hover:bg-[#C5CAE9] transition-colors text-xs">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span class="text-xs font-semibold text-[#303F9F] px-2 font-['Inter',sans-serif]">17 / 50</span>
+          <button class="w-8 h-8 rounded-[8px] bg-[#E8EAF6] text-[#303F9F] flex items-center justify-center hover:bg-[#C5CAE9] transition-colors text-xs">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar: Question Palette -->
+    <div id="sidebar-question-palette" class="w-[280px] bg-[#F8F9FC] border-l border-[#E5E7EB] flex flex-col flex-shrink-0">
+
+      <!-- Candidate Profile Card -->
+      <div class="bg-white border-b border-[#E5E7EB] px-4 py-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-[10px] border-2 border-[#FACC15] overflow-hidden bg-white flex-shrink-0">
+          <img src="https://i.pravatar.cc/150?u=arjun-nta" alt="Candidate" class="w-full h-full object-cover"/>
+        </div>
+        <div class="leading-tight min-w-0">
+          <p class="text-xs font-bold text-[#0F172A] font-['Inter',sans-serif]">Arjun Mehta</p>
+          <p class="text-[10px] text-[#9CA3AF]">Roll: 2026CUET08431</p>
+        </div>
+      </div>
+
+      <!-- Palette Header -->
+      <div class="bg-[#303F9F] text-white px-4 py-2.5 text-center">
+        <span class="text-[11px] font-bold tracking-wide uppercase font-['Inter',sans-serif]">Question Palette</span>
+      </div>
+
+      <!-- Question Grid -->
+      <div class="flex-1 overflow-y-auto px-3 py-4" style="scrollbar-width: thin;">
+        <div class="grid grid-cols-5 gap-[5px]">
+          <!-- 1: Not Visited (grey) -->
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">1</button>
+          <!-- Answered (green) -->
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">2</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">3</button>
+          <!-- Not Answered (red) -->
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#EF4444] text-white text-xs font-bold border border-[#DC2626] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">4</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">5</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">6</button>
+          <!-- Marked for Review (purple) -->
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#7C3AED] text-white text-xs font-bold border border-[#6D28D9] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">7</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#EF4444] text-white text-xs font-bold border border-[#DC2626] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">8</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">9</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">10</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#EF4444] text-white text-xs font-bold border border-[#DC2626] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">11</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">12</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">13</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">14</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#7C3AED] text-white text-xs font-bold border border-[#6D28D9] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">15</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">16</button>
+          <!-- Current Question -->
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#303F9F] text-white text-xs font-bold border-2 border-[#FACC15] ring-2 ring-[#FACC15]/40 shadow-md font-['Inter',sans-serif]">17</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">18</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">19</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">20</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">21</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">22</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">23</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">24</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">25</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">26</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">27</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">28</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#7C3AED] text-white text-xs font-bold border border-[#6D28D9] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">29</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">30</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">31</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">32</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#EF4444] text-white text-xs font-bold border border-[#DC2626] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">33</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">34</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">35</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">36</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">37</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">38</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">39</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#059669] text-white text-xs font-bold border border-[#047857] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">40</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">41</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">42</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#7C3AED] text-white text-xs font-bold border border-[#6D28D9] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">43</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">44</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">45</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">46</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">47</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#EF4444] text-white text-xs font-bold border border-[#DC2626] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">48</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">49</button>
+          <button class="w-[46px] h-[38px] rounded-[6px] bg-[#D1D5DB] text-[#374151] text-xs font-bold border border-[#9CA3AF] hover:opacity-80 transition-opacity font-['Inter',sans-serif]">50</button>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div id="block-legend" class="border-t border-[#E5E7EB] px-4 py-3 bg-white rounded-b-[12px]">
+        <p class="text-[10px] font-bold text-[#374151] uppercase tracking-wider mb-2 font-['Inter',sans-serif]">Legend</p>
+        <div class="grid grid-cols-2 gap-y-2.5 gap-x-3">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#D1D5DB] border border-[#9CA3AF] text-[8px] font-bold text-[#374151] flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Not Visited</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#EF4444] border border-[#DC2626] text-[8px] font-bold text-white flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Not Answered</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#059669] border border-[#047857] text-[8px] font-bold text-white flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Answered</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#7C3AED] border border-[#6D28D9] text-[8px] font-bold text-white flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Marked for Review</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#303F9F] border-2 border-[#FACC15] text-[8px] font-bold text-white flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Current</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-[4px] bg-[#6366F1] border border-[#4F46E5] text-[8px] font-bold text-white flex items-center justify-center"></span>
+            <span class="text-[10px] text-[#64748B]">Answered & Marked</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="border-t border-[#E5E7EB] px-4 py-2 bg-[#F1F3F8]">
+        <div class="flex justify-between text-[10px] font-['Inter',sans-serif]">
+          <span class="text-[#059669] font-semibold"><i class="fa-solid fa-check-circle mr-1"></i>12 Answered</span>
+          <span class="text-[#EF4444] font-semibold"><i class="fa-solid fa-times-circle mr-1"></i>5 Skipped</span>
+          <span class="text-[#7C3AED] font-semibold"><i class="fa-solid fa-eye mr-1"></i>4 Review</span>
+          <span class="text-[#9CA3AF] font-semibold"><i class="fa-solid fa-circle mr-1"></i>29 Left</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

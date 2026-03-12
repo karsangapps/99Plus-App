@@ -1,0 +1,795 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --bg: #F8FAFC;
+    --fg: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+  * { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'Fira Code', monospace; }
+  
+  .sidebar-nav { background: #0F172A; }
+  .sidebar-link { transition: all 0.2s ease; border-radius: 10px; }
+  .sidebar-link:hover { background: #1E293B; }
+  .sidebar-link.active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.08));
+    color: #818CF8 !important;
+    border: 1px solid rgba(99,102,241,0.25);
+  }
+  .sidebar-link.active i { color: #818CF8 !important; }
+  
+  .main-scroll::-webkit-scrollbar { width: 6px; }
+  .main-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+  
+  .mastery-green { background: linear-gradient(135deg, #059669 0%, #10B981 100%); }
+  .mastery-yellow { background: linear-gradient(135deg, #D97706 0%, #FACC15 100%); }
+  .mastery-grey { background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%); }
+  
+  .chapter-row { transition: all 0.2s ease; }
+  .chapter-row:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+  
+  .progress-fill { transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+  
+  .btn-sprint {
+    background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%);
+    transition: all 0.2s ease;
+  }
+  .btn-sprint:hover {
+    background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  }
+  .btn-sprint:active { transform: scale(0.98); }
+  
+  .expand-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .expand-content.open {
+    max-height: 400px;
+    opacity: 1;
+  }
+  
+  .practice-menu {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.3s ease;
+    margin-top: 0;
+  }
+  .practice-menu.show {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 8px;
+  }
+  
+  .unit-header {
+    border-left: 4px solid var(--primary);
+  }
+  
+  .badge-pill {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  
+  .badge-board {
+    background: #EFF6FF;
+    color: #2563EB;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #BFDBFE;
+  }
+  .star-toggle {
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .star-toggle:hover { transform: scale(1.2); }
+  .star-toggle.marked { color: #F59E0B; }
+  .star-toggle:not(.marked) { color: #D1D5DB; }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-row { animation: fadeInUp 0.3s ease forwards; }
+  .animate-row:nth-child(1) { animation-delay: 0.05s; }
+  .animate-row:nth-child(2) { animation-delay: 0.1s; }
+  .animate-row:nth-child(3) { animation-delay: 0.15s; }
+  .animate-row:nth-child(4) { animation-delay: 0.2s; }
+  .animate-row:nth-child(5) { animation-delay: 0.25s; }
+  
+  .subject-tab {
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+  }
+  .subject-tab.active {
+    border-bottom-color: var(--primary);
+    color: var(--primary);
+  }
+  .subject-tab:hover:not(.active) {
+    border-bottom-color: var(--border);
+    color: var(--fg);
+  }
+</style>
+
+<div id="main-content" class="flex min-h-screen" style="background: var(--bg);">
+
+  <!-- Sidebar -->
+  <aside class="sidebar-nav w-[260px] min-h-screen flex flex-col flex-shrink-0 border-r" style="border-color: #1E293B;">
+    <!-- Logo -->
+    <div class="p-5 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-[#6366F1]/15 flex items-center justify-center">
+          <i class="fa-solid fa-square-check text-[#818CF8] text-lg"></i>
+        </div>
+        <p class="text-sm font-extrabold text-white tracking-tight">99Plus</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex-1 overflow-y-auto py-4 px-4" style="scrollbar-width: thin;">
+      <p class="text-[10px] font-bold uppercase tracking-widest mb-3 px-3" style="color: #475569;">Navigation</p>
+      <div class="space-y-1">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-gauge-high w-5 text-center" style="color: #64748B;"></i><span>Command Center</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-clipboard-check w-5 text-center" style="color: #64748B;"></i><span>Pre-Test</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-desktop w-5 text-center" style="color: #64748B;"></i><span>NTA Test</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-stethoscope w-5 text-center" style="color: #64748B;"></i><span>Diagnosis</span></a>
+        <a href="#" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 text-sm font-medium"><i class="fa-solid fa-crosshairs w-5 text-center"></i><span>Surgical Drill</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-chart-line w-5 text-center" style="color: #64748B;"></i><span>Analytics</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-building-columns w-5 text-center" style="color: #64748B;"></i><span>Selection Hub</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-gear w-5 text-center" style="color: #64748B;"></i><span>Settings</span></a>
+      </div>
+
+      <!-- 99Plus Store -->
+      <div class="mt-auto pt-4">
+        <div class="border-t mx-2 mb-4" style="border-color: #1E293B;"></div>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-store w-5 text-center" style="color: #64748B;"></i><span>99Plus Store</span></a>
+      </div>
+    </div>
+
+    <!-- User Profile -->
+    <div class="p-4 border-t" style="border-color: #1E293B;">
+      <div class="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[#1E293B] border border-[#334155] hover:border-[#6366F1]/40 transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+        <div class="w-9 h-9 rounded-full overflow-hidden border-2 flex-shrink-0" style="border-color: #818CF8;">
+          <img src="https://i.pravatar.cc/150?u=arjun-mehta" alt="Arjun" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-white truncate">Arjun Mehta</p>
+          <p class="text-[10px] font-medium" style="color: #64748B;">CUET 2026 Aspirant</p>
+        </div>
+        <button class="w-7 h-7 rounded-full hover:bg-[#334155] flex items-center justify-center transition-colors flex-shrink-0">
+          <i class="fa-solid fa-ellipsis-vertical text-[#94A3B8] text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b" style="border-color: var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+      <div class="px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <a href="#" class="text-xs font-medium" style="color: var(--muted);">Surgical Drill</a>
+            <i class="fa-solid fa-chevron-right text-[10px]" style="color: var(--muted);"></i>
+            <span class="text-xs font-semibold" style="color: var(--primary);">Topic Mastery</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs" style="color: var(--muted);"></i>
+            <input type="text" placeholder="Search topics or board-exclusive chapters..." class="pl-9 pr-4 py-2 text-xs rounded-lg w-[320px] outline-none focus:ring-2 focus:ring-[#6366F1]/20" style="background: var(--bg); border: 1px solid var(--border); color: var(--fg);">
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg" style="background: #F0FDF4; border: 1px solid #BBF7D0;">
+            <i class="fa-solid fa-fire text-xs" style="color: var(--secondary);"></i>
+            <span class="text-xs font-bold" style="color: var(--secondary);">7-Day Streak</span>
+          </div>
+          <div class="w-px h-6" style="background: var(--border);"></div>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer hover:opacity-90 transition-opacity" style="background: #FFFBEB; border: 1px solid #FDE68A;">
+            <i class="fa-solid fa-coins text-xs" style="color: #D97706;"></i>
+            <span class="text-xs font-bold" style="color: #92400E;">Surgical Balance:</span>
+            <span class="mono text-xs font-extrabold" style="color: #D97706;">0 Credits</span>
+          </div>
+          <div class="w-px h-6" style="background: var(--border);"></div>
+          <div class="w-8 h-8 rounded-full overflow-hidden border-2 flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-[#6366F1]/20 transition-all" style="border-color: #C7D2FE;">
+            <img src="https://i.pravatar.cc/150?u=arjun-mehta" alt="Arjun" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Title Banner -->
+    <div class="px-6 pt-5 pb-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-xl font-extrabold tracking-tight" style="color: var(--fg);">NCERT Syllabus Explorer</h1>
+            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md" style="background: #EEF2FF; color: var(--primary);">Mode B</span>
+          </div>
+          <p class="text-xs" style="color: var(--muted);">Deep-dive into chapters and build targeted mastery · CUET 2026</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subject Tabs -->
+    <div id="section-subject-tabs" class="px-6 bg-white border-b" style="border-color: var(--border);">
+      <div class="flex gap-0 overflow-x-auto" style="scrollbar-width: none;">
+        <button class="subject-tab px-5 py-3 text-sm font-semibold whitespace-nowrap" style="color: var(--muted);">
+          <i class="fa-solid fa-book mr-1.5 text-xs"></i>English
+        </button>
+        <button class="subject-tab active px-5 py-3 text-sm font-semibold whitespace-nowrap" style="color: var(--primary);">
+          <i class="fa-solid fa-square-root-variable mr-1.5 text-xs"></i>Mathematics
+        </button>
+        <button class="subject-tab px-5 py-3 text-sm font-semibold whitespace-nowrap" style="color: var(--muted);">
+          <i class="fa-solid fa-chart-line mr-1.5 text-xs"></i>Economics
+        </button>
+        <button class="subject-tab px-5 py-3 text-sm font-semibold whitespace-nowrap" style="color: var(--muted);">
+          <i class="fa-solid fa-landmark mr-1.5 text-xs"></i>Political Science
+        </button>
+        <button class="subject-tab px-5 py-3 text-sm font-semibold whitespace-nowrap" style="color: var(--muted);">
+          <i class="fa-solid fa-flask mr-1.5 text-xs"></i>General Test
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Stats Bar -->
+    <div id="section-summary-stats" class="px-6 mt-5 mb-4">
+      <div class="grid grid-cols-4 gap-3">
+        <div class="bg-white rounded-xl p-3.5 flex items-center gap-3" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #ECFDF5;">
+            <i class="fa-solid fa-circle-check text-base" style="color: var(--secondary);"></i>
+          </div>
+          <div>
+            <p class="text-xl font-extrabold" style="color: var(--fg);">3</p>
+            <p class="text-xs font-medium" style="color: var(--muted);">Mastered</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-3.5 flex items-center gap-3" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #FFFBEB;">
+            <i class="fa-solid fa-triangle-exclamation text-base" style="color: #D97706;"></i>
+          </div>
+          <div>
+            <p class="text-xl font-extrabold" style="color: var(--fg);">4</p>
+            <p class="text-xs font-medium" style="color: var(--muted);">Leaking</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-3.5 flex items-center gap-3" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #F3F4F6;">
+            <i class="fa-solid fa-clock text-base" style="color: var(--muted);"></i>
+          </div>
+          <div>
+            <p class="text-xl font-extrabold" style="color: var(--fg);">6</p>
+            <p class="text-xs font-medium" style="color: var(--muted);">Untested</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-3.5 flex items-center gap-3" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #EEF2FF;">
+            <i class="fa-solid fa-layer-group text-base" style="color: var(--primary);"></i>
+          </div>
+          <div>
+            <p class="text-xl font-extrabold" style="color: var(--fg);">13</p>
+            <p class="text-xs font-medium" style="color: var(--muted);">Total Chapters</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="px-6 mb-4">
+      <div class="flex items-center gap-5 text-[11px] font-medium" style="color: var(--muted);">
+        <span class="flex items-center gap-1.5"><span class="badge-board">Board Overlap</span> = Currently in school syllabus</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-[#F59E0B]"></i> Personal Focus = Your marked weak spots</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background: var(--secondary);"></span> Mastered</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background: #D97706;"></span> Leaking</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background: var(--muted);"></span> Untested</span>
+      </div>
+    </div>
+
+    <!-- Scrollable Mastery Grid -->
+    <div id="section-mastery-grid" class="flex-1 overflow-y-auto main-scroll px-6 pb-8">
+
+      <!-- UNIT 1: Relations and Functions -->
+      <div id="block-unit-1" class="mb-5">
+        <div class="unit-header bg-white rounded-xl px-4 py-3 mb-2.5 flex items-center justify-between cursor-pointer" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="flex items-center gap-3">
+            <span class="mono text-xs font-medium px-2 py-0.5 rounded" style="background: #EEF2FF; color: var(--primary);">UNIT 1</span>
+            <h2 class="text-sm font-bold" style="color: var(--fg);">Relations and Functions</h2>
+            <i class="fa-solid fa-chevron-right text-[10px] ml-1" style="color: var(--muted);"></i>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold" style="color: var(--muted);">3 chapters</span>
+            <div class="w-24 h-1.5 rounded-full" style="background: var(--border);">
+              <div class="h-full rounded-full progress-fill" style="width: 75%; background: linear-gradient(90deg, var(--primary), #818CF8);"></div>
+            </div>
+            <span class="mono text-xs font-medium" style="color: var(--primary);">75%</span>
+          </div>
+        </div>
+
+        <!-- Ch 1 - Mastered -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--secondary);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 1: Relations and Functions</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-solid fa-star star-toggle marked text-xs" title="Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">22 questions attempted · Last: 1 day ago</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-green text-white px-2.5 py-1 rounded-full">92% Mastered</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 2 - Leaking -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: #D97706;"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 2: Inverse Trigonometric Functions</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">14 questions attempted · Last: 3 days ago</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-yellow text-white px-2.5 py-1 rounded-full">61% Leaking</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-[#6366F1] text-white border-transparent" style="border: 1px solid transparent;">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 3 - Mastered -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--secondary);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 3: Matrices</p>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">18 questions attempted · Last: today</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-green text-white px-2.5 py-1 rounded-full">89% Mastered</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 2: Algebra (Collapsed) -->
+      <div id="block-unit-2" class="mb-5">
+        <div class="unit-header bg-white rounded-xl px-4 py-3 mb-2.5 flex items-center justify-between cursor-pointer" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="flex items-center gap-3">
+            <span class="mono text-xs font-medium px-2 py-0.5 rounded" style="background: #EEF2FF; color: var(--primary);">UNIT 2</span>
+            <h2 class="text-sm font-bold" style="color: var(--fg);">Algebra</h2>
+            <i class="fa-solid fa-chevron-right text-[10px] ml-1" style="color: var(--muted);"></i>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold" style="color: var(--muted);">2 chapters</span>
+            <div class="w-24 h-1.5 rounded-full" style="background: var(--border);">
+              <div class="h-full rounded-full progress-fill" style="width: 40%; background: linear-gradient(90deg, var(--primary), #818CF8);"></div>
+            </div>
+            <span class="mono text-xs font-medium" style="color: var(--primary);">40%</span>
+          </div>
+        </div>
+
+        <!-- Ch 4 - Leaking -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: #D97706;"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 4: Determinants</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-solid fa-star star-toggle marked text-xs" title="Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">8 questions attempted · Last: 5 days ago</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-yellow text-white px-2.5 py-1 rounded-full">55% Leaking</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 5 - Untested -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--muted);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 5: Adjoint and Inverse of a Matrix</p>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">No attempts yet</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-grey text-white px-2.5 py-1 rounded-full">Untested</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 3: Calculus (EXPANDED - Active Focus) -->
+      <div id="block-unit-3" class="mb-5">
+        <div class="unit-header bg-white rounded-xl px-4 py-3 mb-2.5 flex items-center justify-between cursor-pointer" style="border: 1px solid #C7D2FE; box-shadow: 0 0 0 1px rgba(99,102,241,0.15), 0 1px 3px rgba(0,0,0,0.04); background: linear-gradient(135deg, #FAFAFE, #F5F3FF);">
+          <div class="flex items-center gap-3">
+            <span class="mono text-xs font-medium px-2 py-0.5 rounded" style="background: var(--primary); color: white;">UNIT 3</span>
+            <h2 class="text-sm font-bold" style="color: var(--fg);">Calculus</h2>
+            <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded" style="background: #FEE2E2; color: var(--destructive);">Mark Leak Zone</span>
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1" style="color: var(--primary);"></i>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold" style="color: var(--muted);">5 chapters</span>
+            <div class="w-24 h-1.5 rounded-full" style="background: var(--border);">
+              <div class="h-full rounded-full progress-fill" style="width: 28%; background: linear-gradient(90deg, #EF4444, #F87171);"></div>
+            </div>
+            <span class="mono text-xs font-medium" style="color: var(--destructive);">28%</span>
+          </div>
+        </div>
+
+        <!-- Ch 5: Continuity and Differentiability - Leaking (EXPANDED) -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid #FDE68A; box-shadow: 0 0 0 1px #FDE68A;">
+          <div class="px-4 py-3 flex items-center justify-between cursor-pointer" style="background: #FFFEF5;">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: #D97706;"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 5: Continuity and Differentiability</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded" style="background: #FEE2E2; color: var(--destructive);">67% LEAKING</span>
+                  <i class="fa-solid fa-star star-toggle marked text-xs" title="Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">10 questions attempted · Last: 2 days ago</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-yellow text-white px-2.5 py-1 rounded-full">67% Leaking</span>
+              <i class="fa-solid fa-chevron-down text-xs" style="color: var(--muted);"></i>
+            </div>
+          </div>
+          <div class="expand-content open">
+            <div class="px-4 pb-4 pt-1">
+              <div class="rounded-lg p-3 space-y-3" style="background: #FFFBEB; border: 1px dashed #FDE68A;">
+                <p class="text-xs font-bold uppercase tracking-wider" style="color: #92400E;">
+                  <i class="fa-solid fa-microscope mr-1"></i>Granular Breakdown
+                </p>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full" style="background: var(--secondary);"></div>
+                    <span class="text-xs font-medium" style="color: var(--fg);">Continuity at a Point</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 h-1.5 rounded-full" style="background: #E5E7EB;">
+                      <div class="h-full rounded-full" style="width: 82%; background: var(--secondary);"></div>
+                    </div>
+                    <span class="mono text-xs font-semibold" style="color: var(--secondary);">82%</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full" style="background: #D97706;"></div>
+                    <span class="text-xs font-medium" style="color: var(--fg);">Derivatives of Composites</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 h-1.5 rounded-full" style="background: #E5E7EB;">
+                      <div class="h-full rounded-full" style="width: 55%; background: #D97706;"></div>
+                    </div>
+                    <span class="mono text-xs font-semibold" style="color: #D97706;">55%</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full" style="background: var(--destructive);"></div>
+                    <span class="text-xs font-medium" style="color: var(--fg);">Rolle's & Mean Value Theorem</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-20 h-1.5 rounded-full" style="background: #E5E7EB;">
+                      <div class="h-full rounded-full" style="width: 22%; background: var(--destructive);"></div>
+                    </div>
+                    <span class="mono text-xs font-semibold" style="color: var(--destructive);">22%</span>
+                  </div>
+                </div>
+                <div class="pt-2 flex items-center justify-between border-t" style="border-color: #FDE68A;">
+                  <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-crosshairs text-xs" style="color: var(--destructive);"></i>
+                    <span class="text-xs font-bold" style="color: var(--destructive);">Critical Fix: Rolle's & MVT</span>
+                  </div>
+                  <button class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                    <i class="fa-solid fa-bolt mr-1"></i>Launch X-Ray Sprint
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 6: Applications of Derivatives - Leaking -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: #D97706;"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 6: Applications of Derivatives</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-solid fa-star star-toggle marked text-xs" title="Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">6 questions attempted · Last: 4 days ago</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-yellow text-white px-2.5 py-1 rounded-full">38% Leaking</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 7: Integrals - Untested -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--muted);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 7: Integrals</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">No attempts yet</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-grey text-white px-2.5 py-1 rounded-full">Untested</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 8: Applications of Integrals - Untested -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--muted);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 8: Applications of Integrals</p>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">No attempts yet</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-grey text-white px-2.5 py-1 rounded-full">Untested</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ch 9: Differential Equations - Mastered -->
+        <div class="chapter-row animate-row bg-white rounded-xl mb-2 overflow-hidden" style="border: 1px solid var(--border);">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+              <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--secondary);"></div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="text-sm font-semibold truncate" style="color: var(--fg);">Ch 9: Differential Equations</p>
+                  <span class="badge-board">Board Overlap</span>
+                  <i class="fa-regular fa-star star-toggle text-xs" title="Mark as Personal Focus"></i>
+                </div>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">16 questions attempted · Last: yesterday</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+              <span class="badge-pill mastery-green text-white px-2.5 py-1 rounded-full">88% Mastered</span>
+              <button onclick="togglePracticeMenu(this)" class="btn-sprint text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg">
+                <i class="fa-solid fa-play mr-1"></i>Start Targeted Practice
+              </button>
+            </div>
+          </div>
+          <div class="practice-menu px-4 pb-3">
+            <div class="rounded-lg p-3 flex items-center gap-2" style="background: #F8FAFC; border: 1px solid var(--border);">
+              <span class="text-[10px] font-bold uppercase tracking-wider mr-2" style="color: var(--muted);">Focus on:</span>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">1. Full Chapter</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">2. Weak Sub-topics only</button>
+              <button class="px-3 py-1.5 text-[11px] font-semibold rounded-lg hover:bg-[#EEF2FF]" style="border: 1px solid var(--border); color: var(--fg);">3. Board-level basics</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 4: Vectors and 3D Geometry (Collapsed) -->
+      <div id="block-unit-4" class="mb-5">
+        <div class="unit-header bg-white rounded-xl px-4 py-3 mb-2.5 flex items-center justify-between cursor-pointer" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="flex items-center gap-3">
+            <span class="mono text-xs font-medium px-2 py-0.5 rounded" style="background: #EEF2FF; color: var(--primary);">UNIT 4</span>
+            <h2 class="text-sm font-bold" style="color: var(--fg);">Vectors and Three-Dimensional Geometry</h2>
+            <i class="fa-solid fa-chevron-right text-[10px] ml-1" style="color: var(--muted);"></i>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold" style="color: var(--muted);">2 chapters</span>
+            <div class="w-24 h-1.5 rounded-full" style="background: var(--border);">
+              <div class="h-full rounded-full progress-fill" style="width: 0%; background: linear-gradient(90deg, var(--primary), #818CF8);"></div>
+            </div>
+            <span class="mono text-xs font-medium" style="color: var(--muted);">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIT 5: Linear Programming (Collapsed) -->
+      <div id="block-unit-5" class="mb-5">
+        <div class="unit-header bg-white rounded-xl px-4 py-3 mb-2.5 flex items-center justify-between cursor-pointer" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div class="flex items-center gap-3">
+            <span class="mono text-xs font-medium px-2 py-0.5 rounded" style="background: #EEF2FF; color: var(--primary);">UNIT 5</span>
+            <h2 class="text-sm font-bold" style="color: var(--fg);">Linear Programming</h2>
+            <i class="fa-solid fa-chevron-right text-[10px] ml-1" style="color: var(--muted);"></i>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-semibold" style="color: var(--muted);">1 chapter</span>
+            <div class="w-24 h-1.5 rounded-full" style="background: var(--border);">
+              <div class="h-full rounded-full progress-fill" style="width: 0%; background: linear-gradient(90deg, var(--primary), #818CF8);"></div>
+            </div>
+            <span class="mono text-xs font-medium" style="color: var(--muted);">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div id="section-bottom-cta" class="bg-white rounded-xl p-4 flex items-center justify-between mb-6" style="border: 1px solid var(--border); background: linear-gradient(135deg, #EEF2FF 0%, #FEF2F2 100%);">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, var(--destructive), #F87171);">
+            <i class="fa-solid fa-crosshairs text-sm text-white"></i>
+          </div>
+          <div>
+            <p class="text-sm font-bold" style="color: var(--fg);">4 chapters leaking in Calculus — 12 marks at risk</p>
+            <p class="text-xs" style="color: var(--muted);">Estimated recovery: 60 min of targeted practice across weak sub-topics</p>
+          </div>
+        </div>
+        <button class="btn-sprint text-white text-sm font-bold px-5 py-2.5 rounded-xl">
+          <i class="fa-solid fa-bolt mr-1.5"></i>Auto-Fix All Calculus Leaks
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePracticeMenu(btn) {
+  const chapterRow = btn.closest('.chapter-row');
+  const menu = chapterRow.querySelector('.practice-menu');
+  if (menu) {
+    menu.classList.toggle('show');
+  }
+}
+
+document.querySelectorAll('.star-toggle').forEach(star => {
+  star.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (this.classList.contains('marked')) {
+      this.classList.remove('marked', 'fa-solid');
+      this.classList.add('fa-regular');
+    } else {
+      this.classList.add('marked', 'fa-solid');
+      this.classList.remove('fa-regular');
+    }
+  });
+});
+</script>

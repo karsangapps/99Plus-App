@@ -1,0 +1,358 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --fg: #0F172A;
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+  * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .gold-shimmer {
+    background: linear-gradient(90deg, #FACC15 0%, #FDE68A 25%, #FACC15 50%, #FDE68A 75%, #FACC15 100%);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+  .float-badge { animation: float 2.5s ease-in-out infinite; }
+</style>
+
+<div id="main-content" class="flex h-screen w-full overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside id="sidebar-master" class="w-[260px] min-w-[260px] h-full flex flex-col justify-between border-r bg-white" style="border-color: var(--border);">
+    <div>
+      <!-- Logo -->
+      <div class="px-6 py-6 border-b" style="border-color: var(--border);">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #EEF2FF;"><i class="fa-regular fa-square-check text-xl" style="color: var(--primary);"></i></div>
+          <span class="text-lg font-extrabold tracking-tight" style="color: var(--fg);">99Plus</span>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="px-3 py-4 flex flex-col gap-1">
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-window-maximize w-5 text-center"></i> Command Center
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-clipboard w-5 text-center"></i> Pre-Test
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-rectangle-list w-5 text-center"></i> NTA Test
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-heart w-5 text-center"></i> Diagnosis
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-compass w-5 text-center"></i> Surgical Drill
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-chart-bar w-5 text-center"></i> Analytics
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-map w-5 text-center"></i> Selection Hub
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50" style="color: var(--muted);">
+          <i class="fa-regular fa-sun w-5 text-center"></i> Settings
+        </a>
+
+        <div class="my-1 border-t" style="border-color: var(--border);"></div>
+
+        <!-- 99Plus Store -->
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all" style="background: var(--primary); color: #FFFFFF;">
+          <i class="fa-regular fa-store w-5 text-center"></i> 99Plus Store
+        </a>
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="px-4 pb-5">
+      <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl border bg-white hover:border-gray-300 transition-colors cursor-pointer" style="border-color: var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+        <img src="https://i.pravatar.cc/150?u=arjun-mehta-99plus" class="w-10 h-10 rounded-full flex-shrink-0 ring-2 ring-gray-100 object-cover" alt="Arjun Mehta">
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold truncate" style="color: var(--fg);">Arjun Mehta</p>
+          <p class="text-xs" style="color: var(--muted);">CUET 2026 Aspirant</p>
+        </div>
+        <button class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors flex-shrink-0">
+          <i class="fa-solid fa-ellipsis-vertical text-xs" style="color: var(--muted);"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+
+    <!-- Header -->
+    <header id="header-store" class="h-16 min-h-[64px] flex items-center justify-between px-8 bg-white border-b" style="border-color: var(--border);">
+      <div>
+        <h1 class="text-xl font-bold tracking-tight" style="color: var(--fg);">99Plus Store</h1>
+      </div>
+      <div class="flex items-center gap-5">
+        <!-- Credits Widget -->
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed" style="border-color: var(--border); background: #FEFCE8;">
+          <i class="fa-solid fa-coins text-sm" style="color: var(--accent);"></i>
+          <span class="text-sm font-bold" style="color: var(--fg);">0 Credits</span>
+        </div>
+        <!-- Notification -->
+        <button class="relative w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors">
+          <i class="fa-regular fa-bell" style="color: var(--muted);"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto p-8 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full" style="scrollbar-width: thin;">
+
+      <!-- Page Intro -->
+      <div class="max-w-5xl mx-auto mb-8 text-center">
+        <p class="text-sm font-semibold uppercase tracking-widest mb-2" style="color: var(--primary);">Invest in Precision</p>
+        <h2 class="text-3xl font-extrabold tracking-tight mb-3" style="color: var(--fg);">Choose Your Toolkit</h2>
+        <p class="text-base max-w-xl mx-auto" style="color: var(--muted);">Every credit unlocks targeted practice. No fluff, no filler — just the exact reps your score needs.</p>
+      </div>
+
+      <!-- 3-Column Grid -->
+      <div id="section-pricing-grid" class="max-w-5xl mx-auto grid grid-cols-3 gap-6 mb-10">
+
+        <!-- Card 1: Sachet -->
+        <div id="card-sachet" class="flex flex-col bg-white rounded-xl border-2 overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1" style="border-color: var(--border); border-radius: var(--radius); box-shadow: 0 4px 8px rgba(0,0,0,0.06);">
+          <!-- Top Accent -->
+          <div class="h-1.5 w-full" style="background: var(--primary);"></div>
+          <div class="flex flex-col flex-1 p-7">
+            <!-- Icon -->
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: #EEF2FF;">
+              <i class="fa-solid fa-syringe text-lg" style="color: var(--primary);"></i>
+            </div>
+            <h3 class="text-lg font-bold mb-1" style="color: var(--fg);">Surgical X-Ray Sachet</h3>
+            <p class="text-sm mb-5" style="color: var(--muted);">A single-use precision dose for targeted practice.</p>
+
+            <!-- Price -->
+            <div class="flex items-baseline gap-1 mb-5">
+              <span class="text-4xl font-extrabold tracking-tight" style="color: var(--fg);">₹25</span>
+              <span class="text-sm font-medium" style="color: var(--muted);">one-time</span>
+            </div>
+
+            <!-- Value -->
+            <div class="flex-1">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">1 Full Mock Test</span>
+              </div>
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">3 Surgical Drills</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">Detailed Score Report</span>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <button class="w-full mt-7 py-3 rounded-xl text-sm font-bold border-2 transition-all hover:shadow-md active:scale-[0.98]" style="border-color: var(--primary); color: var(--primary); background: white;">
+              Buy 1 Credit
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Bundle -->
+        <div id="card-bundle" class="flex flex-col bg-white rounded-xl border-2 overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1" style="border-color: var(--border); border-radius: var(--radius); box-shadow: 0 4px 8px rgba(0,0,0,0.06);">
+          <!-- Top Accent -->
+          <div class="h-1.5 w-full" style="background: var(--secondary);"></div>
+          <div class="flex flex-col flex-1 p-7">
+            <!-- Icon + Badge -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: #ECFDF5;">
+                <i class="fa-solid fa-cubes text-lg" style="color: var(--secondary);"></i>
+              </div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold" style="background: #ECFDF5; color: var(--secondary);">Save ₹25</span>
+            </div>
+            <h3 class="text-lg font-bold mb-1" style="color: var(--fg);">Pack of 5 Credits</h3>
+            <p class="text-sm mb-5" style="color: var(--muted);">The smart bulk buy for consistent practice.</p>
+
+            <!-- Price -->
+            <div class="flex items-baseline gap-1 mb-1">
+              <span class="text-4xl font-extrabold tracking-tight" style="color: var(--fg);">₹100</span>
+              <span class="text-sm font-medium" style="color: var(--muted);">one-time</span>
+            </div>
+            <p class="text-xs mb-5" style="color: var(--secondary);">₹20 per credit instead of ₹25</p>
+
+            <!-- Value -->
+            <div class="flex-1">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">5 Full Mock Tests</span>
+              </div>
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">15 Surgical Drills</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #ECFDF5;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: var(--secondary);"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">Priority Analytics</span>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <button class="w-full mt-7 py-3 rounded-xl text-sm font-bold border-2 transition-all hover:shadow-md active:scale-[0.98]" style="border-color: var(--secondary); color: white; background: var(--secondary);">
+              Buy 5 Credits
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Pro Pass -->
+        <div id="card-pro-pass" class="flex flex-col rounded-xl border-2 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 relative" style="border-color: #FACC15; border-radius: var(--radius); box-shadow: 0 4px 16px rgba(250,204,21,0.2); background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 40%);">
+          <!-- Gold Top Accent -->
+          <div class="h-2 w-full gold-shimmer"></div>
+
+          <!-- Most Popular Badge -->
+          <div class="absolute -top-0 left-1/2 -translate-x-1/2 translate-y-3 float-badge z-10">
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider shadow-lg" style="background: linear-gradient(135deg, #FACC15, #F59E0B); color: #78350F;">
+              <i class="fa-solid fa-crown text-[10px]"></i> Most Popular
+            </span>
+          </div>
+
+          <div class="flex flex-col flex-1 p-7 pt-10">
+            <!-- Icon -->
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: #FEF3C7;">
+              <i class="fa-solid fa-gem text-lg" style="color: #D97706;"></i>
+            </div>
+            <h3 class="text-lg font-bold mb-1" style="color: var(--fg);">Surgical Pro — Unlimited Pass</h3>
+            <p class="text-sm mb-5" style="color: var(--muted);">Full Access until June 30, 2026.</p>
+
+            <!-- Price -->
+            <div class="flex items-baseline gap-1 mb-1">
+              <span class="text-4xl font-extrabold tracking-tight" style="color: var(--fg);">₹999</span>
+              <span class="text-sm font-medium" style="color: var(--muted);">until Jun 2026</span>
+            </div>
+            <p class="text-xs mb-5" style="color: #D97706;">Less than ₹3/day for unlimited access</p>
+
+            <!-- Value -->
+            <div class="flex-1">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #FEF3C7;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: #D97706;"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">Unlimited Mocks & Drills</span>
+              </div>
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #FEF3C7;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: #D97706;"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">Full Admissions OS Access</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0" style="background: #FEF3C7;">
+                  <i class="fa-solid fa-check text-[10px]" style="color: #D97706;"></i>
+                </div>
+                <span class="text-sm font-medium" style="color: var(--fg);">Valid until June 30, 2026</span>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <button class="w-full mt-7 py-3.5 rounded-xl text-sm font-extrabold border-2 transition-all hover:shadow-lg active:scale-[0.98]" style="border-color: #D97706; color: white; background: linear-gradient(135deg, #F59E0B, #D97706);">
+              <i class="fa-solid fa-bolt mr-1.5"></i> Get Unlimited Access
+            </button>
+
+            <!-- Legal Note -->
+            <p class="text-[10px] text-center mt-4 leading-relaxed" style="color: var(--muted);">Pass expires automatically at the end of the 2026 Admission Cycle.</p>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Razorpay Trust Footer -->
+      <div id="section-trust-footer" class="max-w-5xl mx-auto">
+        <div class="bg-white rounded-xl border p-6" style="border-color: var(--border); border-radius: var(--radius);">
+          <div class="flex flex-col items-center gap-4">
+            <!-- Payment Icons -->
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--muted);">Secured by</span>
+              <div class="flex items-center gap-1 px-3 py-1.5 rounded-lg" style="background: #EEF2FF;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#2563EB"/><path d="M7 8l3 8h1l3-8M14 8h3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="text-xs font-bold" style="color: #2563EB;">Razorpay</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-5">
+              <!-- UPI -->
+              <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">
+                <svg width="20" height="14" viewBox="0 0 40 28"><rect width="40" height="28" rx="4" fill="#fff"/><path d="M12 6l4 16M16 6l4 16M24 6l-4 16M28 6l-4 16" stroke="#097939" stroke-width="2.5" stroke-linecap="round"/></svg>
+                <span class="text-xs font-semibold" style="color: var(--fg);">UPI</span>
+              </div>
+              <!-- GPay -->
+              <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">
+                <i class="fa-brands fa-google-pay text-xl" style="color: #4285F4;"></i>
+              </div>
+              <!-- PhonePe -->
+              <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">
+                <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#5F259F"/><path d="M9 7v10M9 7l6 5-6 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="text-xs font-semibold" style="color: #5F259F;">PhonePe</span>
+              </div>
+              <!-- Cards -->
+              <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">
+                <i class="fa-regular fa-credit-card text-sm" style="color: var(--muted);"></i>
+                <span class="text-xs font-semibold" style="color: var(--fg);">Cards</span>
+              </div>
+            </div>
+
+            <!-- Upgrade Subtext -->
+            <div class="flex items-center gap-2 mt-1 px-4 py-2.5 rounded-lg" style="background: #FEFCE8;">
+              <i class="fa-solid fa-circle-info text-xs" style="color: #D97706;"></i>
+              <p class="text-xs font-medium" style="color: #92400E;">Already bought a sachet? Your ₹25 will be automatically credited toward a Pro upgrade.</p>
+            </div>
+
+            <!-- Security Note -->
+            <div class="flex items-center gap-4 mt-1">
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-xs" style="color: var(--secondary);"></i>
+                <span class="text-[11px] font-medium" style="color: var(--muted);">256-bit SSL Encrypted</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-lock text-xs" style="color: var(--secondary);"></i>
+                <span class="text-[11px] font-medium" style="color: var(--muted);">PCI DSS Compliant</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate-left text-xs" style="color: var(--secondary);"></i>
+                <span class="text-[11px] font-medium" style="color: var(--muted);">Instant Refund Policy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-[11px] mt-4 pb-6" style="color: var(--muted);">© 2025 99Plus Surgical Selection Engine. All rights reserved.</p>
+      </div>
+
+    </main>
+  </div>
+</div>

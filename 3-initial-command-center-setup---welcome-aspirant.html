@@ -1,0 +1,431 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  body { background: #F8FAFC; margin-left: 256px; }
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes slideRight {
+    from { width: 0%; }
+    to { width: var(--target-width); }
+  }
+  
+  .fade-up { animation: fadeUp 0.5s ease-out both; }
+  .fade-up-1 { animation-delay: 0.05s; }
+  .fade-up-2 { animation-delay: 0.12s; }
+  .fade-up-3 { animation-delay: 0.2s; }
+  .fade-up-4 { animation-delay: 0.28s; }
+  .fade-up-5 { animation-delay: 0.36s; }
+  .fade-up-6 { animation-delay: 0.44s; }
+  .scale-in { animation: scaleIn 0.4s ease-out both; }
+  
+  .cta-pulse { animation: pulseGlow 2.5s ease-in-out infinite; }
+  
+  .shimmer-bar {
+    background: linear-gradient(90deg, #E5E7EB 25%, #F3F4F6 50%, #E5E7EB 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  
+  .mono { font-family: 'Fira Code', monospace; }
+  
+  @media (max-width: 1024px) {
+    body { margin-left: 0; }
+    .fixed.left-0 { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .fixed.left-0.active { transform: translateX(0); }
+  }
+</style>
+
+<!-- GLOBAL:SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E5E7EB] flex flex-col shadow-sm" style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#EEF2FF] flex items-center justify-center">
+        <i class="fa-solid fa-square-check text-[#6366F1] text-lg"></i>
+      </div>
+      <span class="text-sm font-bold text-[#0F172A]">99Plus</span>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2">
+    <a href="#screen1" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#0F172A] bg-[#6366F1] bg-opacity-10 border border-[#6366F1] border-opacity-30 hover:bg-opacity-20 transition-all" aria-current="page">
+      <i class="fa-regular fa-compass text-[#6366F1]"></i>
+      <span>Command Center</span>
+    </a>
+    <a href="#screen2" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-clipboard text-[#9CA3AF]"></i>
+      <span>Pre-Test</span>
+    </a>
+    <a href="#screen3" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-rectangle-list text-[#9CA3AF]"></i>
+      <span>NTA Test</span>
+    </a>
+    <a href="#screen4" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-file-lines text-[#9CA3AF]"></i>
+      <span>Diagnosis</span>
+    </a>
+    <a href="#screen5" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-circle-dot text-[#9CA3AF]"></i>
+      <span>Surgical Drill</span>
+    </a>
+    <a href="#screen6" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-chart-bar text-[#9CA3AF]"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="#screen7" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-building text-[#9CA3AF]"></i>
+      <span>Selection Hub</span>
+    </a>
+    <a href="#screen8" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+      <i class="fa-regular fa-pen-to-square text-[#9CA3AF]"></i>
+      <span>Settings</span>
+    </a>
+    <div class="pt-4 mt-auto">
+      <div class="border-t border-[#E5E7EB] mb-4"></div>
+      <a href="#screen9" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium text-[#9CA3AF] hover:bg-[#F8FAFC] transition-all">
+        <i class="fa-regular fa-credit-card text-[#9CA3AF]"></i>
+        <span>99Plus Store</span>
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#6366F1]/30 transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center flex-shrink-0">
+        <span class="text-white text-sm font-bold">A</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-1.5">
+          <p class="text-xs font-semibold text-[#0F172A] truncate">Arjun Mehta</p>
+          <button class="w-6 h-6 rounded-full hover:bg-[#E5E7EB] flex items-center justify-center transition-all flex-shrink-0">
+            <i class="fa-solid fa-ellipsis-vertical text-[#9CA3AF] text-[10px]"></i>
+          </button>
+        </div>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content" class="min-h-screen bg-[#F8FAFC] overflow-y-auto" style="scrollbar-width: thin;">
+
+  <!-- Header -->
+  <header id="header-command-center" class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB]" style="box-shadow: 0px 1px 4px rgba(0,0,0,0.04);">
+    <div class="flex items-center justify-between px-8 py-4">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-[#059669] animate-pulse"></div>
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Live</span>
+        </div>
+        <div class="h-5 w-px bg-[#E5E7EB]"></div>
+        <h1 class="text-lg font-bold text-[#0F172A]">Command Center</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <!-- Bilingual Toggle -->
+        <div class="flex items-center bg-[#F1F5F9] rounded-[12px] p-1 border border-[#E5E7EB]">
+          <button class="px-4 py-1.5 rounded-[10px] text-xs font-semibold bg-[#6366F1] text-white shadow-sm transition-all">English</button>
+          <button class="px-4 py-1.5 rounded-[10px] text-xs font-medium text-[#9CA3AF] hover:text-[#0F172A] transition-all">हिन्दी</button>
+        </div>
+        <div class="h-5 w-px bg-[#E5E7EB]"></div>
+        <button class="relative p-2 rounded-[10px] hover:bg-[#F1F5F9] transition-all">
+          <i class="fa-regular fa-bell text-[#0F172A]"></i>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-[#EF4444] rounded-full"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="px-8 py-6 max-w-[1200px]">
+
+    <!-- Progress Stepper - Step 3 of 3 -->
+    <div id="section-stepper" class="fade-up fade-up-1 mb-8">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-widest">Setup Progress</span>
+        <span class="mono text-xs font-medium text-[#6366F1]">Step 3 of 3</span>
+      </div>
+      <div class="flex items-center gap-0">
+        <!-- Step 1 - Complete -->
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-full bg-[#059669] flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-check text-white text-sm"></i>
+          </div>
+          <div class="flex flex-col ml-3 mr-2">
+            <span class="text-xs font-semibold text-[#0F172A]">Dream Mapping</span>
+            <span class="text-[10px] text-[#059669] font-medium">Completed</span>
+          </div>
+        </div>
+        <div class="flex-1 h-0.5 bg-[#059669] mx-2 rounded-full"></div>
+        <!-- Step 2 - Complete -->
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-full bg-[#059669] flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-check text-white text-sm"></i>
+          </div>
+          <div class="flex flex-col ml-3 mr-2">
+            <span class="text-xs font-semibold text-[#0F172A]">Eligibility Lock</span>
+            <span class="text-[10px] text-[#059669] font-medium">Completed</span>
+          </div>
+        </div>
+        <div class="flex-1 h-0.5 bg-gradient-to-r from-[#059669] to-[#6366F1] mx-2 rounded-full"></div>
+        <!-- Step 3 - Active -->
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-full bg-[#6366F1] flex items-center justify-center shadow-md cta-pulse">
+            <span class="text-white text-sm font-bold">3</span>
+          </div>
+          <div class="flex flex-col ml-3">
+            <span class="text-xs font-semibold text-[#6366F1]">Command Center</span>
+            <span class="text-[10px] text-[#FACC15] font-semibold">● Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div id="section-welcome" class="fade-up fade-up-2 mb-8 relative overflow-hidden rounded-[12px] bg-gradient-to-br from-[#6366F1] via-[#4F46E5] to-[#3730A3] p-8" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
+      <div class="absolute bottom-0 left-1/2 w-48 h-48 bg-white/5 rounded-full translate-y-1/2"></div>
+      <div class="relative z-10">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FACC15]/20 text-[#FACC15] text-xs font-semibold">
+            <i class="fa-solid fa-crosshairs text-[10px]"></i>
+            Surgical Selection Engine
+          </span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-white mb-2">Welcome to Your Command Center, Arjun</h2>
+        <p class="text-sm text-white/70 max-w-xl leading-relaxed">Your subjects are locked. Your targets are set. Now let's diagnose your baseline. One diagnostic mock stands between you and your personalized battle plan.</p>
+      </div>
+    </div>
+
+    <!-- Distance to Seat + Stats Row -->
+    <div class="grid grid-cols-12 gap-6 mb-6">
+
+      <!-- Distance to Seat Card -->
+      <div id="card-distance-to-seat" class="col-span-8 fade-up fade-up-3 bg-white rounded-[12px] border border-[#E5E7EB] p-6" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-[10px] bg-[#059669]/10 flex items-center justify-center">
+              <i class="fa-solid fa-route text-[#059669]"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-[#0F172A]">Distance to Seat</h3>
+              <p class="text-xs text-[#9CA3AF]">Your admission probability tracker</p>
+            </div>
+          </div>
+          <span class="mono text-2xl font-extrabold text-[#0F172A]">0<span class="text-sm text-[#9CA3AF] font-medium">%</span></span>
+        </div>
+        <!-- Progress Bar -->
+        <div class="relative w-full h-4 bg-[#F1F5F9] rounded-full overflow-hidden mb-4">
+          <div class="absolute inset-0 shimmer-bar rounded-full"></div>
+          <div class="absolute left-0 top-0 h-full w-0 bg-gradient-to-r from-[#059669] to-[#10B981] rounded-full transition-all duration-1000" style="--target-width: 0%;"></div>
+          <!-- Milestone markers -->
+          <div class="absolute top-1/2 -translate-y-1/2 left-[25%] w-1 h-3 bg-white/60 rounded-full"></div>
+          <div class="absolute top-1/2 -translate-y-1/2 left-[50%] w-1 h-3 bg-white/60 rounded-full"></div>
+          <div class="absolute top-1/2 -translate-y-1/2 left-[75%] w-1 h-3 bg-white/60 rounded-full"></div>
+        </div>
+        <div class="flex items-center justify-between text-[10px] text-[#9CA3AF] font-medium mb-5">
+          <span>Baseline</span>
+          <span>Competitive</span>
+          <span>Safe Zone</span>
+          <span class="text-[#059669] font-semibold">Seat Secured</span>
+        </div>
+        <!-- Seat Probability Chips -->
+        <div class="flex items-center gap-3">
+          <div class="flex-1 rounded-[10px] bg-[#FEF2F2] border border-[#FECACA] p-3 text-center">
+            <p class="text-[10px] text-[#EF4444] font-semibold uppercase tracking-wider mb-1">At Risk</p>
+            <p class="mono text-lg font-bold text-[#EF4444]">—</p>
+          </div>
+          <div class="flex-1 rounded-[10px] bg-[#FFFBEB] border border-[#FDE68A] p-3 text-center">
+            <p class="text-[10px] text-[#D97706] font-semibold uppercase tracking-wider mb-1">Possible</p>
+            <p class="mono text-lg font-bold text-[#D97706]">—</p>
+          </div>
+          <div class="flex-1 rounded-[10px] bg-[#F0FDF4] border border-[#BBF7D0] p-3 text-center">
+            <p class="text-[10px] text-[#059669] font-semibold uppercase tracking-wider mb-1">Safe</p>
+            <p class="mono text-lg font-bold text-[#059669]">—</p>
+          </div>
+        </div>
+        <p class="text-[10px] text-[#9CA3AF] mt-3 text-center italic">Complete your diagnostic mock to unlock seat predictions</p>
+      </div>
+
+      <!-- Quick Stats Column -->
+      <div class="col-span-4 flex flex-col gap-4">
+        <!-- Mocks Taken -->
+        <div id="card-mocks" class="fade-up fade-up-3 bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+          <div class="w-12 h-12 rounded-[12px] bg-[#6366F1]/10 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-clipboard-check text-[#6366F1] text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-[#9CA3AF] font-medium">Mocks Taken</p>
+            <p class="mono text-2xl font-extrabold text-[#0F172A]">0</p>
+          </div>
+        </div>
+        <!-- Mark Leaks -->
+        <div id="card-leaks" class="fade-up fade-up-4 bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+          <div class="w-12 h-12 rounded-[12px] bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-droplet text-[#EF4444] text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-[#9CA3AF] font-medium">Mark Leaks Found</p>
+            <p class="mono text-2xl font-extrabold text-[#0F172A]">—</p>
+          </div>
+        </div>
+        <!-- Accuracy -->
+        <div id="card-accuracy" class="fade-up fade-up-5 bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+          <div class="w-12 h-12 rounded-[12px] bg-[#FACC15]/15 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-bullseye text-[#D97706] text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-[#9CA3AF] font-medium">Accuracy Rate</p>
+            <p class="mono text-2xl font-extrabold text-[#0F172A]">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locked Subjects + CTA Row -->
+    <div class="grid grid-cols-12 gap-6 mb-6">
+
+      <!-- Locked Subjects Card -->
+      <div id="card-locked-subjects" class="col-span-7 fade-up fade-up-5 bg-white rounded-[12px] border border-[#E5E7EB] p-6" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-[10px] bg-[#6366F1]/10 flex items-center justify-center">
+              <i class="fa-solid fa-lock text-[#6366F1]"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-[#0F172A]">Locked Subject Combination</h3>
+              <p class="text-xs text-[#9CA3AF]">Verified by Eligibility Guardian</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#059669]/10 text-[#059669] text-[10px] font-semibold">
+            <i class="fa-solid fa-circle-check text-[9px]"></i> Verified
+          </span>
+        </div>
+
+        <div class="space-y-2.5">
+          <!-- Mandatory -->
+          <div class="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-[#F8FAFC] border border-[#E5E7EB]">
+            <span class="w-6 h-6 rounded-md bg-[#6366F1] flex items-center justify-center flex-shrink-0">
+              <span class="text-white text-[10px] font-bold">M</span>
+            </span>
+            <span class="text-sm font-semibold text-[#0F172A] flex-1">English</span>
+            <span class="text-[10px] text-[#9CA3AF] font-medium px-2 py-0.5 bg-[#F1F5F9] rounded-md">Mandatory</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-[#F8FAFC] border border-[#E5E7EB]">
+            <span class="w-6 h-6 rounded-md bg-[#6366F1] flex items-center justify-center flex-shrink-0">
+              <span class="text-white text-[10px] font-bold">M</span>
+            </span>
+            <span class="text-sm font-semibold text-[#0F172A] flex-1">General Test</span>
+            <span class="text-[10px] text-[#9CA3AF] font-medium px-2 py-0.5 bg-[#F1F5F9] rounded-md">Mandatory</span>
+          </div>
+          <!-- Domain -->
+          <div class="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-[#FFFBEB] border border-[#FDE68A]/50">
+            <span class="w-6 h-6 rounded-md bg-[#FACC15] flex items-center justify-center flex-shrink-0">
+              <span class="text-[#0F172A] text-[10px] font-bold">D</span>
+            </span>
+            <span class="text-sm font-semibold text-[#0F172A] flex-1">Political Science</span>
+            <span class="text-[10px] text-[#D97706] font-medium px-2 py-0.5 bg-[#FEF3C7] rounded-md">Domain</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-[#FFFBEB] border border-[#FDE68A]/50">
+            <span class="w-6 h-6 rounded-md bg-[#FACC15] flex items-center justify-center flex-shrink-0">
+              <span class="text-[#0F172A] text-[10px] font-bold">D</span>
+            </span>
+            <span class="text-sm font-semibold text-[#0F172A] flex-1">History</span>
+            <span class="text-[10px] text-[#D97706] font-medium px-2 py-0.5 bg-[#FEF3C7] rounded-md">Domain</span>
+          </div>
+          <div class="flex items-center gap-3 px-4 py-3 rounded-[10px] bg-[#FFFBEB] border border-[#FDE68A]/50">
+            <span class="w-6 h-6 rounded-md bg-[#FACC15] flex items-center justify-center flex-shrink-0">
+              <span class="text-[#0F172A] text-[10px] font-bold">D</span>
+            </span>
+            <span class="text-sm font-semibold text-[#0F172A] flex-1">Economics</span>
+            <span class="text-[10px] text-[#D97706] font-medium px-2 py-0.5 bg-[#FEF3C7] rounded-md">Domain</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA + Info Column -->
+      <div class="col-span-5 flex flex-col gap-5">
+        <!-- Diagnostic Mock CTA -->
+        <div id="card-cta" class="fade-up fade-up-5 scale-in bg-gradient-to-br from-[#6366F1] to-[#4338CA] rounded-[12px] p-6 flex flex-col items-center text-center relative overflow-hidden" style="box-shadow: 0px 8px 24px rgba(99, 102, 241, 0.3);">
+          <div class="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full"></div>
+          <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-white/5 rounded-full"></div>
+          <div class="relative z-10 w-full">
+            <div class="w-16 h-16 rounded-full bg-white/15 flex items-center justify-center mx-auto mb-4">
+              <i class="fa-solid fa-microscope text-white text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-white mb-2">Start Diagnostic Mock</h3>
+            <p class="text-xs text-white/60 mb-5 leading-relaxed">45-minute baseline assessment across all locked subjects. This unlocks your personalized battle plan.</p>
+            <button class="w-full py-3.5 rounded-[10px] bg-white text-[#6366F1] font-bold text-sm hover:bg-[#F8FAFC] active:scale-[0.98] transition-all cta-pulse flex items-center justify-center gap-2 border-2 border-white/20 hover:border-white/40">
+              <i class="fa-solid fa-play text-xs"></i>
+              Begin Diagnostic
+            </button>
+            <p class="text-[10px] text-white/40 mt-3 flex items-center justify-center gap-1">
+              <i class="fa-solid fa-clock text-[8px]"></i> Estimated: 45 minutes · NTA Mirror Format
+            </p>
+          </div>
+        </div>
+
+        <!-- What Happens Next -->
+        <div id="card-next-steps" class="fade-up fade-up-6 bg-white rounded-[12px] border border-[#E5E7EB] p-5" style="box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+          <h4 class="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-[#FACC15] text-xs"></i>
+            After Diagnostic
+          </h4>
+          <div class="space-y-2.5">
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-full bg-[#059669]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-[#059669] text-[9px] font-bold">1</span>
+              </div>
+              <p class="text-xs text-[#64748B] leading-relaxed">College Heatmap unlocks with seat probabilities</p>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-full bg-[#059669]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-[#059669] text-[9px] font-bold">2</span>
+              </div>
+              <p class="text-xs text-[#64748B] leading-relaxed">Mark Leaks identified for surgical drilling</p>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-full bg-[#059669]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-[#059669] text-[9px] font-bold">3</span>
+              </div>
+              <p class="text-xs text-[#64748B] leading-relaxed">Behavioral analytics detect guessing patterns</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Info Bar -->
+    <div id="section-info-bar" class="fade-up fade-up-6 flex items-center justify-between px-5 py-3.5 rounded-[12px] bg-[#F1F5F9] border border-[#E5E7EB] mb-8">
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-calendar-day text-[#9CA3AF] text-xs"></i>
+          <span class="text-xs text-[#64748B]">CUET 2026 · <span class="font-semibold text-[#0F172A]">Exam Window: May 2026</span></span>
+        </div>
+        <div class="h-4 w-px bg-[#E5E7EB]"></div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-[#9CA3AF] text-xs"></i>
+          <span class="text-xs text-[#64748B]">Target: <span class="font-semibold text-[#6366F1]">North Campus, DU</span></span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] text-[#9CA3AF]">Powered by</span>
+        <span class="mono text-xs font-bold text-[#6366F1]">99+</span>
+      </div>
+    </div>
+
+  </div>
+</div>

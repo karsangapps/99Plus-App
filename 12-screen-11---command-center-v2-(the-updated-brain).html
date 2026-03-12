@@ -1,0 +1,538 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- GLOBAL:SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E5E7EB] flex flex-col z-50" style="font-family: 'Inter', sans-serif;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="6" fill="#6366F1"/>
+        <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="font-bold text-lg text-[#0F172A]">99Plus</span>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2">
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] bg-[#EEF2FF] text-[#0F172A] transition-colors group" data-active="true">
+      <i class="fa-solid fa-gauge-high text-[#6366F1] text-lg"></i>
+      <span class="font-medium text-sm">Command Center</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-clipboard-check text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Pre-Test</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-desktop text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">NTA Test</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-stethoscope text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Diagnosis</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-crosshairs text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Surgical Drill</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-chart-line text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Analytics</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-building-columns text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Selection Hub</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-gear text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Settings</span>
+    </a>
+    <div class="mt-auto pt-4">
+      <div class="border-t border-[#E5E7EB] mb-4 mx-2"></div>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+        <i class="fa-solid fa-store text-[#9CA3AF] text-lg"></i>
+        <span class="font-medium text-sm">99Plus Store</span>
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#6366F1]/30 transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-[#0F172A] truncate">Arjun Mehta</p>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+      <button class="w-7 h-7 rounded-full hover:bg-[#E5E7EB] flex items-center justify-center transition-colors flex-shrink-0">
+        <i class="fa-solid fa-ellipsis-vertical text-[#9CA3AF] text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" class="ml-64 min-h-screen bg-[#F8FAFC]" style="font-family: 'Inter', sans-serif;">
+
+  <!-- Header -->
+  <div id="header-command-center" class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB]">
+    <div class="px-8 py-5 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-3">
+          <h1 class="text-2xl font-bold text-[#0F172A] tracking-tight">Command Center</h1>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#059669]/10 text-[#059669] text-xs font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse"></span>
+            Updated Post-Drill
+          </span>
+        </div>
+        <p class="text-sm text-[#9CA3AF] mt-1">Surgical Intelligence refreshed · Last drill completed 4 min ago</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 px-4 py-2 bg-[#F8FAFC] rounded-[12px] border border-[#E5E7EB]">
+          <i class="fa-solid fa-fire text-[#FACC15]"></i>
+          <span class="text-sm font-semibold text-[#0F172A]">7-day streak</span>
+        </div>
+        <button class="relative p-2.5 rounded-[12px] hover:bg-[#F8FAFC] border border-transparent hover:border-[#E5E7EB] transition-all">
+          <i class="fa-solid fa-bell text-[#9CA3AF] text-lg"></i>
+          <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#EF4444] rounded-full border-2 border-white"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="p-8 overflow-y-auto" style="scrollbar-width: thin;">
+
+    <!-- Top Stats Row -->
+    <div id="section-quick-stats" class="grid grid-cols-4 gap-5 mb-8">
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 hover:shadow-lg hover:shadow-[#6366F1]/5 transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Predicted Percentile</span>
+          <div class="w-8 h-8 rounded-lg bg-[#6366F1]/10 flex items-center justify-center">
+            <i class="fa-solid fa-arrow-trend-up text-[#6366F1] text-sm"></i>
+          </div>
+        </div>
+        <div class="flex items-end gap-2">
+          <span class="text-3xl font-extrabold text-[#0F172A]">88.1</span>
+          <span class="text-sm font-semibold text-[#059669] mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-caret-up text-xs"></i>+3.5
+          </span>
+        </div>
+        <div class="mt-2 h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-[#6366F1] to-[#818CF8] rounded-full" style="width: 88.1%"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 hover:shadow-lg hover:shadow-[#059669]/5 transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Leaks Sealed</span>
+          <div class="w-8 h-8 rounded-lg bg-[#059669]/10 flex items-center justify-center">
+            <i class="fa-solid fa-shield-halved text-[#059669] text-sm"></i>
+          </div>
+        </div>
+        <div class="flex items-end gap-2">
+          <span class="text-3xl font-extrabold text-[#0F172A]">3</span>
+          <span class="text-sm text-[#9CA3AF] mb-1">of 5 critical</span>
+        </div>
+        <div class="mt-2 h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-[#059669] to-[#34D399] rounded-full" style="width: 60%"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 hover:shadow-lg hover:shadow-[#FACC15]/5 transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Drills Completed</span>
+          <div class="w-8 h-8 rounded-lg bg-[#FACC15]/10 flex items-center justify-center">
+            <i class="fa-solid fa-crosshairs text-[#FACC15] text-sm"></i>
+          </div>
+        </div>
+        <div class="flex items-end gap-2">
+          <span class="text-3xl font-extrabold text-[#0F172A]">12</span>
+          <span class="text-sm text-[#9CA3AF] mb-1">sessions</span>
+        </div>
+        <div class="mt-2 h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-[#FACC15] to-[#FDE68A] rounded-full" style="width: 48%"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 hover:shadow-lg hover:shadow-[#EF4444]/5 transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Wild Guess Rate</span>
+          <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center">
+            <i class="fa-solid fa-dice text-[#EF4444] text-sm"></i>
+          </div>
+        </div>
+        <div class="flex items-end gap-2">
+          <span class="text-3xl font-extrabold text-[#0F172A]">8%</span>
+          <span class="text-sm font-semibold text-[#059669] mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-caret-down text-xs"></i>-4%
+          </span>
+        </div>
+        <div class="mt-2 h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-[#EF4444] to-[#FCA5A5] rounded-full" style="width: 8%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Grid: Heatmap + Mastery Trend -->
+    <div class="grid grid-cols-3 gap-6 mb-8">
+
+      <!-- College Heatmap Matrix -->
+      <div id="card-college-heatmap" class="col-span-2 bg-white rounded-[12px] border border-[#E5E7EB] overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div class="px-6 py-5 border-b border-[#E5E7EB] flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-bold text-[#0F172A] flex items-center gap-2">
+              <i class="fa-solid fa-map-location-dot text-[#6366F1]"></i>
+              College Heatmap Matrix
+            </h2>
+            <p class="text-xs text-[#9CA3AF] mt-0.5">Admission probability based on projected scores</p>
+          </div>
+          <span class="text-xs font-medium text-[#9CA3AF] bg-[#F8FAFC] px-3 py-1.5 rounded-lg border border-[#E5E7EB]">Updated 4m ago</span>
+        </div>
+        <div class="p-6">
+          <table id="table-heatmap" class="w-full">
+            <thead>
+              <tr class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">
+                <th class="text-left pb-4 pl-2">College</th>
+                <th class="text-center pb-4">Cutoff</th>
+                <th class="text-center pb-4">Your Score</th>
+                <th class="text-center pb-4">Gap</th>
+                <th class="text-center pb-4">Status</th>
+                <th class="text-right pb-4 pr-2">Trend</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#F1F5F9]">
+              <!-- Hansraj - Solid Green -->
+              <tr class="group hover:bg-[#F0FDF4]/50 transition-colors">
+                <td class="py-4 pl-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[10px] bg-[#059669]/10 flex items-center justify-center">
+                      <span class="text-sm font-bold text-[#059669]">H</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[#0F172A]">Hansraj College</p>
+                      <p class="text-xs text-[#9CA3AF]">B.Com (Hons)</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-semibold text-[#0F172A]">82.0</span>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-bold text-[#059669]">88.1</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#059669]/10 text-[#059669] text-xs font-bold">+6.1</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style="background: #059669; color: white;">
+                    <i class="fa-solid fa-circle-check text-[10px]"></i>SAFE
+                  </span>
+                </td>
+                <td class="text-right pr-2">
+                  <i class="fa-solid fa-arrow-up text-[#059669] text-sm"></i>
+                </td>
+              </tr>
+
+              <!-- Hindu College - Light Green -->
+              <tr class="group hover:bg-[#F0FDF4]/50 transition-colors">
+                <td class="py-4 pl-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[10px] bg-[#34D399]/10 flex items-center justify-center">
+                      <span class="text-sm font-bold text-[#059669]">HC</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[#0F172A]">Hindu College</p>
+                      <p class="text-xs text-[#9CA3AF]">B.A. (Hons) Economics</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-semibold text-[#0F172A]">86.5</span>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-bold text-[#059669]">88.1</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#34D399]/15 text-[#059669] text-xs font-bold">+1.6</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style="background: linear-gradient(135deg, #34D399, #059669); color: white;">
+                    <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i>POSSIBLE
+                  </span>
+                </td>
+                <td class="text-right pr-2">
+                  <div class="flex items-center justify-end gap-1">
+                    <i class="fa-solid fa-arrow-up text-[#059669] text-sm"></i>
+                    <span class="text-[10px] text-[#9CA3AF]">was Yellow</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- SRCC - Red -->
+              <tr class="group hover:bg-[#FEF2F2]/50 transition-colors">
+                <td class="py-4 pl-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[10px] bg-[#EF4444]/10 flex items-center justify-center">
+                      <span class="text-sm font-bold text-[#EF4444]">SR</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[#0F172A]">SRCC</p>
+                      <p class="text-xs text-[#9CA3AF]">B.Com (Hons)</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-semibold text-[#0F172A]">96.0</span>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-bold text-[#EF4444]">88.1</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold">-7.9</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style="background: #EF4444; color: white;">
+                    <i class="fa-solid fa-triangle-exclamation text-[10px]"></i>REACH
+                  </span>
+                </td>
+                <td class="text-right pr-2">
+                  <div class="flex flex-col items-end">
+                    <span class="text-xs font-semibold text-[#059669] flex items-center gap-1">
+                      <i class="fa-solid fa-caret-down text-[10px]"></i>27 marks away
+                    </span>
+                    <span class="text-[10px] text-[#9CA3AF]">was 35</span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Miranda House -->
+              <tr class="group hover:bg-[#FFFBEB]/50 transition-colors">
+                <td class="py-4 pl-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[10px] bg-[#FACC15]/10 flex items-center justify-center">
+                      <span class="text-sm font-bold text-[#D97706]">MH</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-[#0F172A]">Miranda House</p>
+                      <p class="text-xs text-[#9CA3AF]">B.A. (Hons) English</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-semibold text-[#0F172A]">89.0</span>
+                </td>
+                <td class="text-center">
+                  <span class="text-sm font-bold text-[#D97706]">88.1</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FACC15]/15 text-[#D97706] text-xs font-bold">-0.9</span>
+                </td>
+                <td class="text-center">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style="background: #FACC15; color: #0F172A;">
+                    <i class="fa-solid fa-bolt text-[10px]"></i>CLOSE
+                  </span>
+                </td>
+                <td class="text-right pr-2">
+                  <i class="fa-solid fa-arrow-up text-[#059669] text-sm"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mastery Trend Graph -->
+      <div id="card-mastery-trend" class="bg-white rounded-[12px] border border-[#E5E7EB] overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div class="px-6 py-5 border-b border-[#E5E7EB]">
+          <h2 class="text-base font-bold text-[#0F172A] flex items-center gap-2">
+            <i class="fa-solid fa-chart-area text-[#6366F1]"></i>
+            Mastery Trend
+          </h2>
+          <p class="text-xs text-[#9CA3AF] mt-0.5">Predicted NTA Percentile</p>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <span class="text-3xl font-extrabold text-[#0F172A]">88.1</span>
+              <span class="text-sm text-[#9CA3AF] ml-1">projected</span>
+            </div>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#059669]/10 text-[#059669] text-xs font-bold">
+              <i class="fa-solid fa-arrow-up text-[10px]"></i>+3.5 pts
+            </span>
+          </div>
+
+          <!-- SVG Line Graph -->
+          <svg viewBox="0 0 280 160" class="w-full" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid lines -->
+            <line x1="40" y1="20" x2="260" y2="20" stroke="#F1F5F9" stroke-width="1"/>
+            <line x1="40" y1="50" x2="260" y2="50" stroke="#F1F5F9" stroke-width="1"/>
+            <line x1="40" y1="80" x2="260" y2="80" stroke="#F1F5F9" stroke-width="1"/>
+            <line x1="40" y1="110" x2="260" y2="110" stroke="#F1F5F9" stroke-width="1"/>
+            <line x1="40" y1="140" x2="260" y2="140" stroke="#E5E7EB" stroke-width="1"/>
+
+            <!-- Y-axis labels -->
+            <text x="35" y="24" text-anchor="end" fill="#9CA3AF" font-size="9" font-family="Inter">95</text>
+            <text x="35" y="54" text-anchor="end" fill="#9CA3AF" font-size="9" font-family="Inter">90</text>
+            <text x="35" y="84" text-anchor="end" fill="#9CA3AF" font-size="9" font-family="Inter">85</text>
+            <text x="35" y="114" text-anchor="end" fill="#9CA3AF" font-size="9" font-family="Inter">80</text>
+            <text x="35" y="144" text-anchor="end" fill="#9CA3AF" font-size="9" font-family="Inter">75</text>
+
+            <!-- Gradient fill -->
+            <defs>
+              <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6366F1" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#6366F1" stop-opacity="0.02"/>
+              </linearGradient>
+              <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#818CF8"/>
+                <stop offset="100%" stop-color="#6366F1"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Area fill -->
+            <path d="M70 102 L150 80 L230 56 L230 140 L70 140 Z" fill="url(#areaGrad)"/>
+
+            <!-- Line -->
+            <polyline points="70,102 150,80 230,56" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Projected dashed -->
+            <line x1="150" y1="80" x2="230" y2="56" stroke="#6366F1" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>
+            <polyline points="70,102 150,80" fill="none" stroke="#6366F1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Data points -->
+            <circle cx="70" cy="102" r="5" fill="white" stroke="#6366F1" stroke-width="2.5"/>
+            <circle cx="150" cy="80" r="5" fill="white" stroke="#6366F1" stroke-width="2.5"/>
+            <circle cx="230" cy="56" r="6" fill="#6366F1" stroke="white" stroke-width="2.5"/>
+
+            <!-- Labels -->
+            <text x="70" y="120" text-anchor="middle" fill="#9CA3AF" font-size="9" font-family="Inter">Mock 1</text>
+            <text x="70" y="96" text-anchor="middle" fill="#0F172A" font-size="10" font-weight="600" font-family="Inter">84.6</text>
+
+            <text x="150" y="120" text-anchor="middle" fill="#9CA3AF" font-size="9" font-family="Inter">Post-Drill</text>
+            <text x="150" y="74" text-anchor="middle" fill="#0F172A" font-size="10" font-weight="600" font-family="Inter">86.2</text>
+
+            <text x="230" y="120" text-anchor="middle" fill="#9CA3AF" font-size="9" font-family="Inter">Proj. Mock 2</text>
+            <text x="230" y="48" text-anchor="middle" fill="#6366F1" font-size="11" font-weight="700" font-family="Inter">88.1</text>
+
+            <!-- Projected label -->
+            <rect x="195" y="32" width="70" height="16" rx="4" fill="#6366F1" opacity="0.1"/>
+            <text x="230" y="43" text-anchor="middle" fill="#6366F1" font-size="8" font-weight="600" font-family="Inter">PROJECTED</text>
+          </svg>
+
+          <div class="mt-4 p-3 bg-[#F0FDF4] rounded-[10px] border border-[#059669]/15">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-bolt text-[#059669] text-xs"></i>
+              <span class="text-xs font-semibold text-[#059669]">+3.5 percentile gain from Surgical Drills</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Row: Surgical Sidebar + CTA -->
+    <div class="grid grid-cols-3 gap-6">
+
+      <!-- Subject Proficiency Panel -->
+      <div id="card-subject-proficiency" class="col-span-2 bg-white rounded-[12px] border border-[#E5E7EB] overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div class="px-6 py-5 border-b border-[#E5E7EB]">
+          <h2 class="text-base font-bold text-[#0F172A] flex items-center gap-2">
+            <i class="fa-solid fa-microscope text-[#6366F1]"></i>
+            Surgical Intelligence — Subject Proficiency
+          </h2>
+          <p class="text-xs text-[#9CA3AF] mt-0.5">Updated after latest drill session</p>
+        </div>
+        <div class="p-6 space-y-5">
+
+          <!-- Mathematics -->
+          <div class="group">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-[#6366F1]/10 flex items-center justify-center">
+                  <i class="fa-solid fa-square-root-variable text-[#6366F1] text-sm"></i>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[#0F172A]">Mathematics</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#059669]/10 text-[#059669] text-[10px] font-bold">
+                      <i class="fa-solid fa-check text-[8px]"></i>Calculus: Mastery Sealed
+                    </span>
+                    <span class="text-[10px] text-[#9CA3AF]">↑ from 52%</span>
+                  </div>
+                </div>
+              </div>
+              <span class="text-lg font-extrabold text-[#6366F1]">64%</span>
+            </div>
+            <div class="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-[#6366F1] to-[#818CF8] transition-all duration-1000" style="width: 64%"></div>
+            </div>
+          </div>
+
+          <!-- English -->
+          <div class="group">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-[#059669]/10 flex items-center justify-center">
+                  <i class="fa-solid fa-book-open text-[#059669] text-sm"></i>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[#0F172A]">English</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#059669]/10 text-[#059669] text-[10px] font-bold">
+                      <i class="fa-solid fa-check text-[8px]"></i>Reading Comp: Strong
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="text-lg font-extrabold text-[#059669]">78%</span>
+            </div>
+            <div class="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-[#059669] to-[#34D399]" style="width: 78%"></div>
+            </div>
+          </div>
+
+          <!-- General Test -->
+          <div class="group">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-[#FACC15]/10 flex items-center justify-center">
+                  <i class="fa-solid fa-brain text-[#D97706] text-sm"></i>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[#0F172A]">General Test</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FACC15]/15 text-[#D97706] text-[10px] font-bold">
+                      <i class="fa-solid fa-crosshairs text-[8px]"></i>Logical Reasoning: Drill Needed
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="text-lg font-extrabold text-[#D97706]">59%</span>
+            </div>
+            <div class="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-[#FACC15] to-[#FDE68A]" style="width: 59%"></div>
+            </div>
+          </div>
+
+          <!-- Economics -->
+          <div class="group">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-[#EF4444]/10 flex items-center justify-center">
+                  <i class="fa-solid fa-chart-pie text-[#EF4444] text-sm"></i>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[#0F172A]">Economics</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#EF4444]/10 text-[#EF4444] text-[10px] font-bold">
+                      <i class="fa-solid fa-triangle-exclamation text-[8px]"></i>Needs Attention
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="text-lg font-extrabold text-[#EF4444]">45%</span>
+            </div>
+            <div class="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-[#EF4444] to-[#FCA5A5] transition-all duration-1000" style="width: 45%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>

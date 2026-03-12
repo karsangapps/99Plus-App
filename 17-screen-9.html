@@ -1,0 +1,490 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+  }
+
+  * { font-family: 'Inter', sans-serif; }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.3); }
+    50% { box-shadow: 0 0 20px 8px rgba(5, 150, 105, 0.15); }
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(30px) rotate(360deg); opacity: 0; }
+  }
+
+  .animate-fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+  .animate-fade-in-1 { animation: fadeInUp 0.6s ease-out 0.1s forwards; opacity: 0; }
+  .animate-fade-in-2 { animation: fadeInUp 0.6s ease-out 0.2s forwards; opacity: 0; }
+  .animate-fade-in-3 { animation: fadeInUp 0.6s ease-out 0.3s forwards; opacity: 0; }
+  .animate-fade-in-4 { animation: fadeInUp 0.6s ease-out 0.4s forwards; opacity: 0; }
+
+  .shimmer-text {
+    background: linear-gradient(90deg, #FACC15 0%, #FDE68A 25%, #FACC15 50%, #FDE68A 75%, #FACC15 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .pulse-border { animation: pulse-glow 2s ease-in-out infinite; }
+
+  .sidebar-item {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+  .sidebar-item:hover {
+    background: rgba(99, 102, 241, 0.06);
+    border-left-color: var(--primary);
+  }
+  .sidebar-item.active {
+    background: rgba(99, 102, 241, 0.1);
+    border-left-color: var(--primary);
+  }
+
+  .stepper-line {
+    background: linear-gradient(180deg, var(--secondary) 0%, var(--secondary) 50%, var(--border) 50%, var(--border) 100%);
+  }
+
+  .doc-check:hover {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+  }
+</style>
+
+<div id="main-content" class="flex h-screen overflow-hidden" style="background: var(--background);">
+
+  <!-- Sidebar -->
+  <aside id="sidebar-command-center" class="w-[272px] flex-shrink-0 flex flex-col border-r h-full" style="background: #FFFFFF; border-color: var(--border);">
+
+    <!-- Logo -->
+    <div class="px-5 py-5 border-b" style="border-color: var(--border);">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, var(--primary), #818CF8);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#FACC15"/>
+            <path d="M2 17L12 22L22 17" stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="text-lg font-extrabold tracking-tight" style="color: var(--foreground);">99<span style="color: var(--primary);">Plus</span></span>
+      </div>
+    </div>
+
+    <!-- Nav Label -->
+    <div class="px-5 pt-5 pb-2">
+      <span class="text-[10px] font-bold tracking-[0.15em] uppercase" style="color: var(--muted);">Command Center</span>
+    </div>
+
+    <!-- Nav Items -->
+    <nav class="flex-1 px-2 space-y-0.5 overflow-y-auto" style="scrollbar-width: thin;">
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-gauge-high w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Command Center</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-clipboard-check w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Pre-Test</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-desktop w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">NTA Test</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-stethoscope w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Diagnosis</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-crosshairs w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Surgical Drill</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-chart-line w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Analytics</span>
+      </a>
+      <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-building-columns w-5 text-center" style="color: var(--primary); font-size: 14px;"></i>
+        <span class="text-sm font-bold" style="color: var(--primary);">Selection Hub</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <i class="fa-solid fa-gear w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+        <span class="text-sm font-medium" style="color: var(--muted);">Settings</span>
+      </a>
+
+      <!-- Divider + 99Plus Store -->
+      <div class="mt-auto pt-4">
+        <div class="border-t mx-1 mb-3" style="border-color: var(--border);"></div>
+        <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg">
+          <i class="fa-solid fa-store w-5 text-center" style="color: var(--muted); font-size: 14px;"></i>
+          <span class="text-sm font-medium" style="color: var(--muted);">99Plus Store</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Profile -->
+    <div class="p-4 border-t" style="border-color: var(--border);">
+      <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl bg-white border hover:border-indigo-200 transition-all cursor-pointer" style="border-color: var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <img src="https://i.pravatar.cc/150?u=cuet-arjun-2026" class="w-10 h-10 rounded-full ring-2 ring-offset-2 flex-shrink-0" style="ring-color: var(--secondary);" alt="avatar">
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-semibold truncate" style="color: var(--foreground);">Arjun Mehta</div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full inline-block" style="background: var(--secondary);"></span>
+            <span class="text-xs font-semibold" style="color: var(--secondary);">Seat Secured ✓</span>
+          </div>
+        </div>
+        <button class="w-7 h-7 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors flex-shrink-0">
+          <i class="fa-solid fa-ellipsis-vertical text-sm" style="color: var(--muted);"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header id="header-admin-hub" class="flex items-center justify-between px-8 py-4 border-b bg-white flex-shrink-0" style="border-color: var(--border);">
+      <div>
+        <h1 class="text-xl font-extrabold tracking-tight" style="color: var(--foreground);">Seat Allotment Control Center</h1>
+        <p class="text-xs mt-0.5" style="color: var(--muted);">CSAS 2026 · Final Allocation Status</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg" style="background: rgba(5, 150, 105, 0.08);">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--secondary);"></span>
+          <span class="text-xs font-semibold" style="color: var(--secondary);">Allotment Confirmed</span>
+        </div>
+        <button class="w-9 h-9 rounded-xl flex items-center justify-center border transition-colors hover:bg-gray-50" style="border-color: var(--border);">
+          <i class="fa-regular fa-bell text-sm" style="color: var(--muted);"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto p-8 space-y-6" style="scrollbar-width: thin;">
+
+      <!-- Success Banner -->
+      <div id="section-success-banner" class="animate-fade-in relative overflow-hidden rounded-2xl p-8 pulse-border" style="background: linear-gradient(135deg, #059669 0%, #047857 40%, #065F46 100%); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-64 h-64 opacity-10" style="background: radial-gradient(circle, #FACC15 0%, transparent 70%); transform: translate(30%, -30%);"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 opacity-5" style="background: radial-gradient(circle, white 0%, transparent 70%); transform: translate(-20%, 20%);"></div>
+
+        <div class="relative flex items-center gap-8">
+          <!-- University Crest -->
+          <div class="flex-shrink-0">
+            <div class="w-24 h-24 rounded-2xl flex items-center justify-center" style="background: rgba(250, 204, 21, 0.15); border: 2px solid rgba(250, 204, 21, 0.3);">
+              <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+                <path d="M32 4L8 18V28H12V48H8V56H56V48H52V28H56V18L32 4Z" fill="none" stroke="#FACC15" stroke-width="2.5"/>
+                <path d="M32 4L8 18H56L32 4Z" fill="#FACC15" opacity="0.3"/>
+                <rect x="18" y="28" width="8" height="20" rx="1" fill="#FACC15" opacity="0.5"/>
+                <rect x="28" y="28" width="8" height="20" rx="1" fill="#FACC15" opacity="0.5"/>
+                <rect x="38" y="28" width="8" height="20" rx="1" fill="#FACC15" opacity="0.5"/>
+                <circle cx="32" cy="21" r="4" fill="#FACC15" opacity="0.7"/>
+                <rect x="8" y="48" width="48" height="3" fill="#FACC15" opacity="0.4"/>
+                <path d="M24 56L32 60L40 56" stroke="#FACC15" stroke-width="1.5" opacity="0.5"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase" style="background: rgba(250, 204, 21, 0.2); color: #FACC15;">
+                <i class="fa-solid fa-trophy mr-1"></i> Allotment Confirmed
+              </span>
+            </div>
+            <h2 class="text-3xl font-black text-white tracking-tight leading-tight">
+              SEAT SECURED: <span class="shimmer-text">Welcome to Hindu College, DU</span>
+            </h2>
+            <p class="text-base mt-2 font-medium" style="color: rgba(255,255,255,0.8);">
+              B.Com (Hons) — Allotted in CSAS Round 2
+            </p>
+            <div class="flex items-center gap-6 mt-4">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-ranking-star text-sm" style="color: #FACC15;"></i>
+                <span class="text-sm text-white font-medium opacity-80">CUET Percentile: <strong class="opacity-100">98.7</strong></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-sm" style="color: #FACC15;"></i>
+                <span class="text-sm text-white font-medium opacity-80">Allotted: <strong class="opacity-100">12 Jul 2026</strong></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-hashtag text-sm" style="color: #FACC15;"></i>
+                <span class="text-sm text-white font-medium opacity-80">Preference Rank: <strong class="opacity-100">#2</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confetti Icon -->
+          <div class="flex-shrink-0 text-6xl opacity-30" style="color: #FACC15;">
+            <i class="fa-solid fa-champagne-glasses"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two Column Layout -->
+      <div class="grid grid-cols-5 gap-6">
+
+        <!-- Left Column: Timeline -->
+        <div class="col-span-3 space-y-6">
+
+          <!-- Allotment Timeline -->
+          <div id="section-allotment-timeline" class="animate-fade-in-1 bg-white rounded-2xl border p-6" style="border-color: var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h3 class="text-base font-bold" style="color: var(--foreground);">Allotment Timeline</h3>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">CSAS 2026 Round-wise progression</p>
+              </div>
+              <span class="px-3 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase" style="background: rgba(5, 150, 105, 0.08); color: var(--secondary);">
+                Completed
+              </span>
+            </div>
+
+            <!-- Stepper -->
+            <div class="relative pl-8">
+
+              <!-- Round 1 -->
+              <div class="relative pb-8">
+                <div class="absolute left-[-20px] top-0 w-10 h-10 rounded-full flex items-center justify-center border-2" style="background: #F3F4F6; border-color: var(--border);">
+                  <i class="fa-solid fa-minus text-xs" style="color: var(--muted);"></i>
+                </div>
+                <div class="absolute left-[-1px] top-10 bottom-0 w-0.5" style="background: var(--border);"></div>
+                <div class="ml-6 pt-1">
+                  <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold" style="color: var(--muted);">Round 1</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold" style="background: #F3F4F6; color: var(--muted);">No Allocation</span>
+                  </div>
+                  <p class="text-xs mt-1" style="color: var(--muted);">28 Jun 2026 · Preference #1 (SRCC B.Com Hons) — Cutoff not met by 0.3 percentile</p>
+                  <div class="mt-2 flex items-center gap-2 px-3 py-2 rounded-lg" style="background: #F9FAFB;">
+                    <i class="fa-solid fa-circle-info text-xs" style="color: var(--muted);"></i>
+                    <span class="text-[11px]" style="color: var(--muted);">Auto-upgraded to Round 2 with same preference list</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Round 2 - Active -->
+              <div class="relative pb-8">
+                <div class="absolute left-[-20px] top-0 w-10 h-10 rounded-full flex items-center justify-center border-2 pulse-border" style="background: var(--secondary); border-color: var(--secondary);">
+                  <i class="fa-solid fa-check text-sm text-white"></i>
+                </div>
+                <div class="absolute left-[-1px] top-10 bottom-0 w-0.5" style="background: linear-gradient(180deg, var(--secondary), var(--border));"></div>
+                <div class="ml-6 pt-1">
+                  <div class="flex items-center gap-3">
+                    <span class="text-sm font-extrabold" style="color: var(--secondary);">Round 2</span>
+                    <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase" style="background: rgba(5, 150, 105, 0.12); color: var(--secondary);">
+                      ✅ SEAT ALLOCATED
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold animate-pulse" style="background: rgba(250, 204, 21, 0.15); color: #B45309;">ACTIVE</span>
+                  </div>
+                  <p class="text-xs mt-1 font-medium" style="color: var(--foreground);">12 Jul 2026 · Hindu College — B.Com (Hons) · General Category</p>
+                  <div class="mt-3 p-3 rounded-xl border" style="background: rgba(5, 150, 105, 0.03); border-color: rgba(5, 150, 105, 0.15);">
+                    <div class="grid grid-cols-3 gap-4">
+                      <div>
+                        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--muted);">Your Score</div>
+                        <div class="text-lg font-black mt-0.5" style="color: var(--secondary);">782<span class="text-xs font-medium" style="color: var(--muted);">/800</span></div>
+                      </div>
+                      <div>
+                        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--muted);">Cutoff</div>
+                        <div class="text-lg font-black mt-0.5" style="color: var(--foreground);">774<span class="text-xs font-medium" style="color: var(--muted);">/800</span></div>
+                      </div>
+                      <div>
+                        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--muted);">Margin</div>
+                        <div class="text-lg font-black mt-0.5" style="color: var(--secondary);">+8</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Round 3 -->
+              <div class="relative">
+                <div class="absolute left-[-20px] top-0 w-10 h-10 rounded-full flex items-center justify-center border-2" style="background: #F9FAFB; border-color: var(--border);">
+                  <i class="fa-solid fa-lock text-xs" style="color: var(--border);"></i>
+                </div>
+                <div class="ml-6 pt-1">
+                  <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold" style="color: var(--border);">Round 3</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold" style="background: #F9FAFB; color: var(--border);">Admission Locked</span>
+                  </div>
+                  <p class="text-xs mt-1" style="color: var(--border);">Not applicable — Seat accepted in Round 2</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Action Card -->
+          <div id="section-next-steps" class="animate-fade-in-3 bg-white rounded-2xl border p-6" style="border-color: var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <h3 class="text-base font-bold mb-4" style="color: var(--foreground);">Next Steps</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl border-2 border-dashed flex items-start gap-3" style="border-color: var(--primary); background: rgba(99, 102, 241, 0.03);">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(99, 102, 241, 0.1);">
+                  <i class="fa-solid fa-building text-sm" style="color: var(--primary);"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-bold" style="color: var(--foreground);">Physical Reporting</div>
+                  <div class="text-xs mt-0.5" style="color: var(--muted);">Hindu College Campus · 18 Jul 2026</div>
+                  <div class="text-[10px] mt-1 font-semibold" style="color: var(--primary);">9:00 AM — 4:00 PM</div>
+                </div>
+              </div>
+              <div class="p-4 rounded-xl border flex items-start gap-3" style="border-color: var(--border);">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(250, 204, 21, 0.1);">
+                  <i class="fa-solid fa-indian-rupee-sign text-sm" style="color: #B45309;"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-bold" style="color: var(--foreground);">Fee Payment</div>
+                  <div class="text-xs mt-0.5" style="color: var(--muted);">₹24,500 · Due by 16 Jul 2026</div>
+                  <div class="text-[10px] mt-1 font-semibold" style="color: var(--secondary);">Online payment enabled</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-span-2 space-y-6">
+
+          <!-- Document Vault -->
+          <div id="section-document-vault" class="animate-fade-in-2 bg-white rounded-2xl border p-6" style="border-color: var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h3 class="text-base font-bold" style="color: var(--foreground);">Document Vault</h3>
+                <p class="text-xs mt-0.5" style="color: var(--muted);">Verification status for admission</p>
+              </div>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(5, 150, 105, 0.08);">
+                <i class="fa-solid fa-shield-check text-sm" style="color: var(--secondary);"></i>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <!-- Doc 1 -->
+              <div class="doc-check flex items-center gap-4 p-3.5 rounded-xl border transition-all cursor-default" style="border-color: rgba(5, 150, 105, 0.2); background: rgba(5, 150, 105, 0.02);">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(5, 150, 105, 0.1);">
+                  <i class="fa-solid fa-file-certificate text-sm" style="color: var(--secondary);"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-semibold" style="color: var(--foreground);">Class 12 Marksheet</div>
+                  <div class="text-[10px] mt-0.5" style="color: var(--muted);">CBSE Board · Uploaded 15 May 2026</div>
+                </div>
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold" style="background: rgba(5, 150, 105, 0.1); color: var(--secondary);">
+                  <i class="fa-solid fa-circle-check"></i> Verified
+                </span>
+              </div>
+
+              <!-- Doc 2 -->
+              <div class="doc-check flex items-center gap-4 p-3.5 rounded-xl border transition-all cursor-default" style="border-color: rgba(5, 150, 105, 0.2); background: rgba(5, 150, 105, 0.02);">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(5, 150, 105, 0.1);">
+                  <i class="fa-solid fa-file-lines text-sm" style="color: var(--secondary);"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-semibold" style="color: var(--foreground);">CUET 2026 Scorecard</div>
+                  <div class="text-[10px] mt-0.5" style="color: var(--muted);">NTA · Downloaded 25 Jun 2026</div>
+                </div>
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold" style="background: rgba(5, 150, 105, 0.1); color: var(--secondary);">
+                  <i class="fa-solid fa-circle-check"></i> Verified
+                </span>
+              </div>
+
+              <!-- Doc 3 -->
+              <div class="doc-check flex items-center gap-4 p-3.5 rounded-xl border transition-all cursor-default" style="border-color: rgba(5, 150, 105, 0.2); background: rgba(5, 150, 105, 0.02);">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: rgba(5, 150, 105, 0.1);">
+                  <i class="fa-solid fa-id-card text-sm" style="color: var(--secondary);"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-semibold" style="color: var(--foreground);">Category Certificate</div>
+                  <div class="text-[10px] mt-0.5" style="color: var(--muted);">General · Self-declaration uploaded</div>
+                </div>
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold" style="background: rgba(5, 150, 105, 0.1); color: var(--secondary);">
+                  <i class="fa-solid fa-circle-check"></i> Verified
+                </span>
+              </div>
+            </div>
+
+            <!-- All Verified Badge -->
+            <div class="mt-4 p-3 rounded-xl text-center" style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.06), rgba(5, 150, 105, 0.12));">
+              <div class="flex items-center justify-center gap-2">
+                <i class="fa-solid fa-check-double text-sm" style="color: var(--secondary);"></i>
+                <span class="text-xs font-bold" style="color: var(--secondary);">All Documents Verified</span>
+              </div>
+              <p class="text-[10px] mt-1" style="color: var(--muted);">Ready for physical verification at campus</p>
+            </div>
+          </div>
+
+          <!-- Download CTA -->
+          <div id="section-download-cta" class="animate-fade-in-4 bg-white rounded-2xl border p-6" style="border-color: var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="text-center">
+              <div class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-4" style="background: linear-gradient(135deg, var(--primary), #818CF8);">
+                <i class="fa-solid fa-folder-arrow-down text-2xl text-white"></i>
+              </div>
+              <h3 class="text-base font-bold" style="color: var(--foreground);">Admission Dossier</h3>
+              <p class="text-xs mt-1 mb-5" style="color: var(--muted);">Complete package with allotment letter, verified documents, and reporting instructions</p>
+
+              <button class="w-full py-3.5 px-6 rounded-xl text-sm font-bold text-white transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]" style="background: linear-gradient(135deg, var(--primary), #818CF8); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);">
+                <i class="fa-solid fa-download mr-2"></i>
+                Download Admission Dossier
+              </button>
+
+              <div class="flex items-center justify-center gap-4 mt-4">
+                <button class="text-xs font-medium flex items-center gap-1.5 hover:underline" style="color: var(--muted);">
+                  <i class="fa-solid fa-print text-[10px]"></i> Print Copy
+                </button>
+                <span style="color: var(--border);">|</span>
+                <button class="text-xs font-medium flex items-center gap-1.5 hover:underline" style="color: var(--muted);">
+                  <i class="fa-solid fa-share-nodes text-[10px]"></i> Share
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="animate-fade-in-4 rounded-2xl p-4" style="background: linear-gradient(135deg, #0F172A, #1E293B);">
+            <div class="text-[10px] font-bold tracking-widest uppercase mb-3" style="color: var(--accent);">
+              <i class="fa-solid fa-chart-pie mr-1"></i> Your CUET Journey
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl" style="background: rgba(255,255,255,0.06);">
+                <div class="text-xl font-black text-white">147</div>
+                <div class="text-[10px]" style="color: rgba(255,255,255,0.5);">Mocks Taken</div>
+              </div>
+              <div class="p-3 rounded-xl" style="background: rgba(255,255,255,0.06);">
+                <div class="text-xl font-black" style="color: var(--accent);">98.7%</div>
+                <div class="text-[10px]" style="color: rgba(255,255,255,0.5);">Final Percentile</div>
+              </div>
+              <div class="p-3 rounded-xl" style="background: rgba(255,255,255,0.06);">
+                <div class="text-xl font-black text-white">312</div>
+                <div class="text-[10px]" style="color: rgba(255,255,255,0.5);">Drills Completed</div>
+              </div>
+              <div class="p-3 rounded-xl" style="background: rgba(255,255,255,0.06);">
+                <div class="text-xl font-black" style="color: #34D399;">+23%</div>
+                <div class="text-[10px]" style="color: rgba(255,255,255,0.5);">Score Growth</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

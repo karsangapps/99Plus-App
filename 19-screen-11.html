@@ -1,0 +1,523 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --fg: #0F172A;
+    --primary: #6366F1;
+    --primary-dark: #4F46E5;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --destructive: #EF4444;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+  }
+
+  * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+  .mono { font-family: 'Fira Code', monospace; }
+
+  .sidebar-nav { background: #0F172A; }
+  .sidebar-link { transition: all 0.2s ease; border-radius: 10px; }
+  .sidebar-link:hover { background: #1E293B; }
+  .sidebar-link.active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.08));
+    color: #818CF8 !important;
+    border: 1px solid rgba(99,102,241,0.25);
+  }
+  .sidebar-link.active i { color: #818CF8 !important; }
+
+  .main-scroll::-webkit-scrollbar { width: 6px; }
+  .main-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+
+  .mock-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.25s ease;
+    overflow: hidden;
+    position: relative;
+  }
+  .mock-card:hover {
+    border-color: #C7D2FE;
+    box-shadow: 0 8px 30px rgba(99,102,241,0.1);
+    transform: translateY(-2px);
+  }
+  .mock-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), #818CF8);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .mock-card:hover::before { opacity: 1; }
+
+  .launch-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+  }
+  .launch-btn:hover {
+    box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+    transform: translateY(-1px);
+  }
+
+  .badge-sim {
+    background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+    color: var(--primary);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #C7D2FE;
+    text-transform: uppercase;
+  }
+
+  .status-ready {
+    background: #ECFDF5;
+    color: var(--secondary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .status-reattempt {
+    background: #FEF3C7;
+    color: #92400E;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .status-completed {
+    background: #F0FDF4;
+    color: #166534;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .conc-bar {
+    height: 32px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .conc-bar span {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    transition: height 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+  .delay-6 { animation-delay: 0.6s; }
+</style>
+
+<div id="main-content" class="flex min-h-screen" style="background: var(--bg);">
+
+  <!-- Sidebar -->
+  <aside class="sidebar-nav w-[260px] min-h-screen flex flex-col flex-shrink-0 border-r" style="border-color: #1E293B;">
+    <div class="p-5 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: rgba(99,102,241,0.15);">
+          <i class="fa-solid fa-square-check text-[#818CF8] text-lg"></i>
+        </div>
+        <p class="text-sm font-extrabold text-white tracking-tight">99Plus</p>
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-4 px-4" style="scrollbar-width: thin;">
+      <p class="text-[10px] font-bold uppercase tracking-widest mb-3 px-3" style="color: #475569;">Navigation</p>
+      <div class="space-y-1">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-gauge-high w-5 text-center" style="color: #64748B;"></i><span>Command Center</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-clipboard-check w-5 text-center" style="color: #64748B;"></i><span>Pre-Test</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-desktop w-5 text-center" style="color: #64748B;"></i><span>NTA Test</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-stethoscope w-5 text-center" style="color: #64748B;"></i><span>Diagnosis</span></a>
+        <a href="#" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 text-sm font-medium"><i class="fa-solid fa-crosshairs w-5 text-center"></i><span>Surgical Drill</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-chart-line w-5 text-center" style="color: #64748B;"></i><span>Analytics</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-building-columns w-5 text-center" style="color: #64748B;"></i><span>Selection Hub</span></a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-gear w-5 text-center" style="color: #64748B;"></i><span>Settings</span></a>
+      </div>
+
+      <div class="mt-auto pt-4">
+        <div class="border-t mx-2 mb-4" style="border-color: #1E293B;"></div>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium" style="color: #94A3B8;"><i class="fa-solid fa-store w-5 text-center" style="color: #64748B;"></i><span>99Plus Store</span></a>
+      </div>
+    </div>
+
+    <div class="p-4 border-t" style="border-color: #1E293B;">
+      <div class="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[#1E293B] border border-[#334155] hover:border-[#6366F1]/40 transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+        <div class="w-9 h-9 rounded-full overflow-hidden border-2 flex-shrink-0" style="border-color: #818CF8;">
+          <img src="https://i.pravatar.cc/150?u=arjun-mehta" alt="Arjun" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-white truncate">Arjun Mehta</p>
+          <p class="text-[10px] font-medium" style="color: #64748B;">CUET 2026 Aspirant</p>
+        </div>
+        <button class="w-7 h-7 rounded-full hover:bg-[#334155] flex items-center justify-center transition-colors flex-shrink-0">
+          <i class="fa-solid fa-ellipsis-vertical text-[#94A3B8] text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header id="header-mock-library" class="sticky top-0 z-50 bg-white border-b" style="border-color: var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+      <div class="px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <a href="#" class="text-xs font-medium" style="color: var(--muted);">Surgical Drill</a>
+            <i class="fa-solid fa-chevron-right text-[10px]" style="color: var(--muted);"></i>
+            <a href="#" class="text-xs font-medium" style="color: var(--muted);">Mock Tests</a>
+            <i class="fa-solid fa-chevron-right text-[10px]" style="color: var(--muted);"></i>
+            <span class="text-xs font-semibold" style="color: var(--primary);">Mock Library</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg" style="background: #EEF2FF; border: 1px solid #C7D2FE;">
+            <i class="fa-solid fa-stopwatch text-xs" style="color: var(--primary);"></i>
+            <span class="text-xs font-bold" style="color: var(--primary);">Mode D: Stamina Builder</span>
+          </div>
+          <span class="text-xs font-medium px-3 py-1.5 rounded-lg" style="background: #F1F5F9; color: var(--muted);">CUET 2026</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto main-scroll" style="scrollbar-width: thin;">
+
+      <!-- Page Title -->
+      <div class="px-6 pt-6 pb-2 animate-in">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-1">
+              <h1 class="text-xl font-extrabold tracking-tight" style="color: var(--fg);">High-Fidelity NCERT Mocks</h1>
+              <span class="badge-sim"><i class="fa-solid fa-shield-halved mr-1"></i>Pure Simulation</span>
+            </div>
+            <p class="text-xs" style="color: var(--muted);">Build 3-hour exam stamina with pixel-perfect NTA Mirror sessions · Strictly NCERT-mapped</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="px-4 py-2 text-xs font-semibold rounded-lg hover:bg-[#F1F5F9] transition-colors" style="border: 1px solid var(--border); color: var(--fg);">
+              <i class="fa-solid fa-filter mr-1.5"></i>Filter
+            </button>
+            <button class="px-4 py-2 text-xs font-semibold rounded-lg hover:bg-[#F1F5F9] transition-colors" style="border: 1px solid var(--border); color: var(--fg);">
+              <i class="fa-solid fa-arrow-down-wide-short mr-1.5"></i>Sort
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stamina Dashboard -->
+      <div id="section-stamina-dashboard" class="px-6 py-4">
+        <div class="grid grid-cols-3 gap-4 animate-in delay-1">
+
+          <!-- Total Hours Simulated -->
+          <div class="bg-white rounded-2xl p-5 relative overflow-hidden" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-5" style="background: var(--primary); transform: translate(30%, -30%);"></div>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #EEF2FF;">
+                <i class="fa-solid fa-hourglass-half text-base" style="color: var(--primary);"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--muted);">Total Hours Simulated</p>
+              </div>
+            </div>
+            <div class="flex items-end gap-2">
+              <span class="text-3xl font-extrabold" style="color: var(--fg);">14.5</span>
+              <span class="text-sm font-semibold mb-1" style="color: var(--muted);">hrs</span>
+            </div>
+            <div class="flex items-center gap-1.5 mt-2">
+              <i class="fa-solid fa-arrow-trend-up text-[10px]" style="color: var(--secondary);"></i>
+              <span class="text-[10px] font-bold" style="color: var(--secondary);">+3.2 hrs this week</span>
+            </div>
+          </div>
+
+          <!-- Mocks Completed -->
+          <div class="bg-white rounded-2xl p-5 relative overflow-hidden" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-5" style="background: var(--secondary); transform: translate(30%, -30%);"></div>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #ECFDF5;">
+                <i class="fa-solid fa-clipboard-check text-base" style="color: var(--secondary);"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--muted);">Mocks Completed</p>
+              </div>
+            </div>
+            <div class="flex items-end gap-2">
+              <span class="text-3xl font-extrabold" style="color: var(--fg);">7</span>
+              <span class="text-sm font-semibold mb-1" style="color: var(--muted);">of 12</span>
+            </div>
+            <div class="w-full h-2 rounded-full mt-3" style="background: var(--border);">
+              <div class="h-full rounded-full" style="width: 58%; background: linear-gradient(90deg, var(--secondary), #34D399);"></div>
+            </div>
+          </div>
+
+          <!-- Concentration Index -->
+          <div class="bg-white rounded-2xl p-5 relative overflow-hidden" style="border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-5" style="background: var(--accent); transform: translate(30%, -30%);"></div>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #FEF3C7;">
+                <i class="fa-solid fa-brain text-base" style="color: #D97706;"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider" style="color: var(--muted);">Concentration Index</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-lg font-extrabold" style="color: var(--fg);">72%</span>
+              <span class="text-[10px] font-medium" style="color: var(--muted);">45-min window</span>
+            </div>
+            <div class="conc-bar">
+              <span style="height: 55%; background: #FDE68A;"></span>
+              <span style="height: 70%; background: #FACC15;"></span>
+              <span style="height: 85%; background: #F59E0B;"></span>
+              <span style="height: 90%; background: var(--secondary);"></span>
+              <span style="height: 78%; background: var(--secondary);"></span>
+              <span style="height: 65%; background: #FACC15;"></span>
+              <span style="height: 82%; background: var(--secondary);"></span>
+              <span style="height: 95%; background: var(--secondary);"></span>
+              <span style="height: 72%; background: #F59E0B;"></span>
+              <span style="height: 60%; background: #FACC15;"></span>
+              <span style="height: 50%; background: #FDE68A;"></span>
+              <span style="height: 45%; background: var(--destructive);"></span>
+            </div>
+            <div class="flex items-center justify-between mt-1.5">
+              <span class="text-[9px] mono" style="color: var(--muted);">0 min</span>
+              <span class="text-[9px] mono" style="color: var(--muted);">45 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mock Test Grid -->
+      <div id="section-mock-grid" class="px-6 pb-8">
+        <div class="flex items-center justify-between mb-4 animate-in delay-2">
+          <div class="flex items-center gap-3">
+            <h2 class="text-base font-bold" style="color: var(--fg);">Mock Library</h2>
+            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md" style="background: #F1F5F9; color: var(--muted);">12 Mocks Available</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
+          <!-- Mock #8 - Ready -->
+          <div id="card-mock-8" class="mock-card animate-in delay-2">
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #6366F1, #818CF8);">
+                    <span class="text-white font-extrabold text-lg">#8</span>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold" style="color: var(--fg);">Full Mock #8 — NCERT Mapped</h3>
+                    <p class="text-[11px] mt-0.5" style="color: var(--muted);">English + Mathematics + 2 Domains</p>
+                  </div>
+                </div>
+                <span class="badge-sim"><i class="fa-solid fa-shield-halved mr-1"></i>Pure Simulation</span>
+              </div>
+              <div class="flex items-center gap-3 mb-4 flex-wrap">
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-signal text-[10px]" style="color: var(--primary);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">Balanced</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-regular fa-clock text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">45 min/subject</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-layer-group text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">200 Questions</span>
+                </div>
+                <span class="status-ready"><i class="fa-solid fa-circle-play mr-1"></i>Ready for Simulation</span>
+              </div>
+              <button class="launch-btn w-full">
+                <i class="fa-solid fa-rocket mr-2"></i>Launch Stamina Session
+              </button>
+            </div>
+          </div>
+
+          <!-- Mock #7 - Re-attempt -->
+          <div id="card-mock-7" class="mock-card animate-in delay-3">
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #F59E0B, #FBBF24);">
+                    <span class="text-white font-extrabold text-lg">#7</span>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold" style="color: var(--fg);">Full Mock #7 — NCERT Mapped</h3>
+                    <p class="text-[11px] mt-0.5" style="color: var(--muted);">English + Mathematics + 2 Domains</p>
+                  </div>
+                </div>
+                <span class="badge-sim"><i class="fa-solid fa-shield-halved mr-1"></i>Pure Simulation</span>
+              </div>
+              <div class="flex items-center gap-3 mb-3 flex-wrap">
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-signal text-[10px]" style="color: var(--primary);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">Balanced</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-regular fa-clock text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">45 min/subject</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-layer-group text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">200 Questions</span>
+                </div>
+                <span class="status-reattempt"><i class="fa-solid fa-rotate mr-1"></i>Re-attempt Available</span>
+              </div>
+              <div class="flex items-center gap-3 mb-4 p-2.5 rounded-lg" style="background: #FFFBEB; border: 1px solid #FDE68A;">
+                <div class="flex items-center gap-4 flex-1">
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #92400E;">Score</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">156/200</p>
+                  </div>
+                  <div class="h-6 w-px" style="background: #FDE68A;"></div>
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #92400E;">Accuracy</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">72%</p>
+                  </div>
+                  <div class="h-6 w-px" style="background: #FDE68A;"></div>
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #92400E;">Time</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">2h 48m</p>
+                  </div>
+                </div>
+              </div>
+              <button class="launch-btn w-full" style="background: linear-gradient(135deg, #F59E0B, #D97706); box-shadow: 0 4px 14px rgba(245,158,11,0.3);">
+                <i class="fa-solid fa-rotate mr-2"></i>Re-attempt Session
+              </button>
+            </div>
+          </div>
+
+          <!-- Mock #6 - Completed -->
+          <div id="card-mock-6" class="mock-card animate-in delay-4">
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #059669, #34D399);">
+                    <span class="text-white font-extrabold text-lg">#6</span>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold" style="color: var(--fg);">Full Mock #6 — NCERT Mapped</h3>
+                    <p class="text-[11px] mt-0.5" style="color: var(--muted);">English + Mathematics + 2 Domains</p>
+                  </div>
+                </div>
+                <span class="badge-sim"><i class="fa-solid fa-shield-halved mr-1"></i>Pure Simulation</span>
+              </div>
+              <div class="flex items-center gap-3 mb-3 flex-wrap">
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-signal text-[10px]" style="color: var(--primary);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">Balanced</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-regular fa-clock text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">45 min/subject</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-layer-group text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">200 Questions</span>
+                </div>
+                <span class="status-completed"><i class="fa-solid fa-circle-check mr-1"></i>Completed</span>
+              </div>
+              <div class="flex items-center gap-3 mb-4 p-2.5 rounded-lg" style="background: #F0FDF4; border: 1px solid #BBF7D0;">
+                <div class="flex items-center gap-4 flex-1">
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #166534;">Score</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">172/200</p>
+                  </div>
+                  <div class="h-6 w-px" style="background: #BBF7D0;"></div>
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #166534;">Accuracy</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">84%</p>
+                  </div>
+                  <div class="h-6 w-px" style="background: #BBF7D0;"></div>
+                  <div class="text-center">
+                    <p class="text-[10px] font-bold uppercase" style="color: #166534;">Time</p>
+                    <p class="text-sm font-extrabold" style="color: var(--fg);">2h 55m</p>
+                  </div>
+                </div>
+              </div>
+              <button class="w-full py-2.5 text-xs font-semibold rounded-xl transition-colors" style="border: 2px solid var(--border); color: var(--muted); background: #F8FAFC;">
+                <i class="fa-solid fa-magnifying-glass-chart mr-1.5"></i>View Detailed Analysis
+              </button>
+            </div>
+          </div>
+
+          <!-- Mock #9 - Ready -->
+          <div id="card-mock-9" class="mock-card animate-in delay-5">
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #6366F1, #818CF8);">
+                    <span class="text-white font-extrabold text-lg">#9</span>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold" style="color: var(--fg);">Full Mock #9 — NCERT Mapped</h3>
+                    <p class="text-[11px] mt-0.5" style="color: var(--muted);">English + Mathematics + 2 Domains</p>
+                  </div>
+                </div>
+                <span class="badge-sim"><i class="fa-solid fa-shield-halved mr-1"></i>Pure Simulation</span>
+              </div>
+              <div class="flex items-center gap-3 mb-4 flex-wrap">
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-signal text-[10px]" style="color: var(--primary);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">Balanced</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-regular fa-clock text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">45 min/subject</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+                  <i class="fa-solid fa-layer-group text-[10px]" style="color: var(--muted);"></i>
+                  <span class="text-[11px] font-semibold" style="color: var(--fg);">200 Questions</span>
+                </div>
+                <span class="status-ready"><i class="fa-solid fa-circle-play mr-1"></i>Ready for Simulation</span>
+              </div>
+              <div class="flex items-center gap-2 mb-4 p-2.5 rounded-lg" style="background: #EEF2FF; border: 1px solid #C7D2FE;">
+                <i class="fa-solid fa-wand-magic-sparkles text-xs" style="color: var(--primary);"></i>
+                <span class="text-[11px] font-semibold" style="color: var(--primary);">AI-recommended based on your Mock #7 weak areas</span>
+              </div>
+              <button class="launch-btn w-full">
+                <i class="fa-solid fa-rocket mr-2"></i>Launch Stamina Session
+              </button>
+            </div>
+          </div>
+
+          <!-- Mock #5 - Completed -->
+          <div id="card-mock-5" class="mock-card animate-in delay-5">
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #059669, #34D399);">
+                    <span class="text-white font-extrabold text-lg">#5</span>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold" style="color: var(--fg);">Full Mock #5 — NCERT Mapped</h3>
+                    <p class="text-[11px] mt-0.5" style="color: var(--muted);">English + Mathematics + 2 Domains</p>
+                  </div>
+                </div>

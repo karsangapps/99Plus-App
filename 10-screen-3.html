@@ -1,0 +1,518 @@
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --primary-light: #818CF8;
+    --primary-dark: #4F46E5;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+
+  * { font-family: 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+    50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
+  .animate-fade-up-d1 { animation: fadeUp 0.8s ease-out 0.15s forwards; opacity: 0; }
+  .animate-fade-up-d2 { animation: fadeUp 0.8s ease-out 0.3s forwards; opacity: 0; }
+  .animate-fade-up-d3 { animation: fadeUp 0.8s ease-out 0.45s forwards; opacity: 0; }
+  .animate-fade-up-d4 { animation: fadeUp 0.8s ease-out 0.6s forwards; opacity: 0; }
+  .animate-fade-up-d5 { animation: fadeUp 0.8s ease-out 0.75s forwards; opacity: 0; }
+  .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+  .animate-slide-right { animation: slideRight 0.6s ease-out forwards; }
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-count { animation: countUp 0.6s ease-out forwards; }
+
+  .hero-gradient {
+    background: #F8FAFC;
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .cta-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(99,102,241,0.4);
+  }
+  .cta-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+  }
+  .cta-btn:hover::after { left: 100%; }
+
+  .cta-secondary {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    transition: all 0.3s ease;
+  }
+  .cta-secondary:hover {
+    border-color: var(--primary-dark);
+    background: rgba(99,102,241,0.08);
+    color: var(--primary-dark);
+  }
+
+  .feature-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.35s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    border-color: var(--primary-light);
+  }
+
+  .step-line {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+  }
+
+  .heatmap-green { background: linear-gradient(135deg, #059669, #10B981); }
+  .heatmap-yellow { background: linear-gradient(135deg, #D97706, #FBBF24); }
+  .heatmap-red { background: linear-gradient(135deg, #DC2626, #EF4444); }
+
+  .stat-card {
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .testimonial-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+  }
+  .testimonial-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  }
+
+  .nav-link {
+    transition: color 0.2s ease;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  .section-divider {
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    border-radius: 2px;
+  }
+</style>
+
+<!-- HEADER -->
+<header id="header-main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: rgba(248,250,252,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="10" fill="#6366F1"/>
+        <text x="6" y="27" font-family="Inter" font-weight="800" font-size="16" fill="white">99</text>
+        <text x="27" y="20" font-family="Inter" font-weight="800" font-size="10" fill="#FACC15">+</text>
+      </svg>
+      <span class="font-bold text-xl tracking-tight" style="color: var(--foreground);">99Plus</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#section-features" class="nav-link text-sm font-medium" style="color: #475569;">Features</a>
+      <a href="#section-how-it-works" class="nav-link text-sm font-medium" style="color: #475569;">How It Works</a>
+      <a href="#section-heatmap" class="nav-link text-sm font-medium" style="color: #475569;">College Heatmap</a>
+      <a href="#section-testimonials" class="nav-link text-sm font-medium" style="color: #475569;">Results</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#" class="hidden sm:inline-block text-sm font-medium px-4 py-2 rounded-lg transition-colors" style="color: #475569;">Log In</a>
+      <a href="#" class="cta-btn text-white text-sm font-semibold px-5 py-2.5 rounded-lg inline-flex items-center gap-2">
+        Start Free <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div id="main-content">
+
+  <!-- HERO SECTION -->
+  <section id="section-hero" class="hero-gradient relative overflow-hidden" style="min-height: 100vh; padding-top: 80px;">
+    <!-- Background decorations -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-10 w-72 h-72 rounded-full opacity-[0.06]" style="background: radial-gradient(circle, #6366F1, transparent);"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-[0.05]" style="background: radial-gradient(circle, #059669, transparent);"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.04]" style="background: radial-gradient(circle, #FACC15, transparent);"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center justify-center" style="min-height: calc(100vh - 80px);">
+      <!-- Badge -->
+      <div class="animate-fade-up mb-6">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide" style="background: rgba(99,102,241,0.08); color: var(--primary); border: 1px solid rgba(99,102,241,0.2);">
+          <i class="fa-solid fa-crosshairs"></i> SURGICAL SELECTION ENGINE FOR CUET 2026
+        </span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="animate-fade-up-d1 text-center leading-tight max-w-4xl" style="font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--foreground);">
+        Get <span style="color: #6366F1; font-weight: 800;">99+ Percentile.</span><br>
+        <span style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Secure Your Target</span> Seat.
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="animate-fade-up-d2 text-center mt-6 max-w-2xl text-lg leading-relaxed" style="color: #64748B;">
+        99Plus replaces guesswork with a data-driven loop: <span class="font-semibold" style="color: var(--foreground);">Strategy → Execution → Diagnosis → Remedy.</span> Know exactly which marks you're leaking and fix them before exam day.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="animate-fade-up-d3 flex flex-wrap items-center justify-center gap-4 mt-10">
+        <a href="#" class="cta-btn text-white font-semibold px-8 py-4 rounded-xl inline-flex items-center gap-3 text-base">
+          <i class="fa-solid fa-rocket"></i> Begin Your Surgical Prep — Free
+        </a>
+        <a href="#section-how-it-works" class="cta-secondary font-medium px-8 py-4 rounded-xl inline-flex items-center gap-3 text-base">
+          <i class="fa-solid fa-play-circle"></i> See How It Works
+        </a>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="animate-fade-up-d4 flex flex-wrap items-center justify-center gap-6 mt-16">
+        <div class="stat-card px-6 py-4 text-center">
+          <div class="text-2xl font-extrabold animate-count" style="color: var(--foreground);">12,400+</div>
+          <div class="text-xs mt-1" style="color: var(--muted);">Active Aspirants</div>
+        </div>
+        <div class="stat-card px-6 py-4 text-center">
+          <div class="text-2xl font-extrabold animate-count" style="color: #FACC15;">94.7%</div>
+          <div class="text-xs mt-1" style="color: var(--muted);">Avg. Score Improvement</div>
+        </div>
+        <div class="stat-card px-6 py-4 text-center">
+          <div class="text-2xl font-extrabold animate-count" style="color: #10B981;">3,200+</div>
+          <div class="text-xs mt-1" style="color: var(--muted);">North Campus Selections</div>
+        </div>
+        <div class="stat-card px-6 py-4 text-center">
+          <div class="text-2xl font-extrabold animate-count" style="color: var(--foreground);">2.1L+</div>
+          <div class="text-xs mt-1" style="color: var(--muted);">Drills Completed</div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="animate-fade-up-d5 mt-12 flex flex-col items-center gap-2">
+        <span class="text-xs" style="color: var(--muted);">Scroll to explore</span>
+        <div class="w-5 h-8 rounded-full border-2 flex justify-center pt-1.5" style="border-color: var(--border);">
+          <div class="w-1 h-2 rounded-full" style="background: #6366F1; animation: float 1.5s ease-in-out infinite;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION DIVIDER -->
+  <div class="section-divider max-w-32 mx-auto"></div>
+
+  <!-- FEATURES SECTION -->
+  <section id="section-features" class="py-24 px-6" style="background: var(--background);">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style="background: rgba(99,102,241,0.1); color: var(--primary);">
+          <i class="fa-solid fa-microscope"></i> PRECISION TOOLS
+        </span>
+        <h2 class="text-4xl font-extrabold tracking-tight" style="color: var(--foreground);">Six Surgical Instruments</h2>
+        <p class="mt-3 text-base max-w-xl mx-auto" style="color: var(--muted);">Each tool is engineered for one purpose: converting your NCERT knowledge into a confirmed university seat.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(99,102,241,0.1);">
+            <i class="fa-solid fa-shield-halved text-xl" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">Eligibility Guardian</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">Hard-locks your subject combinations based on real university mandates. No wasted prep on invalid combos.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(5,150,105,0.1);">
+            <i class="fa-solid fa-desktop text-xl" style="color: var(--secondary);"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">NTA Mirror</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">Pixel-perfect replica of the official NTA testing interface. Zero surprises on exam day.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(250,204,21,0.15);">
+            <i class="fa-solid fa-map-location-dot text-xl" style="color: #D97706;"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">College Heatmap</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">Live Green/Yellow/Red probability map connecting your mock scores to real admission chances.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(239,68,68,0.1);">
+            <i class="fa-solid fa-crosshairs text-xl" style="color: var(--destructive);"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">Surgical Drill Center</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">20-minute intensive sets targeting your exact "Mark Leaks" — the sub-topics bleeding your score.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(99,102,241,0.1);">
+            <i class="fa-solid fa-brain text-xl" style="color: var(--primary);"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">Behavioral Analytics</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">Detects "Wild Guessing" patterns and "Time Traps" — the invisible habits destroying your negative marking.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="feature-card p-7">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(5,150,105,0.1);">
+            <i class="fa-solid fa-arrows-spin text-xl" style="color: var(--secondary);"></i>
+          </div>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--foreground);">Seat-Success Loop</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">Every test feeds your diagnosis, every drill tightens your score. A self-improving engine that compounds results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="section-how-it-works" class="py-24 px-6" style="background: #F1F5F9;">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style="background: rgba(5,150,105,0.1); color: var(--secondary);">
+          <i class="fa-solid fa-rotate"></i> THE LOOP
+        </span>
+        <h2 class="text-4xl font-extrabold tracking-tight" style="color: var(--foreground);">Four Steps. One Seat.</h2>
+        <p class="mt-3 text-base max-w-lg mx-auto" style="color: var(--muted);">Each cycle tightens your score. Most students see measurable improvement within 3 loops.</p>
+      </div>
+
+      <div class="relative">
+        <!-- Vertical line -->
+        <div class="absolute left-8 top-0 bottom-0 w-0.5 hidden md:block" style="background: linear-gradient(180deg, #6366F1, #059669, #FACC15, #EF4444);"></div>
+
+        <!-- Step 1 -->
+        <div class="relative flex items-start gap-6 mb-12 md:pl-20">
+          <div class="absolute left-5 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold hidden md:flex" style="background: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.2);">1</div>
+          <div class="feature-card p-6 flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center md:hidden" style="background: var(--primary);"><span class="text-white text-sm font-bold">1</span></div>
+              <h3 class="text-lg font-bold" style="color: var(--foreground);">Strategy — Configure Your Battle Plan</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color: var(--muted);">Select your target universities, lock valid subject combinations via Eligibility Guardian, and set your score targets. The system builds a personalized prep roadmap.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative flex items-start gap-6 mb-12 md:pl-20">
+          <div class="absolute left-5 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold hidden md:flex" style="background: var(--secondary); box-shadow: 0 0 0 4px rgba(5,150,105,0.2);">2</div>
+          <div class="feature-card p-6 flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center md:hidden" style="background: var(--secondary);"><span class="text-white text-sm font-bold">2</span></div>
+              <h3 class="text-lg font-bold" style="color: var(--foreground);">Execution — Take the NTA Mirror Test</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color: var(--muted);">Experience the exact NTA interface — same layout, same timer, same pressure. Your muscle memory for exam day starts here.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative flex items-start gap-6 mb-12 md:pl-20">
+          <div class="absolute left-5 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold hidden md:flex" style="background: var(--accent); color: var(--foreground); box-shadow: 0 0 0 4px rgba(250,204,21,0.2);">3</div>
+          <div class="feature-card p-6 flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center md:hidden" style="background: var(--accent);"><span class="text-sm font-bold" style="color: var(--foreground);">3</span></div>
+              <h3 class="text-lg font-bold" style="color: var(--foreground);">Diagnosis — Identify Every Mark Leak</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color: var(--muted);">AI-powered analysis reveals wild guessing patterns, time traps, and the exact sub-topics where you're bleeding marks. No vague "study more" advice.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative flex items-start gap-6 md:pl-20">
+          <div class="absolute left-5 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold hidden md:flex" style="background: var(--destructive); box-shadow: 0 0 0 4px rgba(239,68,68,0.2);">4</div>
+          <div class="feature-card p-6 flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center md:hidden" style="background: var(--destructive);"><span class="text-white text-sm font-bold">4</span></div>
+              <h3 class="text-lg font-bold" style="color: var(--foreground);">Remedy — Surgical Drills Fix the Leaks</h3>
+            </div>
+            <p class="text-sm leading-relaxed" style="color: var(--muted);">Targeted 20-minute drill sets attack your weakest sub-topics. Each completed drill feeds back into the loop, compounding your improvement.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loop indicator -->
+      <div class="text-center mt-12">
+        <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full" style="background: rgba(99,102,241,0.08); border: 1px dashed var(--primary);">
+          <i class="fa-solid fa-arrows-spin" style="color: var(--primary);"></i>
+          <span class="text-sm font-semibold" style="color: var(--primary);">Repeat → Watch your College Heatmap turn Green</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLEGE HEATMAP PREVIEW -->
+  <section id="section-heatmap" class="py-24 px-6" style="background: var(--background);">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style="background: rgba(250,204,21,0.15); color: #D97706;">
+          <i class="fa-solid fa-fire"></i> LIVE PROBABILITY
+        </span>
+        <h2 class="text-4xl font-extrabold tracking-tight" style="color: var(--foreground);">Your College Heatmap</h2>
+        <p class="mt-3 text-base max-w-lg mx-auto" style="color: var(--muted);">Every mock test updates your real-time admission probability. Watch red zones turn green as you drill.</p>
+      </div>
+
+      <!-- Heatmap Demo -->
+      <div class="feature-card p-8 max-w-3xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-sm font-semibold" style="color: var(--foreground);">Sample Heatmap — English + Mathematics</span>
+          <span class="text-xs px-3 py-1 rounded-full font-medium" style="background: rgba(99,102,241,0.1); color: var(--primary);">Score: 168/200</span>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-4">
+            <span class="text-sm w-44 truncate font-medium" style="color: var(--foreground);">Hindu College</span>
+            <div class="flex-1 h-9 rounded-lg heatmap-green flex items-center px-4">
+              <span class="text-white text-xs font-bold">92% Probability</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm w-44 truncate font-medium" style="color: var(--foreground);">Miranda House</span>
+            <div class="flex-1 h-9 rounded-lg heatmap-green flex items-center px-4">
+              <span class="text-white text-xs font-bold">88% Probability</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm w-44 truncate font-medium" style="color: var(--foreground);">Hansraj College</span>
+            <div class="flex-1 h-9 rounded-lg heatmap-yellow flex items-center px-4">
+              <span class="text-white text-xs font-bold">64% Probability</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm w-44 truncate font-medium" style="color: var(--foreground);">SRCC</span>
+            <div class="flex-1 h-9 rounded-lg heatmap-red flex items-center px-4">
+              <span class="text-white text-xs font-bold">23% Probability</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm w-44 truncate font-medium" style="color: var(--foreground);">Kirori Mal College</span>
+            <div class="flex-1 h-9 rounded-lg heatmap-green flex items-center px-4">
+              <span class="text-white text-xs font-bold">85% Probability</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-6 mt-6 pt-5" style="border-top: 1px solid var(--border);">
+          <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm heatmap-green"></div><span class="text-xs" style="color: var(--muted);">Safe (>75%)</span></div>
+          <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm heatmap-yellow"></div><span class="text-xs" style="color: var(--muted);">Competitive (40-75%)</span></div>
+          <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm heatmap-red"></div><span class="text-xs" style="color: var(--muted);">Reach (<40%)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="section-testimonials" class="py-24 px-6" style="background: #F1F5F9;">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style="background: rgba(5,150,105,0.1); color: var(--secondary);">
+          <i class="fa-solid fa-trophy"></i> RESULTS
+        </span>
+        <h2 class="text-4xl font-extrabold tracking-tight" style="color: var(--foreground);">From Red Zones to North Campus</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="testimonial-card p-6">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-5" style="color: #475569;">"The Behavioral Analytics caught my wild guessing habit. I was losing 18 marks to negative marking without realizing it. Fixed it in 2 weeks."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://i.pravatar.cc/150?u=priya-sharma" class="w-10 h-10 rounded-full" alt="">
+            <div>
+              <div class="text-sm font-semibold" style="color: var(--foreground);">Priya Sharma</div>
+              <div class="text-xs" style="color: var(--muted);">Hindu College — English Hons.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card p-6">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-5" style="color: #475569;">"My heatmap was all red in March. After 47 surgical drills, I watched it flip to green for Miranda House. That visual kept me going."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://i.pravatar.cc/150?u=arjun-patel" class="w-10 h-10 rounded-full" alt="">
+            <div>
+              <div class="text-sm font-semibold" style="color: var(--foreground);">Arjun Patel</div>
+              <div class="text-xs" style="color: var(--muted);">Hansraj College — Pol. Science</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card p-6">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star text-sm" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-star-half-stroke text-sm" style="color: var(--accent);"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-5" style="color: #475569;">"NTA Mirror was a game-changer. The real exam felt like just another practice test. Zero anxiety, pure execution."</p>
+          <div class="flex items-center gap-3">
+            <img src="https://i.pravatar.cc/150?u=sneha-reddy" class="w-10 h-10 rounded-full" alt="">
+            <div>
+              <div class="text-sm font-semibold" style="color: var(--foreground);">Sneha Reddy</div>
+              <div class="text-xs" style="color: var(--muted);">Kirori Mal — History Hons.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="section-cta" class="py-24 px-6 relative overflow-hidden" style="background: #F1F5F9;">
+    <div class="absolute inset-0">
+      <div class="absolute top-10 right-20 w-64 h-64 rounded-full opacity-[0.06]" style="background: radial-gradient(circle, #FACC15, transparent);"></div>
+      <div class="absolute bottom-10 left-20 w-48 h-48 rounded-full opacity-[0.06]" style="background: radial-gradient(circle, #059669, transparent);"></div>
+    </div>

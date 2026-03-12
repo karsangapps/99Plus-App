@@ -1,0 +1,374 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --primary-light: #818CF8;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--background); color: var(--foreground); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .anim-1 { animation: fadeUp 0.5s ease-out 0.1s forwards; opacity: 0; }
+  .anim-2 { animation: fadeUp 0.5s ease-out 0.2s forwards; opacity: 0; }
+  .anim-3 { animation: fadeUp 0.5s ease-out 0.3s forwards; opacity: 0; }
+  .anim-4 { animation: fadeUp 0.5s ease-out 0.4s forwards; opacity: 0; }
+  .anim-5 { animation: fadeUp 0.5s ease-out 0.5s forwards; opacity: 0; }
+  .anim-6 { animation: fadeUp 0.5s ease-out 0.6s forwards; opacity: 0; }
+  .anim-7 { animation: fadeUp 0.5s ease-out 0.7s forwards; opacity: 0; }
+
+  .document-container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    min-height: 100vh;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    box-shadow: 0 0 60px rgba(0,0,0,0.04);
+  }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(5,150,105,0.08) 0%, rgba(5,150,105,0.04) 100%);
+    border: 1px solid rgba(5,150,105,0.18);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--secondary);
+    letter-spacing: 0.02em;
+  }
+  .verified-badge i {
+    font-size: 12px;
+  }
+
+  .section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .data-item {
+    position: relative;
+    padding: 20px 24px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+  }
+  .data-item:hover {
+    border-color: rgba(99,102,241,0.25);
+    box-shadow: 0 4px 16px rgba(99,102,241,0.06);
+    transform: translateY(-1px);
+  }
+
+  .data-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .erasure-card {
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .erasure-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--primary) 0%, #4F46E5 100%);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+    letter-spacing: 0.01em;
+  }
+  .close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99,102,241,0.35);
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+  }
+  .close-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(99,102,241,0.25);
+  }
+
+  .watermark {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 10px;
+    color: rgba(0,0,0,0.08);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
+  }
+
+  .purpose-tag-security {
+    background: rgba(99,102,241,0.08);
+    color: var(--primary);
+  }
+  .purpose-tag-algorithm {
+    background: rgba(5,150,105,0.08);
+    color: var(--secondary);
+  }
+
+  .sub-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+  }
+  .sub-item i {
+    margin-top: 2px;
+    font-size: 8px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .sub-item span {
+    font-size: 13px;
+    color: #4B5563;
+    line-height: 1.65;
+  }
+</style>
+
+<div id="main-content" class="document-container overflow-y-auto" style="scrollbar-width: thin; -ms-overflow-style: auto;">
+
+  <!-- Top Bar -->
+  <div id="header-notice-topbar" class="anim-1" style="padding: 20px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary) 0%, #4F46E5 100%); display: flex; align-items: center; justify-content: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L3 7V12C3 17.55 6.84 22.74 12 24C17.16 22.74 21 17.55 21 12V7L12 2Z" fill="white" opacity="0.9"/>
+          <path d="M10 15.5L7.5 13L6.09 14.41L10 18.33L18 10.33L16.59 8.92L10 15.5Z" fill="#4F46E5"/>
+        </svg>
+      </div>
+      <span style="font-size: 14px; font-weight: 700; color: var(--foreground); letter-spacing: -0.01em;">99Plus</span>
+    </div>
+    <div class="verified-badge">
+      <i class="fa-solid fa-shield-check"></i>
+      Security Verified
+    </div>
+  </div>
+
+  <!-- Document Content -->
+  <div style="padding: 48px 48px 40px 48px;">
+
+    <!-- Document Reference -->
+    <div class="anim-1" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+      <span style="font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;">Legal Notice</span>
+      <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--border);"></span>
+      <span style="font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; font-family: 'Fira Code', monospace;">REF: DPDP-2023/NTC/001</span>
+      <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--border);"></span>
+      <span style="font-size: 10px; font-weight: 500; color: var(--muted);">Effective: Jan 2026</span>
+    </div>
+
+    <!-- Title -->
+    <h1 class="anim-2" style="font-size: 28px; font-weight: 800; color: var(--foreground); line-height: 1.25; letter-spacing: -0.03em; margin-bottom: 12px;">
+      DPDP 2023: Data Processing<br>Notice for Guardians
+    </h1>
+
+    <!-- Subtitle line -->
+    <div class="anim-2" style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px;">
+      <div style="width: 40px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--primary), var(--primary-light));"></div>
+      <div style="width: 8px; height: 3px; border-radius: 3px; background: var(--accent);"></div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="anim-3" style="margin-bottom: 36px;">
+      <p style="font-size: 15px; line-height: 1.75; color: #374151; max-width: 600px;">
+        To comply with the <strong style="color: var(--foreground); font-weight: 600;">Digital Personal Data Protection Act (2023)</strong>, we provide this notice regarding the collection and processing of your child's personal data on the 99Plus platform.
+      </p>
+    </div>
+
+    <div class="divider-line anim-3" style="margin-bottom: 36px;"></div>
+
+    <!-- Section: What We Collect -->
+    <div class="anim-4" style="margin-bottom: 12px;">
+      <span style="font-size: 10px; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase;">Itemized Data Collection</span>
+    </div>
+
+    <!-- Data Item 1 -->
+    <div id="card-student-identity" class="data-item anim-4" style="margin-bottom: 16px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <div class="section-number">1</div>
+        <div style="flex: 1;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--foreground); letter-spacing: -0.01em;">Student Identity</h3>
+            <span class="data-tag purpose-tag-security">
+              <i class="fa-solid fa-lock" style="font-size: 8px;"></i>
+              Security
+            </span>
+          </div>
+          <p style="font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 14px;">
+            Collection of personally identifiable information to ensure account security and maintain verifiable consent logs as mandated by the DPDP Act.
+          </p>
+          <div style="background: #F9FAFB; border-radius: 8px; padding: 14px 16px;">
+            <p style="font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px;">Data Points Collected</p>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Full Name</strong> — Used for account identification and certificate generation</span>
+            </div>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Email Address</strong> — Used for login credentials and critical notifications</span>
+            </div>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Phone Number</strong> — Used for OTP verification and account recovery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Item 2 -->
+    <div id="card-academic-performance" class="data-item anim-5" style="margin-bottom: 36px;">
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <div class="section-number">2</div>
+        <div style="flex: 1;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--foreground); letter-spacing: -0.01em;">Academic Performance</h3>
+            <span class="data-tag purpose-tag-algorithm">
+              <i class="fa-solid fa-microchip" style="font-size: 8px;"></i>
+              Algorithm
+            </span>
+          </div>
+          <p style="font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 14px;">
+            Collection of academic interaction data to power the <strong style="color: var(--foreground);">'Surgical Selection'</strong> and <strong style="color: var(--foreground);">'Gap-Analysis'</strong> algorithms that optimize your child's CUET preparation.
+          </p>
+          <div style="background: #F9FAFB; border-radius: 8px; padding: 14px 16px;">
+            <p style="font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px;">Data Points Collected</p>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Mock Test Scores</strong> — Processed to generate College Heatmaps and admission probability</span>
+            </div>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Response Times</strong> — Analyzed to identify "Time Traps" and optimize pacing strategy</span>
+            </div>
+            <div class="sub-item">
+              <i class="fa-solid fa-circle"></i>
+              <span><strong style="color: var(--foreground);">Answer Patterns</strong> — Used to detect "Wild Guessing" behavior and negative marking risk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-line anim-5" style="margin-bottom: 36px;"></div>
+
+    <!-- Erasure Rights Card -->
+    <div id="card-erasure-rights" class="erasure-card anim-6" style="padding: 24px 28px; margin-bottom: 40px;">
+      <div style="display: flex; align-items: flex-start; gap: 14px;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(5,150,105,0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i class="fa-solid fa-scale-balanced" style="font-size: 14px; color: var(--primary);"></i>
+        </div>
+        <div>
+          <p style="font-size: 11px; font-weight: 700; color: var(--foreground); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">Your Rights Under DPDP Act</p>
+          <p style="font-size: 13.5px; line-height: 1.7; color: #4B5563;">
+            For <strong style="color: var(--foreground);">Erasure requests</strong> or <strong style="color: var(--foreground);">complaints</strong>, contact our <strong style="color: var(--primary);">Grievance Officer</strong> at <strong style="color: var(--foreground); font-weight: 600;">privacy@99plus.in</strong>.
+          </p>
+          <div style="margin-top: 12px; display: flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-user-tie" style="font-size: 11px; color: var(--muted);"></i>
+            <span style="font-size: 12px; color: var(--muted);">Erasure requests: <strong style="color: var(--foreground); font-weight: 600;">privacy@99plus.in</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <div class="anim-7" style="text-align: center; padding-bottom: 20px;">
+      <button class="close-btn" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left" style="font-size: 13px;"></i>
+        Close and Return to Sign-Up
+      </button>
+      <p style="font-size: 11px; color: var(--muted); margin-top: 16px;">
+        This notice was last updated on <strong style="font-weight: 600;">January 15, 2026</strong>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div style="padding: 20px 48px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <span style="font-size: 10px; color: var(--muted);">© 2026 99Plus</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <i class="fa-solid fa-shield-halved" style="font-size: 11px; color: var(--secondary);"></i>
+      <span style="font-size: 10px; font-weight: 600; color: var(--muted);">DPDP 2023 Compliant</span>
+      <span style="width: 3px; height: 3px; border-radius: 50%; background: var(--border);"></span>
+      <span style="font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace;">v1.0.2</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="watermark">CONFIDENTIAL</div>

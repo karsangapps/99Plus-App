@@ -1,0 +1,411 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'Fira Code', monospace; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.3); } 50% { box-shadow: 0 0 20px 4px rgba(99,102,241,0.15); } }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .anim-slide-up { animation: slideUp 0.5s ease-out both; }
+  .anim-slide-up-1 { animation: slideUp 0.5s ease-out 0.1s both; }
+  .anim-slide-up-2 { animation: slideUp 0.5s ease-out 0.2s both; }
+  .anim-slide-up-3 { animation: slideUp 0.5s ease-out 0.3s both; }
+  .anim-slide-up-4 { animation: slideUp 0.5s ease-out 0.4s both; }
+  .anim-fade { animation: fadeIn 0.6s ease-out both; }
+  .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  .verified-badge {
+    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    background-size: 200% 200%;
+  }
+  .feed-item:hover { transform: translateX(4px); }
+  .cta-shimmer {
+    background: linear-gradient(90deg, #6366F1 0%, #818CF8 25%, #6366F1 50%, #818CF8 75%, #6366F1 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+</style>
+
+<!-- GLOBAL:SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-[#0F172A] text-white flex flex-col border-r border-[#E5E7EB] shadow-lg" style="z-index:50;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6366F1;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FACC15;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <circle cx="16" cy="16" r="14" fill="url(#logoGrad)" opacity="0.2" stroke="url(#logoGrad)" stroke-width="2"/>
+        <path d="M16 8V24M8 16H24" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <h1 class="text-lg font-bold text-white">99Plus</h1>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-tower-control text-lg"></i>
+      <span>Command Center</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-clipboard-check text-lg"></i>
+      <span>Pre-Test</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-file-lines text-lg"></i>
+      <span>NTA Test</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-microscope text-lg"></i>
+      <span>Diagnosis</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-dumbbell text-lg"></i>
+      <span>Surgical Drill</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-chart-line text-lg"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] bg-[#6366F1] text-white font-medium transition-all duration-200 hover:bg-[#4F46E5]">
+      <i class="fa-solid fa-crosshairs text-lg"></i>
+      <span>Selection Hub</span>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+      <i class="fa-solid fa-gear text-lg"></i>
+      <span>Settings</span>
+    </a>
+    <div class="mt-auto pt-4">
+      <div class="border-t border-[#334155] mb-4 mx-2"></div>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white">
+        <i class="fa-solid fa-store text-lg"></i>
+        <span>99Plus Store</span>
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#334155]">
+    <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl bg-[#1E293B] border border-[#334155] hover:border-[#6366F1]/40 transition-all duration-200 cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-white truncate">Arjun Mehta</p>
+        <p class="text-[10px] text-[#64748B] font-medium truncate">CUET 2026 Aspirant</p>
+      </div>
+      <button class="w-7 h-7 rounded-full hover:bg-[#334155] flex items-center justify-center transition-colors flex-shrink-0">
+        <i class="fa-solid fa-ellipsis-vertical text-[#9CA3AF] text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" class="ml-64 min-h-screen bg-[#F8FAFC]">
+  <!-- Header -->
+  <header id="header-admin-hub" class="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB] px-8 py-5 flex items-center justify-between anim-fade" style="z-index:40; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 rounded-[12px] verified-badge flex items-center justify-center">
+        <i class="fa-solid fa-shield-check text-white text-lg"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-0.5">
+          <span class="text-xs text-[#9CA3AF] font-medium">Selection Hub</span>
+          <i class="fa-solid fa-chevron-right text-[8px] text-[#9CA3AF]"></i>
+          <span class="text-xs text-[#6366F1] font-semibold">Verified Updates</span>
+        </div>
+        <h1 class="text-xl font-bold text-[#0F172A] tracking-tight">Selection Hub</h1>
+        <p class="text-sm text-[#9CA3AF] mt-0.5">Scam-Shield Feed &amp; Document Vault — Noise-free, verified only</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#059669]/10 border border-[#059669]/20">
+        <span class="w-2 h-2 rounded-full bg-[#059669] animate-pulse"></span>
+        <span class="text-xs font-semibold text-[#059669]">All Sources Verified</span>
+      </div>
+      <div class="mono text-xs text-[#9CA3AF] bg-[#F1F5F9] px-3 py-1.5 rounded-[8px]">Last sync: 2 min ago</div>
+    </div>
+  </header>
+
+  <!-- Content Area -->
+  <div class="p-8 overflow-y-auto" style="height: calc(100vh - 97px); scrollbar-width: thin; -ms-overflow-style: auto;">
+
+    <!-- Top Stats Row -->
+    <div id="section-stats" class="grid grid-cols-3 gap-5 mb-8 anim-slide-up">
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="w-12 h-12 rounded-[12px] bg-[#6366F1]/10 flex items-center justify-center">
+          <i class="fa-solid fa-newspaper text-[#6366F1] text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-[#0F172A]">14</p>
+          <p class="text-xs text-[#9CA3AF] font-medium">Verified Updates</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="w-12 h-12 rounded-[12px] bg-[#EF4444]/10 flex items-center justify-center">
+          <i class="fa-solid fa-ban text-[#EF4444] text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-[#0F172A]">37</p>
+          <p class="text-xs text-[#9CA3AF] font-medium">Rumors Blocked</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-5 flex items-center gap-4" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="w-12 h-12 rounded-[12px] bg-[#059669]/10 flex items-center justify-center">
+          <i class="fa-solid fa-file-circle-check text-[#059669] text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-[#0F172A]">2/3</p>
+          <p class="text-xs text-[#9CA3AF] font-medium">Documents Ready</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-5 gap-6">
+
+      <!-- Scam-Shield Feed (3 cols) -->
+      <div class="col-span-3 anim-slide-up-1">
+        <div id="section-scam-shield" class="bg-white rounded-[12px] border border-[#E5E7EB]" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+          <!-- Feed Header -->
+          <div class="px-6 py-5 border-b border-[#E5E7EB] flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-[10px] bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center">
+                <i class="fa-solid fa-shield-halved text-white text-sm"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-[#0F172A]">Scam-Shield Feed</h2>
+                <p class="text-xs text-[#9CA3AF]">Noise-free verified NTA updates only</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="px-3 py-1.5 text-xs font-semibold rounded-[8px] bg-[#6366F1] text-white hover:bg-[#4F46E5] transition-colors">All</button>
+              <button class="px-3 py-1.5 text-xs font-semibold rounded-[8px] text-[#9CA3AF] hover:bg-[#F1F5F9] transition-colors border border-transparent hover:border-[#E5E7EB]">Critical</button>
+              <button class="px-3 py-1.5 text-xs font-semibold rounded-[8px] text-[#9CA3AF] hover:bg-[#F1F5F9] transition-colors border border-transparent hover:border-[#E5E7EB]">Blocked</button>
+            </div>
+          </div>
+
+          <!-- Feed Items -->
+          <div class="divide-y divide-[#E5E7EB]">
+            <!-- Item 1: Admit Card -->
+            <div class="feed-item px-6 py-4 flex items-start gap-4 transition-transform duration-200 cursor-pointer hover:bg-[#F8FAFC]">
+              <div class="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-id-card text-[#059669]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-[#0F172A]">Admit Card Link — LIVE</span>
+                  <span class="verified-badge text-[10px] font-bold text-white px-2 py-0.5 rounded-full uppercase tracking-wider">Verified</span>
+                </div>
+                <p class="text-sm text-[#6B7280] leading-relaxed">CUET UG 2026 Admit Cards are now available on <span class="mono text-xs bg-[#F1F5F9] px-1.5 py-0.5 rounded text-[#6366F1]">cuetug.ntaonline.in</span>. Download using your Application Number and Date of Birth.</p>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-xs text-[#9CA3AF]"><i class="fa-regular fa-clock mr-1"></i>Today, 10:32 AM</span>
+                  <span class="text-xs text-[#059669] font-medium"><i class="fa-solid fa-circle-check mr-1"></i>Source: NTA Official</span>
+                </div>
+              </div>
+              <a href="#" class="flex-shrink-0 mt-1 px-3 py-1.5 text-xs font-semibold text-[#6366F1] bg-[#6366F1]/10 rounded-[8px] hover:bg-[#6366F1]/20 transition-colors border border-[#6366F1]/20">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Open
+              </a>
+            </div>
+
+            <!-- Item 2: Center Change -->
+            <div class="feed-item px-6 py-4 flex items-start gap-4 transition-transform duration-200 cursor-pointer hover:bg-[#F8FAFC]">
+              <div class="w-10 h-10 rounded-full bg-[#FACC15]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-location-dot text-[#D97706]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-[#0F172A]">Center Change Alert — Delhi NCR</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#FACC15]/20 text-[10px] font-bold text-[#D97706] uppercase tracking-wider">Advisory</span>
+                </div>
+                <p class="text-sm text-[#6B7280] leading-relaxed">3 exam centers in South Delhi have been relocated. Affected candidates will receive SMS from NTA. Check your admit card for updated center address.</p>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-xs text-[#9CA3AF]"><i class="fa-regular fa-clock mr-1"></i>Today, 9:15 AM</span>
+                  <span class="text-xs text-[#059669] font-medium"><i class="fa-solid fa-circle-check mr-1"></i>Source: NTA Bulletin</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3: Blocked Rumor -->
+            <div class="feed-item px-6 py-4 flex items-start gap-4 transition-transform duration-200 cursor-pointer hover:bg-[#F8FAFC] bg-[#FEF2F2]/40">
+              <div class="w-10 h-10 rounded-full bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-ban text-[#EF4444]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-[#0F172A] line-through opacity-60">"CUET 2026 Postponed to August"</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#EF4444]/10 text-[10px] font-bold text-[#EF4444] uppercase tracking-wider">Blocked</span>
+                </div>
+                <p class="text-sm text-[#6B7280] leading-relaxed">This claim circulating on WhatsApp and Telegram is <span class="font-semibold text-[#EF4444]">FALSE</span>. NTA has not issued any postponement notice. Original exam schedule stands.</p>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-xs text-[#9CA3AF]"><i class="fa-regular fa-clock mr-1"></i>Yesterday, 6:48 PM</span>
+                  <span class="text-xs text-[#EF4444] font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Origin: WhatsApp Forward</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4: Blocked Rumor 2 -->
+            <div class="feed-item px-6 py-4 flex items-start gap-4 transition-transform duration-200 cursor-pointer hover:bg-[#F8FAFC] bg-[#FEF2F2]/40">
+              <div class="w-10 h-10 rounded-full bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-ban text-[#EF4444]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-[#0F172A] line-through opacity-60">"Leaked Question Paper for Slot 1"</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#EF4444]/10 text-[10px] font-bold text-[#EF4444] uppercase tracking-wider">Blocked</span>
+                </div>
+                <p class="text-sm text-[#6B7280] leading-relaxed">Scam PDF circulating on Telegram. This is a <span class="font-semibold text-[#EF4444]">phishing attempt</span>. Do not download or share. Report to cybercrime.gov.in.</p>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-xs text-[#9CA3AF]"><i class="fa-regular fa-clock mr-1"></i>Yesterday, 3:22 PM</span>
+                  <span class="text-xs text-[#EF4444] font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Origin: Telegram Group</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 5: Verified Update -->
+            <div class="feed-item px-6 py-4 flex items-start gap-4 transition-transform duration-200 cursor-pointer hover:bg-[#F8FAFC]">
+              <div class="w-10 h-10 rounded-full bg-[#6366F1]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-calendar-check text-[#6366F1]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-[#0F172A]">Exam Schedule Confirmed — No Changes</span>
+                  <span class="verified-badge text-[10px] font-bold text-white px-2 py-0.5 rounded-full uppercase tracking-wider">Verified</span>
+                </div>
+                <p class="text-sm text-[#6B7280] leading-relaxed">NTA confirms CUET UG 2026 will proceed as per the published schedule. Slot 1 begins May 15, 2026. No date changes.</p>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-xs text-[#9CA3AF]"><i class="fa-regular fa-clock mr-1"></i>May 8, 2026</span>
+                  <span class="text-xs text-[#059669] font-medium"><i class="fa-solid fa-circle-check mr-1"></i>Source: NTA Press Release</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column (2 cols) -->
+      <div class="col-span-2 space-y-6">
+
+        <!-- Document Vault Checklist -->
+        <div id="section-document-vault" class="bg-white rounded-[12px] border border-[#E5E7EB] anim-slide-up-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+          <div class="px-6 py-5 border-b border-[#E5E7EB] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-[10px] bg-gradient-to-br from-[#FACC15] to-[#F59E0B] flex items-center justify-center">
+              <i class="fa-solid fa-vault text-white text-sm"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-[#0F172A]">Document Vault Checklist</h2>
+              <p class="text-xs text-[#9CA3AF]">Exam-day readiness tracker</p>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-4">
+            <!-- Admit Card -->
+            <div class="flex items-center gap-4 p-4 rounded-[12px] bg-[#059669]/5 border border-[#059669]/15">
+              <div class="w-11 h-11 rounded-[10px] bg-[#059669]/10 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-id-card text-[#059669] text-lg"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-[#0F172A]">Admit Card</p>
+                <p class="text-xs text-[#059669] font-medium mt-0.5">Uploaded successfully</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-[#059669] flex items-center justify-center">
+                <i class="fa-solid fa-check text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- ID Proof -->
+            <div class="flex items-center gap-4 p-4 rounded-[12px] bg-[#059669]/5 border border-[#059669]/15">
+              <div class="w-11 h-11 rounded-[10px] bg-[#059669]/10 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-passport text-[#059669] text-lg"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-[#0F172A]">ID Proof</p>
+                <p class="text-xs text-[#059669] font-medium mt-0.5">Verified &amp; matched</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-[#059669] flex items-center justify-center">
+                <i class="fa-solid fa-check text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- Photographs — Missing -->
+            <div class="flex items-center gap-4 p-4 rounded-[12px] bg-[#EF4444]/5 border border-[#EF4444]/15">
+              <div class="w-11 h-11 rounded-[10px] bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-camera text-[#EF4444] text-lg"></i>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-[#0F172A]">Photographs</p>
+                <p class="text-xs text-[#EF4444] font-medium mt-0.5">Missing — Upload required</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-[#EF4444] flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-white text-sm"></i>
+              </div>
+            </div>
+
+            <!-- Upload Button -->
+            <button class="w-full mt-2 px-4 py-2.5 text-sm font-semibold text-[#EF4444] bg-[#EF4444]/5 border-2 border-dashed border-[#EF4444]/30 rounded-[12px] hover:bg-[#EF4444]/10 hover:border-[#EF4444]/50 transition-all duration-200 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              Upload Photographs Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Readiness Score -->
+        <div id="card-readiness" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6 anim-slide-up-3" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-bold text-[#0F172A]">Exam-Day Readiness</h3>
+            <span class="mono text-lg font-bold text-[#FACC15]">67%</span>
+          </div>
+          <div class="w-full h-3 bg-[#F1F5F9] rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-[#FACC15] to-[#F59E0B]" style="width: 67%;"></div>
+          </div>
+          <div class="flex items-center justify-between mt-3">
+            <span class="text-xs text-[#9CA3AF]">Upload photos to reach 100%</span>
+            <span class="text-xs font-semibold text-[#D97706]">1 action remaining</span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div id="card-quick-links" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6 anim-slide-up-4" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+          <h3 class="text-sm font-bold text-[#0F172A] mb-4">Quick Links</h3>
+          <div class="space-y-2">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-[10px] hover:bg-[#F1F5F9] transition-colors group">
+              <i class="fa-solid fa-globe text-[#6366F1] text-sm"></i>
+              <span class="text-sm text-[#6B7280] group-hover:text-[#0F172A] transition-colors">NTA Official Website</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#9CA3AF] ml-auto"></i>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-[10px] hover:bg-[#F1F5F9] transition-colors group">
+              <i class="fa-solid fa-headset text-[#6366F1] text-sm"></i>
+              <span class="text-sm text-[#6B7280] group-hover:text-[#0F172A] transition-colors">NTA Helpline: 011-40759000</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#9CA3AF] ml-auto"></i>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-[10px] hover:bg-[#F1F5F9] transition-colors group">
+              <i class="fa-solid fa-file-pdf text-[#6366F1] text-sm"></i>
+              <span class="text-sm text-[#6B7280] group-hover:text-[#0F172A] transition-colors">Download Exam Guidelines</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#9CA3AF] ml-auto"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div id="section-cta" class="mt-8 mb-4 anim-slide-up-4">
+      <div class="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-[12px] p-8 flex items-center justify-between" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="flex items-center gap-5">
+          <div class="w-14 h-14 rounded-[12px] bg-[#6366F1]/20 flex items-center justify-center pulse-glow">
+            <i class="fa-solid fa-rocket text-[#818CF8] text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Ready for the Final Simulation?</h3>
+            <p class="text-sm text-[#9CA3AF] mt-1">Full NTA-Mirror environment. Timed. Scored. Diagnosed.</p>
+          </div>
+        </div>
+        <button class="cta-shimmer px-8 py-4 rounded-[12px] text-white font-bold text-base tracking-wide hover:scale-[1.02] active:scale-[0.98] transition-transform duration-150 flex items-center gap-3 border-2 border-[#818CF8]/30 focus:outline-none focus:ring-4 focus:ring-[#6366F1]/30">
+          <span>Enter Final NTA-Mirror Simulation</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

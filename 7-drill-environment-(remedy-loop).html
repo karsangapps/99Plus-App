@@ -1,0 +1,447 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --bg: #F8FAFC;
+    --fg: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+
+  * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+  .mono { font-family: 'Fira Code', monospace; }
+
+  @keyframes pulse-timer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes slide-up-feedback {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .timer-pulse { animation: pulse-timer 1.2s ease-in-out infinite; }
+  .feedback-enter { animation: slide-up-feedback 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  .option-btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    background: white;
+  }
+  .option-btn:hover {
+    border-color: var(--primary);
+    background: #EEF2FF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.12);
+  }
+  .option-btn:active { transform: translateY(0); }
+
+  .option-btn.selected-wrong {
+    border-color: var(--destructive);
+    background: #FEF2F2;
+  }
+  .option-btn.selected-correct {
+    border-color: var(--secondary);
+    background: #ECFDF5;
+  }
+
+  .option-label {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    background: #F1F5F9; color: var(--fg);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .option-btn:hover .option-label { background: var(--primary); color: white; }
+  .option-btn.selected-wrong .option-label { background: var(--destructive); color: white; }
+  .option-btn.selected-correct .option-label { background: var(--secondary); color: white; }
+
+  .progress-track { background: #E2E8F0; height: 4px; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #FEF9C3 0%, #FDE68A 30%, #FACC15 70%, #EAB308 100%);
+  }
+
+  .surgical-card {
+    border: 1.5px solid #FACC15;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(250, 204, 21, 0.15), 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* Collapsed Sidebar */
+  .collapsed-sidebar {
+    width: 60px;
+    background: #0F172A;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    flex-shrink: 0;
+    z-index: 60;
+  }
+  .collapsed-sidebar .sidebar-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748B;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+  }
+  .collapsed-sidebar .sidebar-icon:hover {
+    background: #1E293B;
+    color: #94A3B8;
+  }
+  .collapsed-sidebar .sidebar-icon.active {
+    background: rgba(99,102,241,0.15);
+    color: #818CF8;
+    border: 1px solid rgba(99,102,241,0.25);
+  }
+  .collapsed-sidebar .sidebar-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366F1, #818CF8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  .collapsed-sidebar .sidebar-avatar {
+    width: 44px;
+    padding: 4px;
+    border-radius: 12px;
+    background: #1E293B;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .collapsed-sidebar .sidebar-avatar:hover {
+    border-color: rgba(99,102,241,0.4);
+  }
+  .collapsed-sidebar .sidebar-avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #818CF8;
+  }
+  .collapsed-sidebar .sidebar-avatar .avatar-menu {
+    width: 20px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: #64748B;
+    font-size: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .collapsed-sidebar .sidebar-avatar .avatar-menu:hover {
+    background: #334155;
+    color: #94A3B8;
+  }
+  .collapsed-sidebar .sidebar-divider {
+    width: 24px;
+    height: 1px;
+    background: #1E293B;
+    margin: 4px 0;
+  }
+</style>
+
+<div id="main-content" class="min-h-screen flex" style="background: var(--bg);">
+
+  <!-- Collapsed Sidebar (Icon-Only for Focus Mode) -->
+  <div class="collapsed-sidebar">
+    <div class="sidebar-logo" style="background: rgba(99,102,241,0.15);">
+      <i class="fa-solid fa-square-check text-[#818CF8] text-sm"></i>
+    </div>
+    <div class="sidebar-icon" title="Command Center"><i class="fa-solid fa-gauge-high"></i></div>
+    <div class="sidebar-icon" title="Pre-Test"><i class="fa-solid fa-clipboard-check"></i></div>
+    <div class="sidebar-icon" title="NTA Test"><i class="fa-solid fa-desktop"></i></div>
+    <div class="sidebar-icon" title="Diagnosis"><i class="fa-solid fa-stethoscope"></i></div>
+    <div class="sidebar-icon active" title="Surgical Drill"><i class="fa-solid fa-crosshairs"></i></div>
+    <div class="sidebar-icon" title="Analytics"><i class="fa-solid fa-chart-line"></i></div>
+    <div class="sidebar-icon" title="Selection Hub"><i class="fa-solid fa-building-columns"></i></div>
+    <div class="sidebar-icon" title="Settings"><i class="fa-solid fa-gear"></i></div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-icon" title="99Plus Store"><i class="fa-solid fa-store"></i></div>
+    <div class="sidebar-avatar" title="Arjun Mehta | CUET 2026 Aspirant">
+      <img src="https://i.pravatar.cc/150?u=arjun-mehta" alt="Arjun Mehta">
+      <div class="avatar-menu">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Column -->
+  <div class="flex-1 flex flex-col min-h-screen relative">
+
+  <!-- Top Bar -->
+  <header id="header-drill-bar" class="sticky top-0 z-50" style="background: white; border-bottom: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
+    <div class="px-5 py-3 flex items-center justify-between">
+
+      <!-- Left: Back + Topic -->
+      <div class="flex items-center gap-3">
+        <button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors" style="color: var(--muted);">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <div class="flex items-center gap-1.5 mb-1">
+            <span class="text-[11px] font-medium" style="color: var(--muted);">Surgical Drill</span>
+            <i class="fa-solid fa-chevron-right text-[8px]" style="color: var(--muted);"></i>
+            <span class="text-[11px] font-semibold" style="color: var(--primary);">Mode A: Gap-Remedy</span>
+            <i class="fa-solid fa-chevron-right text-[8px]" style="color: var(--muted);"></i>
+            <span class="text-[11px] font-semibold" style="color: var(--fg);">Mathematics</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="text-sm font-bold" style="color: var(--fg);">Calculus: Assertion-Reasoning</h1>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold" style="background: #F0FDF4; color: var(--secondary); border: 1px solid #BBF7D0;">
+              NCERT Ch.5 — Continuity
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A;">
+              <i class="fa-solid fa-tag text-[8px]"></i>
+              Mark Leak
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Timer -->
+      <div class="flex flex-col items-center">
+        <div class="text-[10px] font-bold uppercase tracking-wider mb-1" style="color: var(--muted);">Question 3 of 8</div>
+        <div class="flex items-center gap-2 px-4 py-1.5 rounded-xl" style="background: #FEF2F2; border: 1px solid #FECACA;">
+          <i class="fa-solid fa-clock text-xs timer-pulse" style="color: var(--destructive);"></i>
+          <span class="mono text-lg font-medium tracking-wider" style="color: var(--destructive);">18:42</span>
+        </div>
+        <div class="w-24 mt-1.5">
+          <div class="progress-track">
+            <div class="progress-fill" style="width: 37.5%; background: linear-gradient(90deg, var(--primary), #818CF8);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Marks Info -->
+      <div class="flex items-center gap-4">
+        <div class="text-right">
+          <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--muted);">Marks</div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="text-xs font-bold" style="color: var(--secondary);">+5</span>
+            <span style="color: var(--border);">/</span>
+            <span class="text-xs font-bold" style="color: var(--destructive);">−1</span>
+          </div>
+        </div>
+        <div class="w-px h-8" style="background: var(--border);"></div>
+        <div class="text-right">
+          <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--muted);">Difficulty</div>
+          <div class="flex items-center gap-1 mt-0.5">
+            <i class="fa-solid fa-bolt text-[10px]" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-bolt text-[10px]" style="color: var(--accent);"></i>
+            <i class="fa-solid fa-bolt text-[10px]" style="color: var(--accent);"></i>
+            <span class="text-xs font-bold" style="color: var(--accent);">Hard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 overflow-y-auto pb-28 px-6 pt-6" style="scrollbar-width: thin;">
+    <div class="max-w-3xl mx-auto">
+
+    <!-- Question Card -->
+    <div id="card-question" class="bg-white p-7" style="border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+
+      <!-- NCERT Reference Tag -->
+      <div class="flex items-center gap-2 mb-4">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold" style="background: #F0FDF4; color: var(--secondary); border: 1px solid #BBF7D0;">
+          <i class="fa-solid fa-book-open text-[10px]"></i>
+          NCERT Ch.5 — Continuity & Differentiability
+        </span>
+        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-semibold" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A;">
+          <i class="fa-solid fa-tag text-[10px]"></i>
+          Mark Leak
+        </span>
+      </div>
+
+      <!-- Question Text -->
+      <div class="mb-6">
+        <p class="text-base font-semibold leading-relaxed" style="color: var(--fg);">
+          <span class="mono text-sm font-medium mr-2" style="color: var(--primary);">Q.3</span>
+          Consider the following Assertion and Reason:
+        </p>
+        <div class="mt-4 p-4 rounded-lg" style="background: #F8FAFC; border: 1px solid var(--border);">
+          <p class="text-sm font-semibold mb-2" style="color: var(--fg);">
+            <span style="color: var(--primary);">Assertion (A):</span> The function f(x) = |x − 1| is not differentiable at x = 1.
+          </p>
+          <p class="text-sm font-semibold" style="color: var(--fg);">
+            <span style="color: var(--primary);">Reason (R):</span> The left-hand derivative and right-hand derivative of f(x) at x = 1 are equal.
+          </p>
+        </div>
+        <p class="text-sm font-medium mt-4" style="color: var(--fg);">
+          Select the correct option:
+        </p>
+      </div>
+
+      <!-- Options -->
+      <div class="space-y-3" id="section-options">
+
+        <!-- Option A -->
+        <button class="option-btn w-full flex items-center gap-4 p-4 text-left">
+          <span class="option-label">A</span>
+          <span class="text-sm font-medium" style="color: var(--fg);">Both A and R are true, and R is the correct explanation of A.</span>
+        </button>
+
+        <!-- Option B — Wrong Answer (Selected) -->
+        <button class="option-btn selected-wrong w-full flex items-center gap-4 p-4 text-left relative">
+          <span class="option-label">B</span>
+          <span class="text-sm font-medium" style="color: var(--fg);">Both A and R are true, but R is <u>not</u> the correct explanation of A.</span>
+          <i class="fa-solid fa-xmark absolute right-4 text-sm" style="color: var(--destructive);"></i>
+        </button>
+
+        <!-- Option C — Correct Answer (Revealed) -->
+        <button class="option-btn selected-correct w-full flex items-center gap-4 p-4 text-left relative">
+          <span class="option-label">C</span>
+          <span class="text-sm font-medium" style="color: var(--fg);">A is true but R is false.</span>
+          <i class="fa-solid fa-check absolute right-4 text-sm" style="color: var(--secondary);"></i>
+        </button>
+
+        <!-- Option D -->
+        <button class="option-btn w-full flex items-center gap-4 p-4 text-left opacity-50 pointer-events-none">
+          <span class="option-label">D</span>
+          <span class="text-sm font-medium" style="color: var(--fg);">A is false but R is true.</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Instant Surgical Feedback Panel -->
+    <div id="card-surgical-feedback" class="surgical-card mt-5 feedback-enter">
+
+      <!-- Gold Header Bar -->
+      <div class="gold-gradient px-5 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background: rgba(15,23,42,0.12);">
+            <i class="fa-solid fa-stethoscope text-xs" style="color: var(--fg);"></i>
+          </div>
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider" style="color: var(--fg);">Conceptual Bridge</span>
+          </div>
+        </div>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase" style="background: rgba(15,23,42,0.1); color: var(--fg);">
+          <i class="fa-solid fa-gem text-[9px]"></i>
+          Surgical Fix
+        </span>
+      </div>
+
+      <!-- Feedback Body -->
+      <div class="bg-white px-5 py-5">
+
+        <!-- The Logic Fix -->
+        <div class="flex gap-3 items-start">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background: #EEF2FF;">
+            <i class="fa-solid fa-lightbulb text-sm" style="color: var(--primary);"></i>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color: var(--muted);">ONE-LINE LOGIC FIX</p>
+            <p class="text-sm font-semibold leading-relaxed" style="color: var(--fg);">
+              For |x - 1|, the LHD = <span class="mono text-xs px-1 py-0.5 rounded" style="background: #FEF3C7; color: #92400E;">-1</span> and RHD = <span class="mono text-xs px-1 py-0.5 rounded" style="background: #F0FDF4; color: #065F46;">+1</span>. Since LHD ≠ RHD, the Reason is <strong style="color: var(--destructive);">false</strong> — making <strong style="color: var(--secondary);">Option C</strong> correct.
+            </p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-4" style="border-top: 1px dashed var(--border);"></div>
+
+        <!-- Pattern Recognition -->
+        <div class="flex gap-3 items-start">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background: #FEF3C7;">
+            <i class="fa-solid fa-brain text-sm" style="color: #D97706;"></i>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color: var(--muted);">PATTERN TO REMEMBER</p>
+            <p class="text-sm font-medium leading-relaxed" style="color: #4B5563;">
+              Modulus functions always create a &ldquo;kink&rdquo; — always check LHD vs RHD at the corner point before assuming differentiability.
+            </p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-4" style="border-top: 1px dashed var(--border);"></div>
+
+        <!-- Behavioral Tag -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full" style="background: var(--accent);"></div>
+            <span class="text-[11px] font-semibold" style="color: var(--muted);">
+              <i class="fa-solid fa-chart-line mr-1 text-[10px]"></i>
+              This sub-topic accounts for <strong style="color: var(--destructive);">38%</strong> of your mark leaks in Calculus
+            </span>
+          </div>
+          <span class="mono text-[10px] font-medium px-2.5 py-1 rounded-md" style="background: #F1F5F9; color: var(--muted);">
+            NCERT Pg. 156
+          </span>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </main>
+
+  <!-- Bottom Action Bar -->
+  <footer id="section-bottom-bar" class="sticky bottom-0 z-50" style="background: white; border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0,0,0,0.04);">
+    <div class="max-w-3xl mx-auto px-6 py-3.5 flex items-center justify-between">
+
+      <!-- Left: Skip -->
+      <button class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-gray-100" style="color: var(--muted); border: 1.5px solid var(--border);">
+        <i class="fa-solid fa-forward-step text-xs"></i>
+        Skip
+      </button>
+
+      <!-- Center: Question Dots -->
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full" style="background: var(--secondary); box-shadow: 0 0 0 2px rgba(5,150,105,0.2);"></div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--secondary); box-shadow: 0 0 0 2px rgba(5,150,105,0.2);"></div>
+        <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center" style="background: #FEF2F2; border-color: var(--destructive); box-shadow: 0 0 0 3px rgba(239,68,68,0.15);">
+          <span class="text-[7px] font-bold" style="color: var(--destructive);">3</span>
+        </div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--border);"></div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--border);"></div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--border);"></div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--border);"></div>
+        <div class="w-3 h-3 rounded-full" style="background: var(--border);"></div>
+      </div>
+
+      <!-- Right: Next Question -->
+      <button class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all hover:opacity-90 hover:shadow-lg" style="background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
+        Next Question
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
+  </footer>
+
+  </div>
+</div>

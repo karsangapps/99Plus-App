@@ -1,0 +1,533 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: Inter, sans-serif; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.2); } 50% { box-shadow: 0 0 0 8px rgba(99,102,241,0); } }
+  @keyframes progressFill { from { width: 0; } }
+  @keyframes lockPulse { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+  @keyframes goldShimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  .lock-pulse { animation: lockPulse 2s ease-in-out infinite; }
+  .gold-shimmer { background: linear-gradient(90deg, #FACC15 0%, #FDE68A 25%, #FACC15 50%, #FDE68A 75%, #FACC15 100%); background-size: 200% auto; animation: goldShimmer 3s linear infinite; }
+  .animate-in { animation: fadeInUp 0.5s ease-out both; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+  .delay-5 { animation-delay: 0.4s; }
+  .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+  .progress-animate { animation: progressFill 1s ease-out both; }
+  .drill-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .drill-card { transition: all 0.25s ease; }
+  .tag-pill { transition: all 0.2s ease; }
+  .tag-pill:hover { transform: scale(1.05); }
+  .start-btn { transition: all 0.2s ease; }
+  .start-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px rgba(99,102,241,0.35); }
+  .start-btn:active { transform: scale(0.98); }
+  .locked-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,251,235,0.6) 60%, rgba(254,243,199,0.85) 100%); z-index: 10; border-radius: 16px; pointer-events: none; }
+  .free-badge { transition: all 0.2s ease; }
+</style>
+
+<!-- Sidebar -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E5E7EB] flex flex-col z-50" style="font-family: Inter, sans-serif;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#6366F1"/>
+        <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="text-lg font-bold text-[#0F172A]">99Plus</span>
+    </div>
+  </div>
+
+  <nav class="flex-1 px-4 py-6 overflow-y-auto" style="scrollbar-width: thin;">
+    <ul class="space-y-2">
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-gauge-high w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Command Center</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-clipboard-check w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Pre-Test</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-desktop w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">NTA Test</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-stethoscope w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Diagnosis</span>
+        </a>
+      </li>
+      <!-- Surgical Drill - ACTIVE -->
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 bg-[#6366F1] text-white shadow-md transition-colors duration-200" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
+          <i class="fa-solid fa-crosshairs w-5 h-5 text-white"></i>
+          <span class="text-sm font-semibold">Surgical Drill</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-chart-line w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Analytics</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-building-columns w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Selection Hub</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-gear w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Settings</span>
+        </a>
+      </li>
+      <li class="mt-1 pt-2 border-t border-[#E5E7EB]">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 text-[#0F172A] hover:bg-[#F8FAFC] transition-colors duration-200" style="border-radius: 12px;">
+          <i class="fa-solid fa-store w-5 h-5 text-[#9CA3AF]"></i>
+          <span class="text-sm font-medium">Surgical Store</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-4 py-3 hover:bg-[#F8FAFC] transition-colors duration-200 cursor-pointer" style="border-radius: 12px;">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center">
+        <span class="text-white text-sm font-bold">A</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-[#0F172A] truncate">Arjun Mehta</p>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" class="ml-64 min-h-screen bg-[#F8FAFC]">
+  <!-- Header -->
+  <div id="header-surgical-drill" class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB]">
+    <div class="px-8 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center shadow-md pulse-glow">
+          <i class="fa-solid fa-microscope text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-[#0F172A] tracking-tight">Surgical Drill Center</h1>
+          <p class="text-xs text-[#9CA3AF] mt-0.5">20-min precision sets targeting your mark leaks</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-4 py-2 bg-[#FEF3C7] border border-[#FACC15]/30 text-[#92400E] text-xs font-semibold" style="border-radius: 12px;">
+          <i class="fa-solid fa-fire text-[#F59E0B]"></i>
+          <span>7-Day Streak</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 bg-[#ECFDF5] border border-[#059669]/20 text-[#059669] text-xs font-semibold" style="border-radius: 12px;">
+          <i class="fa-solid fa-bullseye"></i>
+          <span>142 Marks Recovered</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 border-2 border-dashed border-[#E5E7EB] text-xs font-bold" style="border-radius: 12px; background: #FEFCE8;">
+          <i class="fa-solid fa-coins text-[#FACC15]"></i>
+          <span class="text-[#0F172A]">Surgical Balance:</span>
+          <span class="text-[#EF4444] font-extrabold">0 Credits</span>
+          <a href="#" class="ml-1 text-[#6366F1] hover:underline text-[10px] font-semibold">
+            <i class="fa-solid fa-plus-circle mr-0.5"></i>Add
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="p-8 overflow-y-auto" style="scrollbar-width: thin; max-height: calc(100vh - 76px);">
+
+    <!-- Active Target Banner -->
+    <div class="mb-8 p-6 bg-gradient-to-r from-[#312E81] via-[#4338CA] to-[#6366F1] relative overflow-hidden animate-in" style="border-radius: 16px;">
+      <div class="absolute top-0 right-0 w-64 h-64 opacity-10">
+        <i class="fa-solid fa-crosshairs text-white" style="font-size: 200px; transform: translate(40px, -40px);"></i>
+      </div>
+      <div class="relative z-10">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-[10px] font-bold text-[#A5B4FC] uppercase tracking-widest">Active Target</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-[#C7D2FE] font-medium mb-2">
+          <span>Mathematics</span>
+          <i class="fa-solid fa-chevron-right text-[8px] text-[#818CF8]"></i>
+          <span>Calculus</span>
+          <i class="fa-solid fa-chevron-right text-[8px] text-[#818CF8]"></i>
+          <span class="text-[#FBBF24] font-semibold">Assertion-Reasoning</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-white tracking-tight">12-Mark Leak Detected</h2>
+        <p class="text-xs text-[#C7D2FE] mt-2 max-w-lg">Surgical intervention required — Targeted drills for Calculus Assertion-Reasoning questions have been queued based on your latest mock diagnosis.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <span class="px-3 py-1.5 bg-[#FBBF24]/20 border border-[#FBBF24]/30 text-[#FBBF24] text-[10px] font-bold uppercase tracking-wider" style="border-radius: 8px;"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Priority: Critical</span>
+          <span class="px-3 py-1.5 bg-white/10 border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider" style="border-radius: 8px;"><i class="fa-solid fa-bolt mr-1.5"></i>From Mock #7 Diagnosis</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Row -->
+    <div id="section-quick-stats" class="grid grid-cols-4 gap-5 mb-8 animate-in">
+      <div class="bg-white border border-[#E5E7EB] p-5 hover:shadow-md transition-shadow" style="border-radius: 12px;">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Pending Drills</span>
+          <div class="w-8 h-8 rounded-lg bg-[#EEF2FF] flex items-center justify-center">
+            <i class="fa-solid fa-list-check text-[#6366F1] text-sm"></i>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-[#0F172A]">12</p>
+        <p class="text-xs text-[#EF4444] mt-1 font-medium"><i class="fa-solid fa-arrow-up mr-1"></i>3 new from diagnosis</p>
+      </div>
+      <div class="bg-white border border-[#E5E7EB] p-5 hover:shadow-md transition-shadow" style="border-radius: 12px;">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Completed Today</span>
+          <div class="w-8 h-8 rounded-lg bg-[#ECFDF5] flex items-center justify-center">
+            <i class="fa-solid fa-check-double text-[#059669] text-sm"></i>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-[#0F172A]">4</p>
+        <p class="text-xs text-[#059669] mt-1 font-medium"><i class="fa-solid fa-clock mr-1"></i>80 min invested</p>
+      </div>
+      <div class="bg-white border border-[#E5E7EB] p-5 hover:shadow-md transition-shadow" style="border-radius: 12px;">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Avg Accuracy</span>
+          <div class="w-8 h-8 rounded-lg bg-[#FEF3C7] flex items-center justify-center">
+            <i class="fa-solid fa-crosshairs text-[#F59E0B] text-sm"></i>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-[#0F172A]">73%</p>
+        <div class="w-full bg-[#F1F5F9] rounded-full h-1.5 mt-2">
+          <div class="bg-[#FACC15] h-1.5 rounded-full progress-animate" style="width: 73%;"></div>
+        </div>
+      </div>
+      <div class="bg-white border border-[#E5E7EB] p-5 hover:shadow-md transition-shadow" style="border-radius: 12px;">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-[#9CA3AF] uppercase tracking-wider">Mark Leaks Sealed</span>
+          <div class="w-8 h-8 rounded-lg bg-[#FEE2E2] flex items-center justify-center">
+            <i class="fa-solid fa-shield-halved text-[#EF4444] text-sm"></i>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-[#0F172A]">28</p>
+        <p class="text-xs text-[#059669] mt-1 font-medium"><i class="fa-solid fa-trending-up mr-1"></i>+6 this week</p>
+      </div>
+    </div>
+
+    <!-- Surgical Drill Modes -->
+    <div id="section-surgical-modes" class="mb-8 animate-in delay-1">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <h2 class="text-base font-bold text-[#0F172A]">Choose Your Surgical Mode</h2>
+          <span class="px-2.5 py-1 bg-[#EEF2FF] text-[#6366F1] text-[10px] font-bold uppercase tracking-wider" style="border-radius: 6px;">4 Modes</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-5">
+        <!-- Mode A: Gap-Remedy Drill -->
+        <div id="card-mode-a" class="drill-card bg-white border-2 border-[#FACC15] p-0 relative overflow-hidden cursor-pointer group" style="border-radius: 16px; box-shadow: 0 4px 20px rgba(250,204,21,0.15);">
+          <div class="absolute top-0 left-0 w-full h-1.5 gold-shimmer"></div>
+          <!-- Locked Overlay -->
+          <div class="locked-overlay"></div>
+          <!-- PRO Badge + Lock -->
+          <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+            <span class="px-3 py-1.5 bg-gradient-to-r from-[#FACC15] to-[#F59E0B] text-[#78350F] text-[10px] font-extrabold uppercase tracking-wider shadow-lg flex items-center gap-1.5" style="border-radius: 8px;">
+              <i class="fa-solid fa-crown text-[8px]"></i>PRO
+            </span>
+          </div>
+          <!-- Gold Padlock -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 lock-pulse">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FACC15] to-[#F59E0B] flex items-center justify-center shadow-xl" style="box-shadow: 0 8px 24px rgba(250,204,21,0.4);">
+              <i class="fa-solid fa-lock text-white text-xl"></i>
+            </div>
+          </div>
+          <!-- Recommended Badge -->
+          <div class="absolute top-4 left-4 z-20">
+            <span class="px-2.5 py-1 bg-[#6366F1] text-white text-[9px] font-bold uppercase tracking-wider" style="border-radius: 6px;">
+              <i class="fa-solid fa-star mr-1 text-[8px]"></i>Recommended
+            </span>
+          </div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center shadow-lg flex-shrink-0" style="box-shadow: 0 4px 16px rgba(99,102,241,0.3);">
+                <i class="fa-solid fa-crosshairs text-white text-xl"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-[#6366F1] uppercase tracking-widest">Mode A</span>
+                <h3 class="text-lg font-extrabold text-[#0F172A] mt-1 tracking-tight">Gap-Remedy Drill</h3>
+              </div>
+            </div>
+            <p class="text-sm text-[#64748B] leading-relaxed mb-5">Fix your specific <span class="font-bold text-[#EF4444]">12-mark leak</span> with a personalized 20-min set. AI-targeted questions based on your Mock #7 diagnosis.</p>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#FEE2E2] text-[#EF4444] text-[10px] font-bold" style="border-radius: 8px;">
+                <i class="fa-solid fa-droplet"></i>
+                <span>12 Marks at Risk</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-regular fa-clock"></i>
+                <span>20 min</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>12 Qs</span>
+              </div>
+            </div>
+            <button class="start-btn w-full py-3 bg-gradient-to-r from-[#FACC15] to-[#F59E0B] text-[#78350F] text-sm font-extrabold shadow-lg relative z-20" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(250,204,21,0.4);">
+              <i class="fa-solid fa-lock mr-2 text-xs"></i>Unlock with Pro / Sachet
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode B: Topic Mastery -->
+        <div id="card-mode-b" class="drill-card bg-white border border-[#E5E7EB] p-0 relative overflow-hidden cursor-pointer group hover:border-[#059669]/40" style="border-radius: 16px;">
+          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#059669] to-[#34D399]"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-5">
+              <!-- Free to Browse Badge -->
+              <div class="absolute top-4 right-4">
+                <span class="free-badge px-2.5 py-1 bg-[#ECFDF5] border border-[#059669]/20 text-[#059669] text-[9px] font-bold uppercase tracking-wider" style="border-radius: 6px;"><i class="fa-solid fa-unlock mr-1 text-[8px]"></i>Free to Browse</span>
+              </div>
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#059669] to-[#34D399] flex items-center justify-center shadow-lg flex-shrink-0" style="box-shadow: 0 4px 16px rgba(5,150,105,0.25);">
+                <i class="fa-solid fa-book-open text-white text-xl"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-[#059669] uppercase tracking-widest">Mode B</span>
+                <h3 class="text-lg font-extrabold text-[#0F172A] mt-1 tracking-tight">Topic Mastery</h3>
+              </div>
+            </div>
+            <p class="text-sm text-[#64748B] leading-relaxed mb-5">Deep-dive into the <span class="font-bold text-[#059669]">NCERT Syllabus Explorer</span> and pick your chapters. Build mastery from the ground up with structured practice.</p>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#ECFDF5] text-[#059669] text-[10px] font-bold" style="border-radius: 8px;">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>All Chapters</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-sitemap"></i>
+                <span>NCERT Mapped</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-signal"></i>
+                <span>Progressive</span>
+              </div>
+            </div>
+            <button class="start-btn w-full py-3 bg-white border-2 border-[#059669] text-[#059669] text-sm font-bold hover:bg-[#059669] hover:text-white" style="border-radius: 12px;">
+              <i class="fa-solid fa-compass mr-2"></i>Explore Syllabus
+            </button>
+            <p class="text-[9px] text-center mt-2 text-[#9CA3AF]"><i class="fa-solid fa-info-circle mr-1"></i>Sprint & Practice actions require credits</p>
+          </div>
+        </div>
+
+        <!-- Mode C: Past Question Papers -->
+        <div id="card-mode-c" class="drill-card bg-white border border-[#E5E7EB] p-0 relative overflow-hidden cursor-pointer group hover:border-[#F59E0B]/40" style="border-radius: 16px;">
+          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-5">
+              <!-- Free to Browse Badge -->
+              <div class="absolute top-4 right-4">
+                <span class="free-badge px-2.5 py-1 bg-[#FEF3C7] border border-[#F59E0B]/20 text-[#92400E] text-[9px] font-bold uppercase tracking-wider" style="border-radius: 6px;"><i class="fa-solid fa-unlock mr-1 text-[8px]"></i>Free to Browse</span>
+              </div>
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center shadow-lg flex-shrink-0" style="box-shadow: 0 4px 16px rgba(245,158,11,0.25);">
+                <i class="fa-solid fa-scroll text-white text-xl"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-[#F59E0B] uppercase tracking-widest">Mode C</span>
+                <h3 class="text-lg font-extrabold text-[#0F172A] mt-1 tracking-tight">Past Question Papers</h3>
+              </div>
+            </div>
+            <p class="text-sm text-[#64748B] leading-relaxed mb-5">Master the <span class="font-bold text-[#92400E]">NTA language</span> with official papers from 2022–2025. Understand patterns, weightage, and question framing styles.</p>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#FEF3C7] text-[#92400E] text-[10px] font-bold" style="border-radius: 8px;">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>2022–2025</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Official NTA</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Analyzed</span>
+              </div>
+            </div>
+            <button class="start-btn w-full py-3 bg-white border-2 border-[#F59E0B] text-[#92400E] text-sm font-bold hover:bg-[#F59E0B] hover:text-white" style="border-radius: 12px;">
+              <i class="fa-solid fa-folder-open mr-2"></i>Browse Papers
+            </button>
+            <p class="text-[9px] text-center mt-2 text-[#9CA3AF]"><i class="fa-solid fa-info-circle mr-1"></i>Attempting papers requires credits</p>
+          </div>
+        </div>
+
+        <!-- Mode D: Mock Tests -->
+        <div id="card-mode-d" class="drill-card bg-white border-2 border-[#FACC15] p-0 relative overflow-hidden cursor-pointer group" style="border-radius: 16px; box-shadow: 0 4px 20px rgba(250,204,21,0.15);">
+          <div class="absolute top-0 left-0 w-full h-1.5 gold-shimmer"></div>
+          <!-- Locked Overlay -->
+          <div class="locked-overlay"></div>
+          <!-- PRO Badge -->
+          <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+            <span class="px-3 py-1.5 bg-gradient-to-r from-[#FACC15] to-[#F59E0B] text-[#78350F] text-[10px] font-extrabold uppercase tracking-wider shadow-lg flex items-center gap-1.5" style="border-radius: 8px;">
+              <i class="fa-solid fa-crown text-[8px]"></i>PRO
+            </span>
+          </div>
+          <!-- Gold Padlock -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 lock-pulse">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FACC15] to-[#F59E0B] flex items-center justify-center shadow-xl" style="box-shadow: 0 8px 24px rgba(250,204,21,0.4);">
+              <i class="fa-solid fa-lock text-white text-xl"></i>
+            </div>
+          </div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#EF4444] to-[#F87171] flex items-center justify-center shadow-lg flex-shrink-0" style="box-shadow: 0 4px 16px rgba(239,68,68,0.25);">
+                <i class="fa-solid fa-stopwatch text-white text-xl"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-[#EF4444] uppercase tracking-widest">Mode D</span>
+                <h3 class="text-lg font-extrabold text-[#0F172A] mt-1 tracking-tight">Mock Tests</h3>
+              </div>
+            </div>
+            <p class="text-sm text-[#64748B] leading-relaxed mb-5">Take full-length simulations to build your <span class="font-bold text-[#EF4444]">3-hour exam stamina</span>. Pixel-perfect NTA Mirror interface with real timing pressure.</p>
+            <div class="flex items-center gap-3 mb-5">
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#FEE2E2] text-[#EF4444] text-[10px] font-bold" style="border-radius: 8px;">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <span>3 Hours</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-display"></i>
+                <span>NTA Mirror</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1.5 bg-[#F1F5F9] text-[#64748B] text-[10px] font-semibold" style="border-radius: 8px;">
+                <i class="fa-solid fa-ranking-star"></i>
+                <span>Full Length</span>
+              </div>
+            </div>
+            <button class="start-btn w-full py-3 bg-gradient-to-r from-[#FACC15] to-[#F59E0B] text-[#78350F] text-sm font-extrabold shadow-lg relative z-20" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(250,204,21,0.4);">
+              <i class="fa-solid fa-lock mr-2 text-xs"></i>Unlock with Pro / Sachet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity & Mark Leak Summary -->
+    <div class="grid grid-cols-2 gap-5 animate-in delay-3">
+      <!-- Recent Drill Activity -->
+      <div class="bg-white border border-[#E5E7EB] p-6" style="border-radius: 16px;">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <h2 class="text-base font-bold text-[#0F172A]">Recent Drill Activity</h2>
+            <span class="px-2.5 py-1 bg-[#ECFDF5] text-[#059669] text-[10px] font-bold uppercase tracking-wider" style="border-radius: 6px;">4 Today</span>
+          </div>
+          <a href="#" class="text-xs text-[#6366F1] font-semibold hover:underline">View All</a>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 bg-[#F8FAFC] hover:bg-[#F1F5F9] transition-colors" style="border-radius: 10px;">
+            <div class="w-9 h-9 rounded-lg bg-[#ECFDF5] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-check text-[#059669] text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-[#0F172A]">Tenses — Active/Passive</p>
+              <p class="text-[10px] text-[#9CA3AF]">English · 18 min</p>
+            </div>
+            <span class="text-sm font-bold text-[#059669]">87%</span>
+            <span class="px-2 py-1 bg-[#ECFDF5] text-[#059669] text-[10px] font-bold" style="border-radius: 6px;">Sealed</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-[#F8FAFC] hover:bg-[#F1F5F9] transition-colors" style="border-radius: 10px;">
+            <div class="w-9 h-9 rounded-lg bg-[#ECFDF5] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-check text-[#059669] text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-[#0F172A]">Demand & Supply Curves</p>
+              <p class="text-[10px] text-[#9CA3AF]">Economics · 19 min</p>
+            </div>
+            <span class="text-sm font-bold text-[#059669]">80%</span>
+            <span class="px-2 py-1 bg-[#ECFDF5] text-[#059669] text-[10px] font-bold" style="border-radius: 6px;">Sealed</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-[#F8FAFC] hover:bg-[#F1F5F9] transition-colors" style="border-radius: 10px;">
+            <div class="w-9 h-9 rounded-lg bg-[#FEF3C7] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-rotate text-[#F59E0B] text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-[#0F172A]">Parliament — Lok Sabha</p>
+              <p class="text-[10px] text-[#9CA3AF]">Pol. Science · 20 min</p>
+            </div>
+            <span class="text-sm font-bold text-[#FACC15]">65%</span>
+            <span class="px-2 py-1 bg-[#FEF3C7] text-[#92400E] text-[10px] font-bold" style="border-radius: 6px;">Retry</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-[#F8FAFC] hover:bg-[#F1F5F9] transition-colors" style="border-radius: 10px;">
+            <div class="w-9 h-9 rounded-lg bg-[#ECFDF5] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-check text-[#059669] text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-[#0F172A]">Figurative Language</p>
+              <p class="text-[10px] text-[#9CA3AF]">English · 16 min</p>
+            </div>
+            <span class="text-sm font-bold text-[#059669]">92%</span>
+            <span class="px-2 py-1 bg-[#ECFDF5] text-[#059669] text-[10px] font-bold" style="border-radius: 6px;">Sealed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mark Leak Summary -->
+      <div class="bg-white border border-[#E5E7EB] p-6" style="border-radius: 16px;">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-base font-bold text-[#0F172A]">Active Mark Leaks</h2>
+          <span class="px-2.5 py-1 bg-[#FEE2E2] text-[#EF4444] text-[10px] font-bold uppercase tracking-wider" style="border-radius: 6px;">33 Marks Total</span>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-[#0F172A]">Calculus — Assertion-Reasoning</span>
+              <span class="text-xs font-bold text-[#EF4444]">-12 marks</span>
+            </div>
+            <div class="w-full bg-[#F1F5F9] rounded-full h-2.5">
+              <div class="bg-gradient-to-r from-[#EF4444] to-[#F87171] h-2.5 rounded-full progress-animate" style="width: 95%;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-medium text-[#0F172A]">Reading Comprehension</span>
+              <span class="text-xs font-bold text-[#EF4444]">-8 marks</span>
+            </div>
+            <div class="w-full bg-[#F1F5F9] rounded-full h-2.5">
+              <div class="bg-gradient-to-r from-[#EF4444] to-[#F87171] h-2.5 rounded-full progress-animate" style="width: 65%; animation-delay: 0.1s;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-medium text-[#0F172A]">National Income Accounting</span>
+              <span class="text-xs font-bold text-[#EF4444]">-6 marks</span>
+            </div>
+            <div class="w-full bg-[#F1F5F9] rounded-full h-2.5">
+              <div class="bg-gradient-to-r from-[#EF4444] to-[#F87171] h-2.5 rounded-full progress-animate" style="width: 50%; animation-delay: 0.2s;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-medium text-[#0F172A]">Fundamental Rights</span>
+              <span class="text-xs font-bold text-[#FACC15]">-4 marks</span>
+            </div>
+            <div class="w-full bg-[#F1F5F9] rounded-full h-2.5">
+              <div class="bg-gradient-to-r from-[#FACC15] to-[#FDE68A] h-2.5 rounded-full progress-animate" style="width: 35%; animation-delay: 0.3s;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-medium text-[#0F172A]">Emergency Provisions</span>
+              <span class="text-xs font-bold text-[#FACC15]">-3 marks</span>
+            </div>
+            <div class="w-full bg-[#F1F5F9] rounded-full h-2.5">
+              <div class="bg-gradient-to-r from-[#FACC15] to-[#FDE68A] h-2.5 rounded-full progress-animate" style="width: 25%; animation-delay: 0.4s;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

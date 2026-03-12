@@ -1,0 +1,473 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --destructive: #EF4444;
+    --foreground: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --background: #F8FAFC;
+  }
+
+  .sidebar-link { transition: all 0.2s ease; }
+  .sidebar-link:hover { background: #F1F5F9; }
+  .sidebar-link.active { background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(99,102,241,0.04)); color: var(--primary); border: 1px solid rgba(99,102,241,0.2); }
+
+  .filter-btn { transition: all 0.15s ease; }
+  .filter-btn:hover { background: #E2E8F0; }
+  .filter-btn.active { background: var(--primary); color: white; }
+
+  .paper-row { transition: all 0.2s ease; }
+  .paper-row:hover { background: #F1F5F9; transform: translateX(2px); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+
+  .tag-verified {
+    background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(5,150,105,0.04));
+    color: var(--secondary);
+    border: 1px solid rgba(5,150,105,0.2);
+  }
+  .tag-nta {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(99,102,241,0.04));
+    color: var(--primary);
+    border: 1px solid rgba(99,102,241,0.2);
+  }
+  .tag-difficulty-moderate {
+    background: linear-gradient(135deg, rgba(250,204,21,0.1), rgba(250,204,21,0.04));
+    color: #92400E;
+    border: 1px solid rgba(250,204,21,0.3);
+  }
+  .tag-difficulty-hard {
+    background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.04));
+    color: var(--destructive);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+
+  .start-paper-btn {
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+  }
+  .start-paper-btn:hover {
+    box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    transform: translateY(-1px);
+  }
+</style>
+
+<div id="main-content" class="flex h-screen overflow-hidden" style="background: var(--background);">
+
+  <!-- Sidebar -->
+  <aside id="sidebar-main" class="w-[260px] bg-white border-r flex flex-col flex-shrink-0" style="border-color: var(--border);">
+    <!-- Logo -->
+    <div class="p-5 border-b" style="border-color: var(--border);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#EEF2FF] flex items-center justify-center">
+          <i class="fa-solid fa-square-check text-[#6366F1] text-lg"></i>
+        </div>
+        <h1 class="text-sm font-extrabold tracking-tight" style="color: var(--foreground);">99Plus</h1>
+      </div>
+    </div>
+
+    <!-- Nav Links -->
+    <div class="flex-1 overflow-y-auto py-5 px-4" style="scrollbar-width: thin;">
+      <p class="text-[10px] font-bold uppercase tracking-widest px-4 mb-3" style="color: var(--muted);">Navigation</p>
+      <div class="space-y-1.5">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-gauge-high w-5 text-center"></i><span>Command Center</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-clipboard-check w-5 text-center"></i><span>Pre-Test</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-desktop w-5 text-center"></i><span>NTA Test</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-stethoscope w-5 text-center"></i><span>Diagnosis</span>
+        </a>
+        <a href="#" class="sidebar-link active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold">
+          <i class="fa-solid fa-crosshairs w-5 text-center"></i><span>Surgical Drill</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-chart-line w-5 text-center"></i><span>Analytics</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-building-columns w-5 text-center"></i><span>Selection Hub</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-gear w-5 text-center"></i><span>Settings</span>
+        </a>
+      </div>
+
+      <!-- Divider + 99Plus Store -->
+      <div class="mt-auto pt-4">
+        <div class="border-t mb-4 mx-2" style="border-color: var(--border);"></div>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="color: var(--muted);">
+          <i class="fa-solid fa-store w-5 text-center"></i><span>99Plus Store</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- User Footer -->
+    <div class="p-4 border-t" style="border-color: var(--border);">
+      <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl bg-[#F8FAFC] border hover:border-[#6366F1]/30 transition-all cursor-pointer" style="border-color: var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center flex-shrink-0">
+          <span class="text-white text-sm font-bold">A</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold truncate" style="color: var(--foreground);">Arjun Mehta</p>
+          <p class="text-[10px] font-medium" style="color: var(--muted);">CUET 2026 Aspirant</p>
+        </div>
+        <button class="w-7 h-7 rounded-full hover:bg-[#E5E7EB] flex items-center justify-center transition-colors flex-shrink-0">
+          <i class="fa-solid fa-ellipsis-vertical text-sm" style="color: var(--muted);"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Top Header -->
+    <header id="header-archive" class="bg-white border-b px-8 py-4 flex items-center justify-between flex-shrink-0" style="border-color: var(--border);">
+      <div class="flex items-center gap-4">
+        <a href="#" class="flex items-center gap-2 text-xs font-medium hover:underline" style="color: var(--primary);">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Drill Hub</span>
+        </a>
+        <div class="h-5 w-px" style="background: var(--border);"></div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight" style="color: var(--foreground);">Official NTA Archive</h1>
+          <p class="text-xs" style="color: var(--muted);">Past Question Papers · Mode C</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs font-medium hidden sm:inline" style="color: var(--muted);">CUET 2026</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style="background: rgba(5,150,105,0.1); color: var(--secondary);">
+          <span class="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></span>
+          Surgical Mode
+        </span>
+        <div class="w-9 h-9 rounded-full border-2 overflow-hidden" style="border-color: var(--primary);">
+          <img src="https://i.pravatar.cc/150?u=arjun-nta" alt="Arjun" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto px-8 py-6 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full" style="scrollbar-width: thin;">
+
+      <!-- Mission Banner -->
+      <div id="section-mission-banner" class="mb-6 animate-in delay-1 p-5 bg-gradient-to-r from-[#6366F1] to-[#818CF8] relative overflow-hidden" style="border-radius: 16px;">
+        <div class="absolute top-0 right-0 w-48 h-48 opacity-10">
+          <i class="fa-solid fa-scroll text-white" style="font-size: 140px; transform: rotate(-15deg);"></i>
+        </div>
+        <div class="relative z-10 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2.5 py-1 bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm" style="border-radius: 6px;">
+                <i class="fa-solid fa-scroll mr-1"></i>Mode C — Past Papers
+              </span>
+              <span class="px-2.5 py-1 bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm" style="border-radius: 6px;">
+                Mathematics → Calculus Leak (12 Marks)
+              </span>
+            </div>
+            <h2 class="text-xl font-extrabold text-white mb-1">Master the NTA Language</h2>
+            <p class="text-sm text-white/70">Study official question patterns from 2021–2025 to decode NTA's framing style.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-center px-5 py-3 bg-white/10 backdrop-blur-sm" style="border-radius: 12px;">
+              <p class="text-2xl font-black text-white">47</p>
+              <p class="text-[10px] text-white/60 font-semibold">Papers</p>
+            </div>
+            <div class="text-center px-5 py-3 bg-white/10 backdrop-blur-sm" style="border-radius: 12px;">
+              <p class="text-2xl font-black text-white">5</p>
+              <p class="text-[10px] text-white/60 font-semibold">Years</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Bar -->
+      <div id="section-filters" class="mb-6 animate-in delay-2 bg-white border p-5" style="border-color: var(--border); border-radius: 14px;">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-6">
+            <!-- Year Filter -->
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-widest mb-2.5" style="color: var(--muted);">Year</p>
+              <div class="flex items-center gap-1.5">
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">All</button>
+                <button class="filter-btn active px-3 py-1.5 text-xs font-semibold rounded-lg">2025</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">2024</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">2023</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">2022</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">2021</button>
+              </div>
+            </div>
+
+            <div class="h-10 w-px" style="background: var(--border);"></div>
+
+            <!-- Subject Filter -->
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-widest mb-2.5" style="color: var(--muted);">Subject</p>
+              <div class="flex items-center gap-1.5">
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">All</button>
+                <button class="filter-btn active px-3 py-1.5 text-xs font-semibold rounded-lg">Mathematics</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">English</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">Economics</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">Pol. Science</button>
+              </div>
+            </div>
+
+            <div class="h-10 w-px" style="background: var(--border);"></div>
+
+            <!-- Difficulty Filter -->
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-widest mb-2.5" style="color: var(--muted);">Difficulty</p>
+              <div class="flex items-center gap-1.5">
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">All</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">Easy</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">Moderate</button>
+                <button class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg" style="background: #F1F5F9; color: #64748B;">Hard</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs" style="color: var(--muted);"></i>
+            <input type="text" placeholder="Search papers..." class="pl-9 pr-4 py-2 text-xs border rounded-lg w-48 focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 focus:border-[#6366F1]" style="border-color: var(--border);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <div class="flex items-center justify-between mb-4 animate-in delay-2">
+        <p class="text-xs font-semibold" style="color: var(--muted);">Showing <span style="color: var(--foreground);">12 papers</span> for Mathematics · 2025</p>
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-medium" style="color: var(--muted);">Sort by:</span>
+          <select class="text-xs font-semibold border rounded-lg px-3 py-1.5 focus:outline-none" style="color: var(--foreground); border-color: var(--border);">
+            <option>Most Recent</option>
+            <option>Difficulty</option>
+            <option>Slot Number</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Papers List -->
+      <div id="section-papers-list" class="space-y-3">
+
+        <!-- Paper 1 -->
+        <div class="paper-row animate-in delay-3 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(99,102,241,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2025 — Slot 1 Mathematics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section IA + Section IB · 50 Questions · 60 Minutes · May 15, 2025</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-moderate px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Moderate
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>Calculus: 14 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="start-paper-btn px-5 py-2.5 bg-[#6366F1] text-white text-xs font-bold flex-shrink-0" style="border-radius: 10px;">
+            <i class="fa-solid fa-play mr-1.5"></i>Attempt
+          </button>
+        </div>
+
+        <!-- Paper 2 -->
+        <div class="paper-row animate-in delay-3 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(99,102,241,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2025 — Slot 2 Mathematics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section IA + Section IB · 50 Questions · 60 Minutes · May 16, 2025</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-hard px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Hard
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>Calculus: 16 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <div class="text-right">
+              <p class="text-xs font-bold" style="color: var(--secondary);">Completed</p>
+              <p class="text-[10px]" style="color: var(--muted);">Score: 38/50</p>
+            </div>
+            <button class="px-5 py-2.5 bg-white border-2 text-xs font-bold" style="border-color: var(--primary); color: var(--primary); border-radius: 10px;">
+              <i class="fa-solid fa-rotate-right mr-1.5"></i>Retry
+            </button>
+          </div>
+        </div>
+
+        <!-- Paper 3 -->
+        <div class="paper-row animate-in delay-4 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#059669] to-[#34D399] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2024 — Slot 1 Mathematics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section IA + Section IB · 50 Questions · 60 Minutes · May 21, 2024</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-moderate px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Moderate
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>Calculus: 12 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="start-paper-btn px-5 py-2.5 bg-[#6366F1] text-white text-xs font-bold flex-shrink-0" style="border-radius: 10px;">
+            <i class="fa-solid fa-play mr-1.5"></i>Attempt
+          </button>
+        </div>
+
+        <!-- Paper 4 -->
+        <div class="paper-row animate-in delay-4 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#059669] to-[#34D399] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(5,150,105,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2024 — Slot 2 Economics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section II · 40 Questions · 45 Minutes · May 22, 2024</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-moderate px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Moderate
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>National Income: 8 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="start-paper-btn px-5 py-2.5 bg-[#6366F1] text-white text-xs font-bold flex-shrink-0" style="border-radius: 10px;">
+            <i class="fa-solid fa-play mr-1.5"></i>Attempt
+          </button>
+        </div>
+
+        <!-- Paper 5 -->
+        <div class="paper-row animate-in delay-5 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(245,158,11,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2023 — Slot 1 Mathematics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section IA + Section IB · 50 Questions · 60 Minutes · May 29, 2023</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-hard px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Hard
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>Calculus: 10 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="start-paper-btn px-5 py-2.5 bg-[#6366F1] text-white text-xs font-bold flex-shrink-0" style="border-radius: 10px;">
+            <i class="fa-solid fa-play mr-1.5"></i>Attempt
+          </button>
+        </div>
+
+        <!-- Paper 6 -->
+        <div class="paper-row animate-in delay-5 bg-white border p-5 flex items-center justify-between cursor-pointer" style="border-color: var(--border); border-radius: 14px;">
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center flex-shrink-0 shadow-md" style="box-shadow: 0 4px 12px rgba(245,158,11,0.2);">
+              <i class="fa-solid fa-file-lines text-white text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="text-sm font-bold" style="color: var(--foreground);">CUET 2022 — Slot 1 Mathematics</h3>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider tag-nta" style="border-radius: 5px;">Official NTA</span>
+                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider" style="border-radius: 5px; background: rgba(250,204,21,0.15); color: #92400E; border: 1px solid rgba(250,204,21,0.3);">Inaugural Year</span>
+              </div>
+              <p class="text-xs mb-2" style="color: var(--muted);">Section IA + Section IB · 50 Questions · 60 Minutes · July 15, 2022</p>
+              <div class="flex items-center gap-2">
+                <span class="tag-verified px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-shield-check mr-1"></i>Evaluation Logic Verified
+                </span>
+                <span class="tag-difficulty-moderate px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px;">
+                  <i class="fa-solid fa-signal mr-1"></i>NTA Standard — Moderate
+                </span>
+                <span class="px-2.5 py-1 text-[10px] font-bold" style="border-radius: 6px; background: #F1F5F9; color: #64748B;">
+                  <i class="fa-solid fa-chart-pie mr-1"></i>Calculus: 8 Qs
+                </span>
+              </div>
+            </div>
+          </div>
+          <button class="start-paper-btn px-5 py-2.5 bg-[#6366F1] text-white text-xs font-bold flex-shrink-0" style="border-radius: 10px;">
+            <i class="fa-solid fa-play mr-1.5"></i>Attempt
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between mt-8 mb-4 animate-in delay-5">
+        <p class="text-xs" style="color: var(--muted);">Showing 1–6 of 12 papers</p>
+        <div class="flex items-center gap-1.5">
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border text-xs" style="border-color: var(--border); color: var(--muted);">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-white" style="background: var(--primary);">1</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border text-xs font-semibold" style="border-color: var(--border); color: var(--foreground);">2</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border text-xs" style="border-color: var(--border); color: var(--muted);">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>

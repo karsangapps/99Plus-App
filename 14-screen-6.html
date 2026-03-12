@@ -1,0 +1,302 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'Fira Code', monospace; }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
+    50% { box-shadow: 0 0 20px 4px rgba(99, 102, 241, 0.15); }
+  }
+  .anim-1 { animation: fadeInUp 0.5s ease-out 0.1s both; }
+  .anim-2 { animation: fadeInUp 0.5s ease-out 0.2s both; }
+  .anim-3 { animation: fadeInUp 0.5s ease-out 0.3s both; }
+  .anim-4 { animation: fadeInUp 0.5s ease-out 0.4s both; }
+  .anim-5 { animation: fadeInUp 0.5s ease-out 0.5s both; }
+  .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  .heatmap-cell { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+  .heatmap-cell:hover { transform: scale(1.25); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .skip-item:hover { transform: translateX(4px); transition: transform 0.2s ease; }
+  .drill-btn { background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  .drill-btn:hover { background: linear-gradient(135deg, #4F46E5 0%, #3730A3 100%); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35); }
+  .drill-btn:active { transform: translateY(0); }
+  .roi-badge { background: linear-gradient(135deg, rgba(250, 204, 21, 0.12) 0%, rgba(250, 204, 21, 0.04) 100%); border: 1.5px solid rgba(250, 204, 21, 0.35); }
+  .stat-card { transition: all 0.25s ease; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .update-card { transition: all 0.25s ease; }
+  .update-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .timeline-dot { transition: all 0.2s ease; }
+  .timeline-dot:hover { transform: scale(1.3); }
+</style>
+
+<!-- ==================== SCREEN 12: ANALYTICS > SPEED AUDIT ==================== -->
+<div id="screen-12" style="display:block;">
+
+<!-- SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-[#0F172A] text-white flex flex-col border-r border-[#E5E7EB] shadow-lg" style="z-index:50;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="logoGrad12" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366F1;stop-opacity:1"/><stop offset="100%" style="stop-color:#366F1;stop-opacity:1"/></linearGradient></defs><circle cx="16" cy="16" r="14" fill="url(#logoGrad12)" opacity="0.2" stroke="url(#logoGrad12)" stroke-width="2"/><path d="M16 8V24M8 16H24" stroke="url(#logoGrad12)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <div>
+        <h1 class="text-lg font-bold text-white">99Plus</h1>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-gauge-high text-lg"></i><span>Command Center</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-clipboard-check text-lg"></i><span>Pre-Test</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-desktop text-lg"></i><span>NTA Test</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-stethoscope text-lg"></i><span>Diagnosis</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-crosshairs text-lg"></i><span>Surgical Drill</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] bg-[#6366F1] text-white font-medium transition-all duration-200 hover:bg-[#4F46E5]"><i class="fa-solid fa-chart-line text-lg"></i><span>Analytics</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-building-columns text-lg"></i><span>Selection Hub</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-gear text-lg"></i><span>Settings</span></a>
+    <div class="pt-3 mt-3 border-t border-[#1E293B]">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-store text-lg"></i><span>99Plus Store</span></a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-3 py-3 rounded-[16px] bg-[#1E293B] transition-all duration-200 cursor-pointer">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center text-white font-bold text-sm">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">Arjun Mehta</p>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+      <i class="fa-solid fa-ellipsis-vertical text-sm text-[#9CA3AF] hover:text-white transition-colors cursor-pointer"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" class="ml-64 min-h-screen bg-[#F8FAFC]">
+  <header id="header-speed-audit" class="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB] px-8 py-5 z-40" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-[12px] bg-gradient-to-br from-[#6366F1] to-[#818CF8] flex items-center justify-center">
+          <i class="fa-solid fa-stopwatch text-white text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-0.5">
+            <span class="text-xs text-[#9CA3AF] font-medium">Analytics</span>
+            <i class="fa-solid fa-chevron-right text-[8px] text-[#9CA3AF]"></i>
+            <span class="text-xs text-[#6366F1] font-semibold">Speed Audit</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-bold text-[#0F172A]">Exam Week Tactics</h1>
+            <span class="text-xs font-semibold text-[#6366F1] bg-[#6366F1]/10 px-2.5 py-1 rounded-full uppercase tracking-wider">Speed Audit</span>
+          </div>
+          <p class="text-sm text-[#9CA3AF] mt-0.5">Speed Optimization · Last Mock: June 12, 2026</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="roi-badge rounded-[12px] px-5 py-3 flex items-center gap-3 pulse-glow">
+          <i class="fa-solid fa-bolt text-[#FACC15] text-lg"></i>
+          <div>
+            <p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-widest">Surgical ROI</p>
+            <p class="text-xl font-black text-[#0F172A] mono leading-none">7.2 <span class="text-sm font-semibold text-[#059669]">min gained</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-8 overflow-y-auto" style="height: calc(100vh - 85px); scrollbar-width: thin;">
+
+    <!-- Quick Stats Row -->
+    <div id="section-quick-stats" class="grid grid-cols-4 gap-5 mb-8 anim-1">
+      <div class="stat-card bg-white rounded-[12px] border border-[#E5E7EB] p-5" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Avg Time/Q</span>
+          <div class="w-8 h-8 rounded-lg bg-[#6366F1]/10 flex items-center justify-center"><i class="fa-solid fa-clock text-[#6366F1] text-sm"></i></div>
+        </div>
+        <p class="text-2xl font-black text-[#0F172A] mono">52s</p>
+        <p class="text-xs text-[#EF4444] mt-1 font-medium"><i class="fa-solid fa-arrow-up text-[10px] mr-1"></i>7s above target</p>
+      </div>
+      <div class="stat-card bg-white rounded-[12px] border border-[#E5E7EB] p-5" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Time Traps</span>
+          <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation text-[#EF4444] text-sm"></i></div>
+        </div>
+        <p class="text-2xl font-black text-[#EF4444] mono">8</p>
+        <p class="text-xs text-[#9CA3AF] mt-1 font-medium">of 40 questions</p>
+      </div>
+      <div class="stat-card bg-white rounded-[12px] border border-[#E5E7EB] p-5" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Fast Correct</span>
+          <div class="w-8 h-8 rounded-lg bg-[#059669]/10 flex items-center justify-center"><i class="fa-solid fa-check-double text-[#059669] text-sm"></i></div>
+        </div>
+        <p class="text-2xl font-black text-[#059669] mono">22</p>
+        <p class="text-xs text-[#059669] mt-1 font-medium"><i class="fa-solid fa-arrow-up text-[10px] mr-1"></i>+3 from last mock</p>
+      </div>
+      <div class="stat-card bg-white rounded-[12px] border border-[#E5E7EB] p-5" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Skip Saves</span>
+          <div class="w-8 h-8 rounded-lg bg-[#FACC15]/15 flex items-center justify-center"><i class="fa-solid fa-forward text-[#D97706] text-sm"></i></div>
+        </div>
+        <p class="text-2xl font-black text-[#0F172A] mono">4</p>
+        <p class="text-xs text-[#9CA3AF] mt-1 font-medium">correct skips made</p>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-3 gap-6">
+      <!-- Heatmap -->
+      <div id="section-heatmap" class="col-span-2 anim-2">
+        <div class="bg-white rounded-[12px] border border-[#E5E7EB] p-6" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-lg font-bold text-[#0F172A]">Time-Per-Question Heatmap</h2>
+              <p class="text-sm text-[#9CA3AF] mt-0.5">40 questions · Color-coded by response time</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-medium">
+              <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-sm bg-[#059669]"></div><span class="text-[#9CA3AF]">&lt;45s</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-sm bg-[#FACC15]"></div><span class="text-[#9CA3AF]">45–90s</span></div>
+              <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-sm bg-[#EF4444]"></div><span class="text-[#9CA3AF]">&gt;90s</span></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-8 gap-2.5 mb-6">
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">1</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">2</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">3</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">4</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">5</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">6</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">7</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">8</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">9</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">10</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">11</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">12</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">13</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">14</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">15</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">16</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">17</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">18</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">19</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">20</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">21</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">22</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">23</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">24</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">25</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">26</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">27</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">28</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">29</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">30</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">31</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">32</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">33</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">34</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">35</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">36</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">37</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#EF4444] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">38</span><i class="fa-solid fa-skull-crossbones absolute -top-1 -right-1 text-[8px] text-white bg-[#EF4444] rounded-full p-0.5"></i></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#059669] flex items-center justify-center cursor-pointer"><span class="text-white text-xs font-bold">39</span></div>
+            <div class="heatmap-cell relative w-full aspect-square rounded-lg bg-[#FACC15] flex items-center justify-center cursor-pointer"><span class="text-[#0F172A] text-xs font-bold">40</span></div>
+          </div>
+          <div class="flex items-center gap-3 p-4 bg-[#F8FAFC] rounded-[12px] border border-[#E5E7EB]">
+            <div class="flex-1 text-center"><p class="text-2xl font-black text-[#059669] mono">22</p><p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mt-0.5">Fast &lt;45s</p></div>
+            <div class="w-px h-10 bg-[#E5E7EB]"></div>
+            <div class="flex-1 text-center"><p class="text-2xl font-black text-[#D97706] mono">10</p><p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mt-0.5">Moderate</p></div>
+            <div class="w-px h-10 bg-[#E5E7EB]"></div>
+            <div class="flex-1 text-center"><p class="text-2xl font-black text-[#EF4444] mono">8</p><p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mt-0.5">Time Traps</p></div>
+            <div class="w-px h-10 bg-[#E5E7EB]"></div>
+            <div class="flex-1 text-center"><p class="text-2xl font-black text-[#0F172A] mono">34:40</p><p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mt-0.5">Total Time</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-span-1 space-y-6">
+        <div id="card-skip-list" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6 anim-3" style="box-shadow: 0 4px 8px rgba(0,0,0,0.04);">
+          <div class="flex items-center gap-2 mb-5">
+            <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center"><i class="fa-solid fa-ban text-[#EF4444] text-sm"></i></div>
+            <div><h3 class="text-sm font-bold text-[#0F172A]">Skip on Sight</h3><p class="text-[10px] text-[#9CA3AF] uppercase tracking-wider font-semibold">Tactical Avoidance List</p></div>
+          </div>
+          <div class="space-y-3">
+            <div class="skip-item p-3.5 rounded-[10px] border border-[#EF4444]/20 bg-[#EF4444]/5 cursor-pointer">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#EF4444] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white text-[10px] font-bold">1</span></div>
+                <div><p class="text-sm font-semibold text-[#0F172A]">Multi-step Assertion-Reason</p><p class="text-xs text-[#9CA3AF] mt-0.5">Avg 132s · 2/5 correct</p><div class="flex items-center gap-1 mt-1.5"><span class="text-[10px] font-bold text-[#EF4444] bg-[#EF4444]/10 px-2 py-0.5 rounded-full">−4 marks risk</span></div></div>
+              </div>
+            </div>
+            <div class="skip-item p-3.5 rounded-[10px] border border-[#EF4444]/20 bg-[#EF4444]/5 cursor-pointer">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#EF4444] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white text-[10px] font-bold">2</span></div>
+                <div><p class="text-sm font-semibold text-[#0F172A]">Passage-based Inference</p><p class="text-xs text-[#9CA3AF] mt-0.5">Avg 108s · 1/4 correct</p><div class="flex items-center gap-1 mt-1.5"><span class="text-[10px] font-bold text-[#EF4444] bg-[#EF4444]/10 px-2 py-0.5 rounded-full">−3 marks risk</span></div></div>
+              </div>
+            </div>
+            <div class="skip-item p-3.5 rounded-[10px] border border-[#EF4444]/20 bg-[#EF4444]/5 cursor-pointer">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#EF4444] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white text-[10px] font-bold">3</span></div>
+                <div><p class="text-sm font-semibold text-[#0F172A]">Data Table Comparison</p><p class="text-xs text-[#9CA3AF] mt-0.5">Avg 96s · 1/3 correct</p><div class="flex items-center gap-1 mt-1.5"><span class="text-[10px] font-bold text-[#EF4444] bg-[#EF4444]/10 px-2 py-0.5 rounded-full">−2 marks risk</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="card-drill-cta" class="bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-[12px] p-6 anim-4" style="box-shadow: 0 4px 16px rgba(15,23,42,0.3);">
+          <div class="flex items-center gap-2 mb-4"><i class="fa-solid fa-crosshairs text-[#FACC15] text-lg"></i><h3 class="text-sm font-bold text-white">Speed Drill Protocol</h3></div>
+          <p class="text-xs text-[#9CA3AF] mb-5 leading-relaxed">10-minute intensive skip drill. Practice identifying and bypassing time-trap patterns under timed conditions.</p>
+          <div class="flex items-center gap-3 mb-5 p-3 rounded-[10px] bg-white/5 border border-white/10">
+            <div class="text-center flex-1"><p class="text-lg font-black text-[#FACC15] mono">10</p><p class="text-[9px] text-[#9CA3AF] uppercase tracking-wider font-semibold">Minutes</p></div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div class="text-center flex-1"><p class="text-lg font-black text-white mono">15</p><p class="text-[9px] text-[#9CA3AF] uppercase tracking-wider font-semibold">Questions</p></div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div class="text-center flex-1"><p class="text-lg font-black text-[#059669] mono">40s</p><p class="text-[9px] text-[#9CA3AF] uppercase tracking-wider font-semibold">Target</p></div>
+          </div>
+          <button class="drill-btn w-full py-3.5 rounded-[10px] text-white font-bold text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play text-xs"></i>
+            Start Speed Drill
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== SCREEN 13: ADMIN HUB > VERIFIED UPDATES ==================== -->
+<div id="screen-13" style="display:none;">
+
+<!-- SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-[#0F172A] text-white flex flex-col border-r border-[#E5E7EB] shadow-lg" style="z-index:50;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="logoGrad13" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366F1;stop-opacity:1"/><stop offset="100%" style="stop-color:#FACC15;stop-opacity:1"/></linearGradient></defs><circle cx="16" cy="16" r="14" fill="url(#logoGrad13)" opacity="0.2" stroke="url(#logoGrad13)" stroke-width="2"/><path d="M16 8V24M8 16H24" stroke="url(#logoGrad13)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <div>
+        <h1 class="text-lg font-bold text-white">99Plus</h1>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-gauge-high text-lg"></i><span>Command Center</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-clipboard-check text-lg"></i><span>Pre-Test</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-desktop text-lg"></i><span>NTA Test</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-stethoscope text-lg"></i><span>Diagnosis</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-crosshairs text-lg"></i><span>Surgical Drill</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-chart-line text-lg"></i><span>Analytics</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-building-columns text-lg"></i><span>Selection Hub</span></a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-gear text-lg"></i><span>Settings</span></a>
+    <div class="pt-3 mt-3 border-t border-[#1E293B]">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#9CA3AF] font-medium transition-all duration-200 hover:bg-[#1E293B] hover:text-white"><i class="fa-solid fa-store text-lg"></i><span>99Plus Store</span></a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-3 py-3 rounded-[16px] bg-[#1E293B] transition-all duration-200 cursor-pointer">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center text-white font-bold text-sm">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">Arjun Mehta</p>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+      <i class="fa-solid fa-ellipsis-vertical text-sm text-[#9CA3AF] hover:text-white transition-colors cursor-pointer"></i>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,486 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #6366F1;
+    --primary-light: #818CF8;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --foreground: #0F172A;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --background: #F8FAFC;
+    --destructive: #EF4444;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: var(--foreground); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.2); } 50% { box-shadow: 0 0 0 8px rgba(5,150,105,0); } }
+  @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 400px; } }
+  @keyframes checkPop { 0% { transform: scale(0.8); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+  .anim-1 { animation: fadeUp 0.5s ease-out 0.1s forwards; opacity: 0; }
+  .anim-2 { animation: fadeUp 0.5s ease-out 0.2s forwards; opacity: 0; }
+  .anim-3 { animation: fadeUp 0.6s ease-out 0.3s forwards; opacity: 0; }
+  .anim-4 { animation: fadeUp 0.6s ease-out 0.4s forwards; opacity: 0; }
+  .anim-5 { animation: fadeUp 0.6s ease-out 0.5s forwards; opacity: 0; }
+
+  .consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: white;
+    user-select: none;
+  }
+  .consent-checkbox:hover {
+    border-color: var(--primary-light);
+    background: rgba(99,102,241,0.015);
+  }
+  .consent-checkbox.checked {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.03);
+  }
+  .consent-checkbox .cb-box {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    margin-top: 1px;
+  }
+  .consent-checkbox.checked .cb-box {
+    background: var(--primary);
+    border-color: var(--primary);
+    animation: checkPop 0.3s ease;
+  }
+  .consent-checkbox .cb-box i {
+    color: white;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .consent-checkbox.checked .cb-box i {
+    opacity: 1;
+  }
+
+  .verify-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--background);
+    border-radius: 10px;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .verify-toggle-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+  .verify-toggle-btn.active {
+    background: white;
+    color: var(--foreground);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .otp-input {
+    width: 48px;
+    height: 56px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Fira Code', monospace;
+    color: var(--foreground);
+    background: white;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .otp-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+  }
+
+  .btn-green {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    border: none;
+    border-radius: var(--radius);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(5,150,105,0.25);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-green:hover {
+    box-shadow: 0 6px 24px rgba(5,150,105,0.35);
+    transform: translateY(-1px);
+  }
+  .btn-green:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-indigo {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border: none;
+    border-radius: var(--radius);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.25);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-indigo:hover {
+    box-shadow: 0 6px 24px rgba(99,102,241,0.35);
+    transform: translateY(-1px);
+  }
+  .btn-indigo:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .dynamic-section {
+    display: none;
+    animation: slideDown 0.4s ease-out forwards;
+  }
+  .dynamic-section.visible {
+    display: block;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  @media (max-width: 640px) {
+    .otp-input { width: 42px; height: 50px; font-size: 18px; }
+    .consent-card-inner { padding: 24px 18px !important; }
+    .hero-heading { font-size: 22px !important; }
+  }
+</style>
+
+<div id="main-content" style="min-height: 100vh; background: white; display: flex; flex-direction: column;">
+
+  <!-- Top Bar -->
+  <header id="header-parent-portal" class="anim-1" style="background: white; border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50;">
+    <div style="width: 100px;"></div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="10" fill="var(--primary)"/>
+        <text x="6" y="28" font-family="Fira Code" font-weight="800" font-size="18" fill="white">99</text>
+        <text x="28" y="18" font-family="Fira Code" font-weight="600" font-size="8" fill="#FACC15">+</text>
+      </svg>
+      <span style="font-weight: 800; font-size: 16px; color: var(--foreground);">99Plus</span>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="this.classList.add('active'); this.nextElementSibling.classList.remove('active');">English</button>
+      <button class="lang-btn" onclick="this.classList.add('active'); this.previousElementSibling.classList.remove('active');">हिन्दी</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="flex: 1; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 48px;">
+
+    <!-- DPDP Secure Badge -->
+    <div class="anim-2" style="display: flex; justify-content: center; margin-bottom: 32px;">
+      <div style="display: inline-flex; align-items: center; gap: 10px; padding: 10px 24px; background: rgba(99,102,241,0.05); border: 1.5px solid rgba(99,102,241,0.15); border-radius: 50px;">
+        <i class="fa-solid fa-lock" style="font-size: 13px; color: var(--primary);"></i>
+        <span style="font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; font-family: 'Fira Code', monospace;">DPDP 2023 SECURE VERIFICATION</span>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="section-hero" class="anim-2" style="text-align: center; margin-bottom: 36px;">
+      <!-- Shield Icon -->
+      <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(5,150,105,0.06) 100%); margin-bottom: 20px;">
+        <i class="fa-solid fa-user-shield" style="font-size: 28px; color: var(--primary);"></i>
+      </div>
+      <h2 class="hero-heading" style="font-size: 28px; font-weight: 900; color: var(--foreground); letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 14px;">
+        Authorize Surgical Prep for<br><span style="color: var(--primary);">Arjun Mehta</span>
+      </h2>
+      <p style="font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 520px; margin: 0 auto;">
+        <strong style="color: var(--foreground); font-weight: 600;">Arjun Mehta</strong> is currently completing their initial Calibration Sprint. Your <strong style="color: var(--secondary); font-weight: 600;">1-click approval</strong> will secure their data and unlock the full North Campus Battle Plan.
+      </p>
+    </div>
+
+    <!-- Student Info Card -->
+    <div class="anim-3" style="background: var(--background); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px;">
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <span style="font-size: 15px; font-weight: 800; color: white;">AM</span>
+      </div>
+      <div style="flex: 1;">
+        <p style="font-size: 14px; font-weight: 700; color: var(--foreground);">Arjun Mehta</p>
+        <p style="font-size: 11px; color: var(--muted); font-family: 'Fira Code', monospace;">CUET 2026 Aspirant · Age 17</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: rgba(250,204,21,0.1); border-radius: 6px;">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulseGlow 2s infinite;"></div>
+        <span style="font-size: 10px; font-weight: 600; color: #B45309; font-family: 'Fira Code', monospace;">CALIBRATING</span>
+      </div>
+    </div>
+
+    <!-- Affirmative Consent Card -->
+    <div id="card-consent" class="anim-3" style="background: white; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.04); overflow: hidden;">
+
+      <!-- Card Header -->
+      <div style="padding: 22px 28px; border-bottom: 1px solid var(--border); background: var(--background);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-file-signature" style="font-size: 14px; color: var(--primary);"></i>
+          <span style="font-size: 13px; font-weight: 700; color: var(--foreground); letter-spacing: -0.01em;">Affirmative Consent Declaration</span>
+        </div>
+        <p style="font-size: 11px; color: var(--muted); margin-top: 4px; margin-left: 24px;">Both checkboxes are mandatory to proceed</p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="consent-card-inner" style="padding: 28px 28px 32px;">
+
+        <!-- Checkbox 1 -->
+        <div class="consent-checkbox" id="cb1" onclick="toggleCheckbox('cb1')" style="margin-bottom: 14px;">
+          <div class="cb-box"><i class="fa-solid fa-check"></i></div>
+          <div>
+            <p style="font-size: 13.5px; color: var(--foreground); line-height: 1.65; font-weight: 500;">
+              I confirm I am the <strong>legal guardian</strong> of <strong style="color: var(--primary);">Arjun Mehta</strong> and consent to the processing of their academic performance data as per the <strong>DPDP Act 2023</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Checkbox 2 -->
+        <div class="consent-checkbox" id="cb2" onclick="toggleCheckbox('cb2')" style="margin-bottom: 28px;">
+          <div class="cb-box"><i class="fa-solid fa-check"></i></div>
+          <div>
+            <p style="font-size: 13.5px; color: var(--foreground); line-height: 1.65; font-weight: 500;">
+              I authorize <strong>99Plus</strong> to send exam-critical alerts and admission notifications to my verified contact.
+            </p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div style="height: 1px; background: var(--border); margin-bottom: 24px;"></div>
+
+        <!-- Verification Toggle -->
+        <div style="margin-bottom: 20px;">
+          <p style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">Verification Method</p>
+          <div class="verify-toggle">
+            <button class="verify-toggle-btn active" id="vt-sms" onclick="switchVerify('sms')">
+              <i class="fa-solid fa-comment-sms"></i> Verify via SMS OTP
+            </button>
+            <button class="verify-toggle-btn" id="vt-email" onclick="switchVerify('email')">
+              <i class="fa-solid fa-envelope"></i> Verify via Email
+            </button>
+          </div>
+        </div>
+
+        <!-- SMS OTP Section -->
+        <div id="section-sms" class="dynamic-section visible">
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Enter the 6-digit OTP sent to <strong style="color: var(--foreground);">+91 98XXX XXXXX</strong></p>
+          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 0)">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 1)">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 2)">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 3)">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 4)">
+            <input class="otp-input" type="text" maxlength="1" oninput="moveToNext(this, 5)">
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px;">
+            <i class="fa-solid fa-clock" style="font-size: 11px; color: var(--muted);"></i>
+            <span style="font-size: 11px; color: var(--muted);">OTP expires in <strong style="color: var(--foreground); font-family: 'Fira Code', monospace;">04:32</strong></span>
+            <span style="margin-left: 8px; font-size: 11px; color: var(--primary); font-weight: 600; cursor: pointer;">Resend OTP</span>
+          </div>
+          <button class="btn-green" id="btn-verify-sms" disabled>
+            <i class="fa-solid fa-shield-halved"></i>
+            Verify & Secure Seat
+            <i class="fa-solid fa-arrow-right" style="font-size: 13px; opacity: 0.7;"></i>
+          </button>
+        </div>
+
+        <!-- Email Section -->
+        <div id="section-email" class="dynamic-section">
+          <div style="text-align: center; padding: 16px 0 24px;">
+            <div style="width: 56px; height: 56px; border-radius: 14px; background: rgba(99,102,241,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <i class="fa-solid fa-envelope-open-text" style="font-size: 22px; color: var(--primary);"></i>
+            </div>
+            <p style="font-size: 13px; color: var(--muted); line-height: 1.6;">Click below to authorize. A confirmation email will be sent to <strong style="color: var(--foreground);">parent@example.com</strong></p>
+          </div>
+          <button class="btn-indigo" id="btn-verify-email" disabled>
+            <i class="fa-solid fa-lock-open"></i>
+            I Authorize & Unlock Profile
+            <i class="fa-solid fa-arrow-right" style="font-size: 13px; opacity: 0.7;"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Legal Audit Footer -->
+    <div id="section-legal-footer" class="anim-4" style="margin-top: 32px; padding: 22px 24px; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius);">
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(99,102,241,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+          <i class="fa-solid fa-scale-balanced" style="font-size: 13px; color: var(--primary);"></i>
+        </div>
+        <div>
+          <p style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">Legal Compliance Notice</p>
+          <p style="font-size: 12px; color: var(--muted); line-height: 1.75;">
+            This action generates a <strong style="color: var(--foreground);">tamper-proof Consent Artefact</strong> (Timestamped & IP Logged) for regulatory compliance under the <strong style="color: var(--foreground);">Digital Personal Data Protection Act, 2023</strong>.
+          </p>
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-fingerprint" style="font-size: 10px; color: var(--muted);"></i>
+              <span style="font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace;">IP Logged</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-clock" style="font-size: 10px; color: var(--muted);"></i>
+              <span style="font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace;">Timestamped</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-shield-halved" style="font-size: 10px; color: var(--secondary);"></i>
+              <span style="font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace;">AES-256 Encrypted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grievance Officer -->
+    <div class="anim-5" style="text-align: center; margin-top: 20px;">
+      <p style="font-size: 11px; color: var(--muted);">
+        For erasure requests or complaints, contact our Grievance Officer at <strong style="color: var(--foreground); font-weight: 600;">privacy@99plus.in</strong>
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Bottom Bar -->
+  <footer style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 24px; background: white;">
+    <span style="font-size: 10px; color: var(--muted);">© 2026 99Plus</span>
+    <span style="width: 3px; height: 3px; border-radius: 50%; background: var(--border);"></span>
+    <span style="font-size: 10px; color: var(--muted);">DPDP 2023 Compliant</span>
+    <span style="width: 3px; height: 3px; border-radius: 50%; background: var(--border);"></span>
+    <span style="font-size: 10px; color: var(--muted);">Secure Portal v1.0</span>
+  </footer>
+
+</div>
+
+<script>
+  function toggleCheckbox(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('checked');
+    updateButtonState();
+  }
+
+  function updateButtonState() {
+    const cb1 = document.getElementById('cb1').classList.contains('checked');
+    const cb2 = document.getElementById('cb2').classList.contains('checked');
+    const allChecked = cb1 && cb2;
+    document.getElementById('btn-verify-sms').disabled = !allChecked;
+    document.getElementById('btn-verify-email').disabled = !allChecked;
+  }
+
+  function switchVerify(method) {
+    const smsBtn = document.getElementById('vt-sms');
+    const emailBtn = document.getElementById('vt-email');
+    const smsSection = document.getElementById('section-sms');
+    const emailSection = document.getElementById('section-email');
+
+    if (method === 'sms') {
+      smsBtn.classList.add('active');
+      emailBtn.classList.remove('active');
+      smsSection.classList.add('visible');
+      emailSection.classList.remove('visible');
+    } else {
+      emailBtn.classList.add('active');
+      smsBtn.classList.remove('active');
+      emailSection.classList.add('visible');
+      smsSection.classList.remove('visible');
+    }
+  }
+
+  function moveToNext(input, index) {
+    const inputs = document.querySelectorAll('.otp-input');
+    if (input.value.length === 1 && index < 5) {
+      inputs[index + 1].focus();
+    }
+    // Check if all filled
+    let allFilled = true;
+    inputs.forEach(inp => { if (!inp.value) allFilled = false; });
+    // Visual feedback when all filled
+    if (allFilled) {
+      inputs.forEach(inp => {
+        inp.style.borderColor = 'var(--secondary)';
+        inp.style.background = 'rgba(5,150,105,0.03)';
+      });
+    } else {
+      inputs.forEach(inp => {
+        if (inp !== document.activeElement) {
+          inp.style.borderColor = 'var(--border)';
+          inp.style.background = 'white';
+        }
+      });
+    }
+  }
+</script>

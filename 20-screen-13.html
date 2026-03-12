@@ -1,0 +1,518 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --fg: #0F172A;
+    --primary: #6366F1;
+    --secondary: #059669;
+    --accent: #FACC15;
+    --destructive: #EF4444;
+    --muted: #9CA3AF;
+    --border: #E5E7EB;
+    --radius: 12px;
+    --shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  }
+  * { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'Fira Code', monospace; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .sidebar-item { transition: all 0.2s ease; }
+  .sidebar-item:hover { background: rgba(99,102,241,0.1); }
+  .sidebar-item.active { background: rgba(99,102,241,0.15); border-left: 3px solid var(--primary); }
+  .btn-primary { background: var(--primary); color: #fff; border-radius: 8px; transition: all 0.2s; }
+  .btn-primary:hover { background: #4F46E5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
+  .btn-warn { background: var(--accent); color: var(--fg); border-radius: 8px; transition: all 0.2s; font-weight: 600; }
+  .btn-warn:hover { background: #EAB308; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(250,204,21,0.3); }
+  .btn-destructive { background: var(--destructive); color: #fff; border-radius: 8px; transition: all 0.2s; }
+  .btn-destructive:hover { background: #DC2626; }
+  .pulse-dot { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .funnel-step { position: relative; }
+  .funnel-step::after { content:''; position:absolute; left:50%; bottom:-20px; transform:translateX(-50%); width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:8px solid var(--primary); }
+  .funnel-step:last-child::after { display:none; }
+  .heatmap-cell { border-radius: 6px; transition: all 0.2s; cursor: pointer; }
+  .heatmap-cell:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .graph-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 2s ease forwards; }
+  @keyframes drawLine { to { stroke-dashoffset: 0; } }
+  .security-badge { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); }
+</style>
+
+<div id="main-content" class="flex h-screen overflow-hidden" style="background: var(--bg);">
+
+  <!-- Sidebar -->
+  <aside id="sidebar-admin" class="w-64 flex-shrink-0 flex flex-col security-badge text-white" style="min-width:240px;">
+    <div class="p-5 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:var(--primary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="#fff"/><path d="M2 17l10 5 10-5" stroke="#fff" stroke-width="2" fill="none"/><path d="M2 12l10 5 10-5" stroke="#fff" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div>
+          <span class="text-base font-bold tracking-tight">99Plus</span>
+          <span class="block text-[10px] uppercase tracking-widest text-white/50 mono">Admin Console</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-3 pt-4 pb-2">
+      <div class="flex items-center justify-between px-3 mb-3">
+        <span class="text-[10px] uppercase tracking-widest text-white/30 font-semibold">Admin Hub</span>
+        <span class="flex items-center gap-1 px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider" style="background:rgba(239,68,68,0.15); color:#FCA5A5; border:1px solid rgba(239,68,68,0.25);">
+          <i class="fa-solid fa-lock text-[7px]"></i> Restricted Access
+        </span>
+      </div>
+      <div class="mx-3 mb-3 border-t" style="border-color:rgba(255,255,255,0.08);"></div>
+    </div>
+
+    <nav class="flex-1 px-3 space-y-1 overflow-y-auto" style="scrollbar-width:thin;">
+      <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white">
+        <i class="fa-solid fa-tower-broadcast w-5 text-center" style="color:var(--primary);"></i>
+        <span>Command Hub</span>
+        <span class="ml-auto w-2 h-2 rounded-full pulse-dot" style="background:var(--secondary);"></span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-users w-5 text-center"></i>
+        <span>User Management</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-database w-5 text-center"></i>
+        <span>Question Bank</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-flask-vial w-5 text-center"></i>
+        <span>Mock Tests</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+        <span>Analytics</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-indian-rupee-sign w-5 text-center"></i>
+        <span>Revenue</span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60">
+        <i class="fa-solid fa-shield-halved w-5 text-center"></i>
+        <span>Security & Logs</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+          <i class="fa-solid fa-user-shield text-xs" style="color:var(--primary);"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold truncate">Founder</p>
+          <p class="text-[10px] text-white/40 mono">SUPERADMIN</p>
+        </div>
+        <i class="fa-solid fa-right-from-bracket text-white/30 text-xs cursor-pointer hover:text-white/60 transition-colors"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header id="header-command" class="flex-shrink-0 bg-white border-b px-6 py-3.5 flex items-center justify-between" style="border-color:var(--border);">
+      <div class="flex items-center gap-4">
+        <div>
+          <h1 class="text-lg font-bold tracking-tight" style="color:var(--fg);">99Plus Admin: Operations Control</h1>
+          <p class="text-xs mt-0.5" style="color:var(--muted);">Founder's Command Hub &middot; Real-time platform oversight</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background:#ECFDF5; color:var(--secondary);">
+          <span class="w-2 h-2 rounded-full pulse-dot" style="background:var(--secondary);"></span>
+          All Systems Operational
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs mono font-medium" style="background:#F1F5F9; color:var(--muted);">
+          <i class="fa-solid fa-clock text-[10px]"></i>
+          <span>15 Jun 2025 &middot; 14:32 IST</span>
+        </div>
+        <button class="w-9 h-9 rounded-lg flex items-center justify-center border hover:bg-gray-50 transition-colors relative" style="border-color:var(--border);">
+          <i class="fa-solid fa-bell text-sm" style="color:var(--muted);"></i>
+          <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center text-white" style="background:var(--destructive);">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6" style="scrollbar-width:thin;">
+
+      <!-- Yearly Cycle Master Switch -->
+      <section id="section-cycle-switch">
+        <div class="card p-0 overflow-hidden" style="border-left: 4px solid var(--primary);">
+          <div class="flex items-center justify-between p-5">
+            <div class="flex items-center gap-5">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg, #6366F1 0%, #818CF8 100%);">
+                <i class="fa-solid fa-rotate text-white text-xl"></i>
+              </div>
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-widest" style="color:var(--muted);">Yearly Cycle Master Switch</p>
+                <div class="flex items-center gap-3 mt-1">
+                  <h2 class="text-2xl font-black tracking-tight" style="color:var(--fg);">Current Cycle: CUET 2026</h2>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style="background:#ECFDF5; color:var(--secondary);">ACTIVE</span>
+                </div>
+                <p class="text-xs mt-1" style="color:var(--muted);">Cycle started 01 Apr 2025 &middot; Exam window: May 2026 &middot; 342 days remaining</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right mr-4">
+                <p class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted);">Cycle Health</p>
+                <div class="flex items-center gap-1.5 mt-1">
+                  <div class="w-24 h-2 rounded-full overflow-hidden" style="background:var(--border);">
+                    <div class="h-full rounded-full" style="width:34%; background:var(--primary);"></div>
+                  </div>
+                  <span class="text-xs font-bold mono" style="color:var(--primary);">34%</span>
+                </div>
+              </div>
+              <button class="btn-warn px-5 py-2.5 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-forward-fast"></i>
+                Prepare for 2027 Shift
+              </button>
+            </div>
+          </div>
+          <div class="bg-amber-50/60 border-t px-5 py-2.5 flex items-center gap-6 text-xs" style="border-color:#FDE68A;">
+            <span class="font-semibold" style="color:#92400E;"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>2027 Shift includes:</span>
+            <span style="color:#92400E;">Archive 2026 student data</span>
+            <span style="color:#D4D4D4;">&middot;</span>
+            <span style="color:#92400E;">Reset university mandates</span>
+            <span style="color:#D4D4D4;">&middot;</span>
+            <span style="color:#92400E;">Purge expired mock tests</span>
+            <span style="color:#D4D4D4;">&middot;</span>
+            <span style="color:#92400E;">Refresh eligibility rules</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Widgets Row -->
+      <div class="grid grid-cols-12 gap-6">
+
+        <!-- Widget 1: North Star ASI Tracker -->
+        <div id="card-asi-tracker" class="col-span-7 card p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#EEF2FF;">
+                  <i class="fa-solid fa-star text-xs" style="color:var(--primary);"></i>
+                </div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">North Star: Average Score Improvement</h3>
+              </div>
+              <p class="text-[11px] mt-1 ml-9" style="color:var(--muted);">Cohort-wide ASI per student across all mock cycles</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 rounded-md text-[10px] font-semibold cursor-pointer" style="background:var(--primary); color:#fff;">6M</span>
+              <span class="px-2 py-1 rounded-md text-[10px] font-semibold cursor-pointer hover:bg-gray-100 transition-colors" style="color:var(--muted);">3M</span>
+              <span class="px-2 py-1 rounded-md text-[10px] font-semibold cursor-pointer hover:bg-gray-100 transition-colors" style="color:var(--muted);">1M</span>
+            </div>
+          </div>
+          <div class="relative" style="height:220px;">
+            <svg width="100%" height="100%" viewBox="0 0 600 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="asiGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6366F1" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="40" x2="600" y2="40" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4"/>
+              <line x1="0" y1="80" x2="600" y2="80" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4"/>
+              <line x1="0" y1="120" x2="600" y2="120" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4"/>
+              <line x1="0" y1="160" x2="600" y2="160" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4"/>
+              <!-- Area fill -->
+              <path d="M0,170 L60,155 L120,140 L180,125 L240,105 L300,95 L360,78 L420,65 L480,50 L540,38 L600,28 L600,200 L0,200 Z" fill="url(#asiGrad)"/>
+              <!-- Main line -->
+              <path class="graph-line" d="M0,170 L60,155 L120,140 L180,125 L240,105 L300,95 L360,78 L420,65 L480,50 L540,38 L600,28" fill="none" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Target line -->
+              <line x1="0" y1="55" x2="600" y2="55" stroke="#059669" stroke-width="1" stroke-dasharray="6,4"/>
+              <!-- Data points -->
+              <circle cx="540" cy="38" r="5" fill="#6366F1" stroke="#fff" stroke-width="2"/>
+              <circle cx="600" cy="28" r="5" fill="#6366F1" stroke="#fff" stroke-width="2"/>
+            </svg>
+            <!-- Y-axis labels -->
+            <div class="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] mono font-medium" style="color:var(--muted);">
+              <span>+20</span><span>+15</span><span>+10</span><span>+5</span><span>0</span>
+            </div>
+            <!-- Target label -->
+            <div class="absolute right-0 text-[10px] font-semibold px-2 py-0.5 rounded" style="top:42px; background:#ECFDF5; color:var(--secondary);">Target: +16</div>
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t" style="border-color:var(--border);">
+            <div class="flex items-center gap-6">
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted);">Current ASI</span>
+                <p class="text-xl font-black mono" style="color:var(--primary);">+12.4</p>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted);">Δ This Week</span>
+                <p class="text-sm font-bold flex items-center gap-1" style="color:var(--secondary);"><i class="fa-solid fa-arrow-up text-[10px]"></i>+1.8</p>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted);">Cohort Size</span>
+                <p class="text-sm font-bold mono" style="color:var(--fg);">14,832</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px] font-medium" style="color:var(--muted);">
+              <span class="w-3 h-0.5 rounded" style="background:var(--primary);"></span> ASI Trend
+              <span class="w-3 h-0.5 rounded ml-2" style="background:var(--secondary); border-style:dashed;"></span> Target
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget 3: Seat Success Funnel -->
+        <div id="card-seat-funnel" class="col-span-5 card p-5">
+          <div class="flex items-center gap-2 mb-5">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#ECFDF5;">
+              <i class="fa-solid fa-filter text-xs" style="color:var(--secondary);"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold" style="color:var(--fg);">Seat Success Funnel</h3>
+              <p class="text-[10px]" style="color:var(--muted);">Conversion pipeline &middot; Updated live</p>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <!-- Step 1 -->
+            <div class="relative">
+              <div class="rounded-xl p-3.5 text-center" style="background:linear-gradient(135deg, #EEF2FF, #E0E7FF);">
+                <p class="text-[10px] uppercase tracking-widest font-semibold" style="color:var(--primary);">Total Signups</p>
+                <p class="text-2xl font-black mono mt-0.5" style="color:var(--fg);">24,561</p>
+              </div>
+              <div class="flex justify-center my-1"><i class="fa-solid fa-chevron-down text-xs" style="color:var(--primary);"></i></div>
+            </div>
+            <!-- Step 2 -->
+            <div class="relative">
+              <div class="rounded-xl p-3.5 text-center mx-4" style="background:linear-gradient(135deg, #F0FDF4, #DCFCE7);">
+                <div class="flex items-center justify-between px-2">
+                  <span class="text-[10px] font-bold mono" style="color:var(--secondary);">72.3%</span>
+                  <p class="text-[10px] uppercase tracking-widest font-semibold" style="color:var(--secondary);">Baseline Completed</p>
+                  <span class="text-[10px]" style="color:var(--muted);">↓ from signup</span>
+                </div>
+                <p class="text-2xl font-black mono mt-0.5" style="color:var(--fg);">17,762</p>
+              </div>
+              <div class="flex justify-center my-1"><i class="fa-solid fa-chevron-down text-xs" style="color:var(--secondary);"></i></div>
+            </div>
+            <!-- Step 3 -->
+            <div class="relative">
+              <div class="rounded-xl p-3.5 text-center mx-8" style="background:linear-gradient(135deg, #FFFBEB, #FEF3C7);">
+                <div class="flex items-center justify-between px-2">
+                  <span class="text-[10px] font-bold mono" style="color:#92400E;">54.1%</span>
+                  <p class="text-[10px] uppercase tracking-widest font-semibold" style="color:#92400E;">Active in Drills</p>
+                  <span class="text-[10px]" style="color:var(--muted);">↓ from baseline</span>
+                </div>
+                <p class="text-2xl font-black mono mt-0.5" style="color:var(--fg);">9,609</p>
+              </div>
+              <div class="flex justify-center my-1"><i class="fa-solid fa-chevron-down text-xs" style="color:var(--accent);"></i></div>
+            </div>
+            <!-- Step 4 -->
+            <div>
+              <div class="rounded-xl p-3.5 text-center mx-12 relative overflow-hidden" style="background:linear-gradient(135deg, #0F172A, #1E293B);">
+                <div class="flex items-center justify-between px-2">
+                  <span class="text-[10px] font-bold mono text-green-400">68.2%</span>
+                  <p class="text-[10px] uppercase tracking-widest font-semibold text-white/70">Projected Seat Secured</p>
+                  <span class="text-[10px] text-white/40">↓ from drills</span>
+                </div>
+                <p class="text-2xl font-black mono mt-0.5 text-white">6,553</p>
+                <div class="absolute top-1 right-2"><i class="fa-solid fa-trophy text-amber-400/20 text-3xl"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t flex items-center justify-between" style="border-color:var(--border);">
+            <span class="text-[10px] font-semibold" style="color:var(--muted);">Overall Conversion</span>
+            <span class="text-sm font-black mono" style="color:var(--secondary);">26.7%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid grid-cols-12 gap-6">
+
+        <!-- Widget 2: Cohort Mark Leak Heatmap -->
+        <div id="card-mark-leak" class="col-span-7 card p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#FEF2F2;">
+                <i class="fa-solid fa-fire text-xs" style="color:var(--destructive);"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">Cohort Mark Leak Heatmap</h3>
+                <p class="text-[10px]" style="color:var(--muted);">NCERT chapters &middot; Red = >50% failure rate</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-medium" style="color:var(--muted);">
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded" style="background:#DCFCE7;"></span>Safe</span>
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded" style="background:#FEF9C3;"></span>At Risk</span>
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded" style="background:#FEE2E2;"></span>Critical</span>
+            </div>
+          </div>
+
+          <!-- Heatmap Grid -->
+          <div class="grid grid-cols-6 gap-2">
+            <!-- Math -->
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEE2E2;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--destructive);">MATH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Integration</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--destructive);">67% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEE2E2;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--destructive);">MATH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Probability</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--destructive);">58% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEF9C3;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:#92400E;">MATH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Matrices</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:#92400E;">42% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#DCFCE7;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--secondary);">MATH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Sets</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--secondary);">18% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEE2E2;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--destructive);">PHYSICS</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Optics</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--destructive);">61% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEF9C3;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:#92400E;">PHYSICS</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Thermodynamics</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:#92400E;">47% fail</p>
+            </div>
+            <!-- Row 2 -->
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEE2E2;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--destructive);">CHEM</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Organic Rxns</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--destructive);">72% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEF9C3;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:#92400E;">CHEM</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Electrochemistry</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:#92400E;">44% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#DCFCE7;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--secondary);">CHEM</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Periodic Table</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--secondary);">12% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEE2E2;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--destructive);">ENGLISH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Reading Comp</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--destructive);">53% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#DCFCE7;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--secondary);">ENGLISH</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Grammar</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:var(--secondary);">22% fail</p>
+            </div>
+            <div class="heatmap-cell p-2.5 text-center" style="background:#FEF9C3;">
+              <p class="text-[9px] font-bold uppercase tracking-wider" style="color:#92400E;">GEN TEST</p>
+              <p class="text-[11px] font-bold mt-1" style="color:var(--fg);">Current Affairs</p>
+              <p class="text-[10px] mono font-bold mt-0.5" style="color:#92400E;">49% fail</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t flex items-center justify-between" style="border-color:var(--border);">
+            <span class="text-[10px] font-semibold" style="color:var(--muted);">5 critical chapters detected &middot; Auto-drill generation queued</span>
+            <button class="text-[11px] font-semibold flex items-center gap-1 hover:underline" style="color:var(--primary);">View Full Report <i class="fa-solid fa-arrow-right text-[9px]"></i></button>
+          </div>
+        </div>
+
+        <!-- Revenue & Seasonal Pricing Control -->
+        <div id="card-revenue-pricing" class="col-span-5 card p-5 flex flex-col">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#EEF2FF;">
+              <i class="fa-solid fa-indian-rupee-sign text-xs" style="color:var(--primary);"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold" style="color:var(--fg);">Revenue & Seasonal Pricing Control</h3>
+              <p class="text-[10px]" style="color:var(--muted);">Current cycle financials &middot; Set next season's price-list</p>
+            </div>
+            <span class="ml-auto px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider" style="background:#ECFDF5; color:var(--secondary);">LIVE</span>
+          </div>
+
+          <!-- Pricing Table -->
+          <div class="flex-1">
+            <table class="w-full text-left" style="border-collapse: separate; border-spacing: 0;">
+              <thead>
+                <tr>
+                  <th class="text-[10px] uppercase tracking-wider font-semibold pb-2.5 pr-2" style="color:var(--muted);">Product</th>
+                  <th class="text-[10px] uppercase tracking-wider font-semibold pb-2.5 pr-2 text-right" style="color:var(--muted);">Current Price</th>
+                  <th class="text-[10px] uppercase tracking-wider font-semibold pb-2.5 pr-2 text-right" style="color:var(--muted);">2026 Revenue</th>
+                  <th class="text-[10px] uppercase tracking-wider font-semibold pb-2.5 text-right" style="color:var(--muted);">2027 Target Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Sachet -->
+                <tr class="border-t" style="border-color:var(--border);">
+                  <td class="py-3 pr-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-md flex items-center justify-center" style="background:#EEF2FF;">
+                        <i class="fa-solid fa-syringe text-[9px]" style="color:var(--primary);"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold" style="color:var(--fg);">Sachet</p>
+                        <p class="text-[9px]" style="color:var(--muted);">1 Credit</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--fg);">₹25</span></td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--secondary);">₹1.2L</span></td>
+                  <td class="py-3 text-right">
+                    <input type="text" value="₹29" class="w-16 px-2 py-1 rounded-md border text-xs mono font-semibold text-right focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all" style="border-color:var(--border); color:var(--fg);">
+                  </td>
+                </tr>
+                <!-- Bundle -->
+                <tr class="border-t" style="border-color:var(--border);">
+                  <td class="py-3 pr-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-md flex items-center justify-center" style="background:#ECFDF5;">
+                        <i class="fa-solid fa-cubes text-[9px]" style="color:var(--secondary);"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold" style="color:var(--fg);">Bundle</p>
+                        <p class="text-[9px]" style="color:var(--muted);">5 Credits</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--fg);">₹100</span></td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--secondary);">₹3.8L</span></td>
+                  <td class="py-3 text-right">
+                    <input type="text" value="₹119" class="w-16 px-2 py-1 rounded-md border text-xs mono font-semibold text-right focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all" style="border-color:var(--border); color:var(--fg);">
+                  </td>
+                </tr>
+                <!-- Pro Pass -->
+                <tr class="border-t" style="border-color:var(--border);">
+                  <td class="py-3 pr-2">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-md flex items-center justify-center" style="background:#FEF3C7;">
+                        <i class="fa-solid fa-gem text-[9px]" style="color:#D97706;"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-semibold" style="color:var(--fg);">Pro Pass</p>
+                        <p class="text-[9px]" style="color:var(--muted);">Unlimited</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--fg);">₹999</span></td>
+                  <td class="py-3 pr-2 text-right"><span class="text-xs font-bold mono" style="color:var(--secondary);">₹8.4L</span></td>
+                  <td class="py-3 text-right">
+                    <input type="text" value="₹999" class="w-16 px-2 py-1 rounded-md border text-xs mono font-semibold text-right focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all" style="border-color:var(--border); color:var(--fg);">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Total Revenue Summary -->
+            <div class="mt-3 pt-3 border-t flex items-center justify-between" style="border-color:var(--border);">
+              <span class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted);">Total 2026 Revenue</span>
+              <span class="text-base font-black mono" style="color:var(--primary);">₹13.4L</span>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <button class="btn-warn w-full mt-4 px-5 py-2.5 text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-lock text-xs"></i>
+            Lock Pricing for 2027 Cycle
+          </button>
+          <p class="text-[9px] text-center mt-2" style="color:var(--muted);">Changes will apply when the 2027 cycle is activated</p>
+        </div>

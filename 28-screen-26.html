@@ -1,0 +1,413 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(5, 150, 105, 0.2), 0 0 40px rgba(5, 150, 105, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(5, 150, 105, 0.4), 0 0 60px rgba(5, 150, 105, 0.2); }
+  }
+  @keyframes countUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes sealBridge {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  @keyframes arrowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes checkDraw {
+    0% { stroke-dashoffset: 40; }
+    100% { stroke-dashoffset: 0; }
+  }
+  @keyframes confettiDrop {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(30px) rotate(360deg); opacity: 0; }
+  }
+  .animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+  .animate-count-up { animation: countUp 0.8s ease-out forwards; }
+  .animate-seal { animation: sealBridge 1.5s ease-out forwards; }
+  .animate-arrow { animation: arrowBounce 1.5s ease-in-out infinite; }
+  .animate-fade-scale { animation: fadeInScale 0.6s ease-out forwards; }
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  .animate-check { stroke-dasharray: 40; animation: checkDraw 0.8s ease-out 0.3s forwards; stroke-dashoffset: 40; }
+  .confetti-1 { animation: confettiDrop 2s ease-out 0.2s infinite; }
+  .confetti-2 { animation: confettiDrop 2.3s ease-out 0.5s infinite; }
+  .confetti-3 { animation: confettiDrop 1.8s ease-out 0.8s infinite; }
+  .confetti-4 { animation: confettiDrop 2.1s ease-out 0.1s infinite; }
+  .confetti-5 { animation: confettiDrop 2.5s ease-out 0.6s infinite; }
+</style>
+
+<!-- GLOBAL:SIDEBAR -->
+<div class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E5E7EB] flex flex-col z-50" style="font-family: 'Inter', sans-serif;">
+  <div class="p-6 border-b border-[#E5E7EB]">
+    <div class="flex items-center gap-3">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="6" fill="#6366F1"/>
+        <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="font-bold text-lg text-[#0F172A]">99Plus</span>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 py-6 space-y-2">
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-gauge-high text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Command Center</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-clipboard-check text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Pre-Test</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-desktop text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">NTA Test</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-stethoscope text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Diagnosis</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] bg-[#6366F1]/5 text-[#0F172A] transition-colors group" data-active="true">
+      <i class="fa-solid fa-crosshairs text-[#6366F1] text-lg"></i>
+      <span class="font-medium text-sm">Surgical Drill</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-100"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-chart-line text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Analytics</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-building-columns text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Selection Hub</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+      <i class="fa-solid fa-gear text-[#9CA3AF] text-lg"></i>
+      <span class="font-medium text-sm">Settings</span>
+      <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+    </a>
+    <div class="mt-auto pt-4">
+      <div class="border-t border-[#E5E7EB] mb-4 mx-2"></div>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[#0F172A] hover:bg-[#F8FAFC] transition-colors group">
+        <i class="fa-solid fa-store text-[#9CA3AF] text-lg"></i>
+        <span class="font-medium text-sm">99Plus Store</span>
+        <div class="ml-auto w-1 h-6 bg-[#6366F1] rounded-full opacity-0"></div>
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-[#E5E7EB]">
+    <div class="flex items-center gap-3 px-3.5 py-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#6366F1]/30 transition-all cursor-pointer" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#6366F1] to-[#FACC15] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">A</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-[#0F172A] truncate">Arjun Mehta</p>
+        <p class="text-xs text-[#9CA3AF] truncate">CUET 2026 Aspirant</p>
+      </div>
+      <button class="w-7 h-7 rounded-full hover:bg-[#E5E7EB] flex items-center justify-center transition-colors flex-shrink-0">
+        <i class="fa-solid fa-ellipsis-vertical text-[#9CA3AF] text-sm"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" class="ml-64 min-h-screen bg-[#F8FAFC] overflow-y-auto" style="font-family: 'Inter', sans-serif; scrollbar-width: thin; -ms-overflow-style: auto;">
+
+  <!-- Confetti particles -->
+  <div class="fixed ml-64 top-0 left-0 right-0 h-full pointer-events-none overflow-hidden z-10">
+    <div class="confetti-1 absolute top-0 left-[15%] w-2 h-2 bg-[#FACC15] rounded-full"></div>
+    <div class="confetti-2 absolute top-0 left-[30%] w-3 h-1.5 bg-[#6366F1] rounded-full"></div>
+    <div class="confetti-3 absolute top-0 left-[55%] w-2 h-2 bg-[#059669] rounded-full"></div>
+    <div class="confetti-4 absolute top-0 left-[75%] w-1.5 h-3 bg-[#EF4444] rounded-full"></div>
+    <div class="confetti-5 absolute top-0 left-[88%] w-2.5 h-2.5 bg-[#FACC15] rounded-sm rotate-45"></div>
+    <div class="confetti-1 absolute top-0 left-[42%] w-2 h-2 bg-[#6366F1] rounded-sm rotate-12"></div>
+    <div class="confetti-3 absolute top-0 left-[65%] w-1.5 h-3 bg-[#FACC15] rounded-full"></div>
+    <div class="confetti-2 absolute top-0 left-[22%] w-3 h-1.5 bg-[#059669] rounded-sm rotate-45"></div>
+  </div>
+
+  <!-- Header Section -->
+  <div id="header-reward" class="relative px-10 pt-10 pb-6">
+    <div class="flex items-center gap-2 text-[#9CA3AF] text-sm mb-2">
+      <i class="fa-solid fa-dumbbell text-xs"></i>
+      <span>Surgical Drill</span>
+      <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      <span>Calculus</span>
+      <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      <span class="text-[#059669] font-medium">Mission Complete</span>
+    </div>
+  </div>
+
+  <!-- Main Reward Content -->
+  <div class="px-10 pb-10">
+
+    <!-- Success Badge & Header -->
+    <div id="section-mission-accomplished" class="animate-fade-scale text-center mb-10">
+      <div class="relative inline-block mb-6">
+        <div class="w-28 h-28 rounded-full bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center animate-pulse-glow mx-auto relative">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="24" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+            <path class="animate-check" d="M15 26L23 34L37 18" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <div class="absolute inset-[-4px] rounded-full border-2 border-[#FACC15]/40"></div>
+          <div class="absolute inset-[-8px] rounded-full border border-[#FACC15]/15"></div>
+        </div>
+        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#FACC15] text-[#0F172A] font-extrabold text-xs px-4 py-1.5 rounded-full shadow-lg" style="letter-spacing: 0.05em;">
+          93% ACCURACY
+        </div>
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-[#0F172A] mb-2" style="letter-spacing: -0.02em;">Mission Accomplished</h1>
+      <p class="text-[#9CA3AF] text-base max-w-md mx-auto">Calculus Drill completed with surgical precision. Your mark leak has been sealed.</p>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+
+      <!-- Left: Mark Leak Sealed Visual -->
+      <div id="card-leak-sealed" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="flex items-center gap-2 mb-5">
+          <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center">
+            <i class="fa-solid fa-shield-halved text-[#EF4444] text-sm"></i>
+          </div>
+          <h3 class="font-bold text-[#0F172A] text-sm">12-Mark Leak — Calculus</h3>
+          <span class="ml-auto text-xs font-semibold text-[#059669] bg-[#059669]/10 px-2.5 py-1 rounded-full">SEALED</span>
+        </div>
+
+        <div class="relative bg-[#F8FAFC] rounded-[12px] p-5 mb-5">
+          <div class="flex justify-between text-xs text-[#9CA3AF] mb-3">
+            <span>Before Drill</span>
+            <span>After Drill</span>
+          </div>
+
+          <div class="relative h-24">
+            <div class="absolute left-0 bottom-0 w-[38%] h-16 bg-gradient-to-r from-[#EF4444]/20 to-[#EF4444]/10 rounded-tl-lg border-t-2 border-l-2 border-[#EF4444]/30">
+              <div class="absolute top-2 left-3 text-xs font-bold text-[#EF4444]">GAP</div>
+              <div class="absolute bottom-2 left-3 text-[10px] text-[#9CA3AF]">−12 marks</div>
+            </div>
+            <div class="absolute right-0 bottom-0 w-[38%] h-16 bg-gradient-to-l from-[#059669]/20 to-[#059669]/10 rounded-tr-lg border-t-2 border-r-2 border-[#059669]/30">
+              <div class="absolute top-2 right-3 text-xs font-bold text-[#059669]">SEALED</div>
+              <div class="absolute bottom-2 right-3 text-[10px] text-[#9CA3AF]">+8 marks</div>
+            </div>
+            <div class="absolute left-[38%] right-[38%] bottom-6 h-4 bg-[#E5E7EB] rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-[#059669] to-[#34d399] rounded-full animate-seal"></div>
+            </div>
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-3 w-8 h-8 bg-white rounded-full border-2 border-[#059669] flex items-center justify-center shadow-md z-10">
+              <i class="fa-solid fa-link text-[#059669] text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#059669]"></div>
+              <span class="text-xs text-[#0F172A]">Continuity & Differentiability</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-[#E5E7EB] rounded-full overflow-hidden">
+                <div class="w-[95%] h-full bg-[#059669] rounded-full"></div>
+              </div>
+              <span class="text-[10px] font-semibold text-[#059669]">95%</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#059669]"></div>
+              <span class="text-xs text-[#0F172A]">Application of Derivatives</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-[#E5E7EB] rounded-full overflow-hidden">
+                <div class="w-[90%] h-full bg-[#059669] rounded-full"></div>
+              </div>
+              <span class="text-[10px] font-semibold text-[#059669]">90%</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#059669]"></div>
+              <span class="text-xs text-[#0F172A]">Definite Integrals</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-[#E5E7EB] rounded-full overflow-hidden">
+                <div class="w-[92%] h-full bg-[#059669] rounded-full"></div>
+              </div>
+              <span class="text-[10px] font-semibold text-[#059669]">92%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Probability Jump Widget -->
+      <div id="card-probability-jump" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="flex items-center gap-2 mb-5">
+          <div class="w-8 h-8 rounded-lg bg-[#6366F1]/10 flex items-center justify-center">
+            <i class="fa-solid fa-chart-line text-[#6366F1] text-sm"></i>
+          </div>
+          <h3 class="font-bold text-[#0F172A] text-sm">Admission Probability Jump</h3>
+        </div>
+
+        <div class="bg-gradient-to-br from-[#0F172A] to-[#1e293b] rounded-[12px] p-5 mb-5 relative overflow-hidden">
+          <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px);"></div>
+
+          <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-6 h-6 rounded bg-[#FACC15]/20 flex items-center justify-center">
+                <i class="fa-solid fa-building-columns text-[#FACC15] text-[10px]"></i>
+              </div>
+              <span class="text-white/80 text-xs font-medium">Hindu College, DU</span>
+              <span class="ml-auto text-[10px] text-white/40">B.Sc. (Hons) Mathematics</span>
+            </div>
+
+            <div class="flex items-end justify-center gap-6 mb-4">
+              <div class="text-center">
+                <p class="text-white/40 text-[10px] mb-1">BEFORE</p>
+                <p class="text-2xl font-bold text-white/50">58<span class="text-sm">%</span></p>
+              </div>
+
+              <div class="flex flex-col items-center animate-arrow mb-1">
+                <div class="w-12 h-12 rounded-full bg-[#059669] flex items-center justify-center shadow-lg" style="box-shadow: 0 0 20px rgba(5,150,105,0.4);">
+                  <i class="fa-solid fa-arrow-trend-up text-white text-lg"></i>
+                </div>
+                <span class="text-[#059669] text-[10px] font-bold mt-1">+14%</span>
+              </div>
+
+              <div class="text-center">
+                <p class="text-[#059669] text-[10px] mb-1 font-semibold">AFTER</p>
+                <p class="text-3xl font-extrabold text-white animate-count-up">72<span class="text-lg">%</span></p>
+              </div>
+            </div>
+
+            <svg class="w-full h-10" viewBox="0 0 200 40">
+              <polyline points="0,35 30,33 60,30 90,28 120,22 140,18 160,12 180,8 200,5" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,35 30,33 60,30 90,28 120,22 140,18 160,12 180,8 200,5" fill="url(#greenGrad)" stroke="none"/>
+              <defs>
+                <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#059669" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <circle cx="200" cy="5" r="3" fill="#059669"/>
+              <circle cx="200" cy="5" r="6" fill="#059669" opacity="0.2"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="bg-[#059669]/5 border border-[#059669]/20 rounded-[12px] p-4 mb-4">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#059669]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fa-solid fa-bullseye text-[#059669] text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#0F172A] mb-1">Zone: <span class="text-[#FACC15]">YELLOW → APPROACHING GREEN</span></p>
+              <p class="text-xs text-[#9CA3AF] leading-relaxed">Hindu College probability moved from <span class="font-semibold text-[#EF4444]">Risky</span> to <span class="font-semibold text-[#FACC15]">Competitive</span>. One more drill cycle to reach <span class="font-semibold text-[#059669]">Safe Zone</span>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider">Also improved</p>
+          <div class="flex items-center justify-between py-1.5">
+            <span class="text-xs text-[#0F172A]">Hansraj College</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] text-[#9CA3AF]">71%</span>
+              <i class="fa-solid fa-arrow-up text-[#059669] text-[8px]"></i>
+              <span class="text-[10px] font-bold text-[#059669]">79%</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between py-1.5">
+            <span class="text-xs text-[#0F172A]">KMC, DU</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] text-[#9CA3AF]">65%</span>
+              <i class="fa-solid fa-arrow-up text-[#059669] text-[8px]"></i>
+              <span class="text-[10px] font-bold text-[#059669]">74%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Update Banner -->
+    <div id="section-status-update" class="bg-white rounded-[12px] border border-[#E5E7EB] p-6 mb-6" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-4 flex-1">
+          <div class="w-14 h-14 rounded-[12px] bg-gradient-to-br from-[#059669] to-[#34d399] flex items-center justify-center">
+            <span class="text-white font-extrabold text-xl">+8</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-[#0F172A]">8 Marks Reclaimed</p>
+            <p class="text-xs text-[#9CA3AF]">From the 12-mark Calculus leak</p>
+          </div>
+        </div>
+
+        <div class="w-px h-12 bg-[#E5E7EB]"></div>
+
+        <div class="flex items-center gap-4 flex-1">
+          <div class="w-14 h-14 rounded-[12px] bg-gradient-to-br from-[#FACC15] to-[#fbbf24] flex items-center justify-center">
+            <span class="text-[#0F172A] font-extrabold text-xl">4</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-[#0F172A]">4 Marks to SAFE Seat</p>
+            <p class="text-xs text-[#9CA3AF]">Hindu College — Green Zone threshold</p>
+          </div>
+        </div>
+
+        <div class="w-px h-12 bg-[#E5E7EB]"></div>
+
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-[#0F172A]">Seat Security Progress</span>
+            <span class="text-xs font-bold text-[#059669]">67%</span>
+          </div>
+          <div class="w-full h-3 bg-[#E5E7EB] rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FACC15] to-[#059669]" style="width: 67%;"></div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-[9px] text-[#EF4444]">Risky</span>
+            <span class="text-[9px] text-[#FACC15] font-semibold">← You are here</span>
+            <span class="text-[9px] text-[#059669]">Safe</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Steps & CTA -->
+    <div class="flex items-center gap-6">
+      <div id="card-next-drill" class="flex-1 bg-white rounded-[12px] border border-[#E5E7EB] border-dashed p-5 flex items-center gap-4 hover:border-[#6366F1] hover:bg-[#6366F1]/[0.02] transition-all cursor-pointer">
+        <div class="w-10 h-10 rounded-[12px] bg-[#6366F1]/10 flex items-center justify-center">
+          <i class="fa-solid fa-crosshairs text-[#6366F1]"></i>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-[#0F172A]">Next Suggested Drill</p>
+          <p class="text-xs text-[#9CA3AF]">Probability & Statistics — 4-mark leak remaining</p>
+        </div>
+        <i class="fa-solid fa-arrow-right text-[#9CA3AF] ml-auto"></i>
+      </div>
+
+      <a href="#" id="block-cta-return" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#6366F1] to-[#4f46e5] text-white font-bold text-sm rounded-[12px] hover:from-[#4f46e5] hover:to-[#4338ca] transition-all hover:shadow-xl hover:shadow-[#6366F1]/20 hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden group" style="box-shadow: 0 4px 8px rgba(99,102,241,0.3);">
+        <div class="absolute inset-0 animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <i class="fa-solid fa-compass relative z-10"></i>
+        <span class="relative z-10">Return to Command Center</span>
+        <i class="fa-solid fa-arrow-right relative z-10 text-xs opacity-70 group-hover:translate-x-1 transition-transform"></i>
+      </a>
+    </div>
+
+  </div>
+</div>

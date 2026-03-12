@@ -1,0 +1,446 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --bg:#F8FAFC;--fg:#0F172A;--primary:#6366F1;--secondary:#059669;--accent:#FACC15;--destructive:#EF4444;--muted:#9CA3AF;--border:#E5E7EB;--radius:12px;--shadow:0px 4px 8px rgba(0,0,0,0.1);
+  }
+  *{font-family:'Inter',sans-serif;box-sizing:border-box;}
+  .mono{font-family:'Fira Code',monospace;}
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .sidebar-item{transition:all .2s ease;}
+  .sidebar-item:hover{background:rgba(99,102,241,.1);}
+  .sidebar-item.active{background:rgba(99,102,241,.15);border-left:3px solid var(--primary);}
+  .btn-p{background:var(--primary);color:#fff;border-radius:8px;transition:all .2s;border:none;cursor:pointer;font-weight:600;}
+  .btn-p:hover{background:#4F46E5;transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,.3);}
+  .btn-s{background:var(--secondary);color:#fff;border-radius:8px;transition:all .2s;border:none;cursor:pointer;font-weight:600;}
+  .btn-s:hover{background:#047857;transform:translateY(-1px);}
+  .btn-d{background:var(--destructive);color:#fff;border-radius:8px;transition:all .2s;border:none;cursor:pointer;font-weight:600;}
+  .btn-d:hover{background:#DC2626;transform:translateY(-1px);box-shadow:0 4px 12px rgba(239,68,68,.25);}
+  .btn-g{background:transparent;border:1.5px solid var(--border);border-radius:8px;transition:all .2s;color:var(--fg);cursor:pointer;font-weight:600;}
+  .btn-g:hover{background:#F1F5F9;border-color:#CBD5E1;}
+  .pill{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+  .trow{transition:background .15s;}
+  .trow:hover{background:#F8FAFC;}
+  .pulse-dot{animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+  .security-bg{background:linear-gradient(180deg,#0F172A 0%,#1E293B 100%);}
+  .timer-urgent{animation:timerPulse 1.5s infinite;}
+  @keyframes timerPulse{0%,100%{color:#EF4444;}50%{color:#FCA5A5;}}
+  .shield-glow{box-shadow:0 0 0 4px rgba(99,102,241,.08);}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(99,102,241,.12);}
+  .editable-cell{border:1.5px solid transparent;border-radius:6px;padding:4px 8px;transition:all .2s;cursor:text;}
+  .editable-cell:hover{border-color:var(--primary);background:#EEF2FF;}
+  .editable-cell:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(99,102,241,.12);}
+</style>
+
+<div id="main-content" class="flex h-screen overflow-hidden" style="background:var(--bg);">
+
+  <!-- Sidebar -->
+  <aside id="sidebar-admin" class="w-[252px] flex-shrink-0 flex flex-col security-bg text-white">
+    <div class="p-5 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:var(--primary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="#fff"/><path d="M2 17l10 5 10-5" stroke="#fff" stroke-width="2" fill="none"/><path d="M2 12l10 5 10-5" stroke="#fff" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div>
+          <span class="text-base font-bold tracking-tight">99Plus</span>
+          <span class="block text-[10px] uppercase tracking-widest text-white/50 mono">Admin Console</span>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 pt-4 pb-2"><span class="text-[10px] uppercase tracking-widest text-white/30 px-3 font-semibold">Navigation</span></div>
+    <nav class="flex-1 px-3 space-y-1">
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-tower-broadcast w-5 text-center"></i><span>Command Hub</span></a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-users w-5 text-center"></i><span>User Management</span></a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-database w-5 text-center"></i><span>Content & NTA Config</span></a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-flask-vial w-5 text-center"></i><span>Mock Tests</span></a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-chart-line w-5 text-center"></i><span>Analytics</span></a>
+      <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white">
+        <i class="fa-solid fa-scale-balanced w-5 text-center" style="color:var(--primary);"></i>
+        <span>Admissions & Legal</span>
+        <span class="ml-auto w-2 h-2 rounded-full pulse-dot" style="background:var(--accent);"></span>
+      </a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/55"><i class="fa-solid fa-shield-halved w-5 text-center"></i><span>Security & Logs</span></a>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"><i class="fa-solid fa-user-shield text-xs" style="color:var(--primary);"></i></div>
+        <div class="flex-1 min-w-0"><p class="text-xs font-semibold truncate">Founder</p><p class="text-[10px] text-white/40 mono">SUPERADMIN</p></div>
+        <i class="fa-solid fa-right-from-bracket text-white/30 text-xs cursor-pointer hover:text-white/60 transition-colors"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header id="header-admissions-legal" class="flex-shrink-0 bg-white border-b px-6 py-3.5 flex items-center justify-between" style="border-color:var(--border);">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <h1 class="text-lg font-bold tracking-tight" style="color:var(--fg);">Admissions OS & Legal Compliance Vault</h1>
+          <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider mono" style="background:#FEF2F2;color:var(--destructive);">RESTRICTED</span>
+          <div class="w-5 h-5 rounded-full flex items-center justify-center shield-glow" style="background:#EEF2FF;"><i class="fa-solid fa-lock text-[8px]" style="color:var(--primary);"></i></div>
+        </div>
+        <p class="text-xs mt-0.5" style="color:var(--muted);">Cutoff management &middot; DPDP Act 2023 compliance &middot; Grievance resolution</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background:#ECFDF5;color:var(--secondary);">
+          <span class="w-2 h-2 rounded-full pulse-dot" style="background:var(--secondary);"></span> DPDP Compliant
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background:#FFFBEB;color:#92400E;">
+          <i class="fa-solid fa-clock text-[10px]"></i> 3 Tickets Nearing SLA
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs mono font-medium" style="background:#F1F5F9;color:var(--muted);">
+          <i class="fa-solid fa-clock text-[10px]"></i> 15 Jun 2025 &middot; 14:32 IST
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Body -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full" style="scrollbar-width:thin;">
+
+      <!-- Section 1: Real-Time Cutoff Manager -->
+      <section id="section-cutoff-manager">
+        <div class="card overflow-hidden">
+          <div class="px-5 py-4 border-b flex items-center justify-between" style="border-color:var(--border);">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#6366F1,#818CF8);">
+                <i class="fa-solid fa-graduation-cap text-white text-sm"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">Real-Time Cutoff Manager</h3>
+                <p class="text-[10px]" style="color:var(--muted);">Edit cutoffs to refresh student College Heatmaps globally &middot; Last synced: 14 Jun 2025</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <select class="px-2.5 py-1.5 rounded-lg border text-xs transition-all" style="border-color:var(--border);color:var(--fg);">
+                <option>All Universities</option><option>Delhi University</option><option>BHU</option><option>JNU</option><option>Jamia Millia</option>
+              </select>
+              <select class="px-2.5 py-1.5 rounded-lg border text-xs transition-all" style="border-color:var(--border);color:var(--fg);">
+                <option>CUET 2026</option><option>CUET 2025 (Archive)</option>
+              </select>
+              <button class="btn-p px-3.5 py-1.5 text-xs flex items-center gap-1.5"><i class="fa-solid fa-rotate text-[9px]"></i> Sync Heatmaps</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto [&::-webkit-scrollbar]:hidden" style="scrollbar-width:none;">
+            <table id="table-cutoffs" class="w-full text-xs">
+              <thead>
+                <tr style="background:#F8FAFC;">
+                  <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">University</th>
+                  <th class="text-left px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">College</th>
+                  <th class="text-left px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Programme</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Category</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Round 1</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Round 2</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Round 3</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Heatmap</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 font-semibold" style="color:var(--fg);">DU</td>
+                  <td class="px-3 py-3 font-medium" style="color:var(--fg);">Hindu College</td>
+                  <td class="px-3 py-3" style="color:var(--fg);">B.A. (Hons) Economics</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#EEF2FF;color:var(--primary);">General</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">742</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">728</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--muted);" contenteditable="true">—</span></td>
+                  <td class="px-3 py-3 text-center"><span class="w-5 h-5 rounded-full inline-flex items-center justify-center" style="background:#FEE2E2;"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--destructive);"></span></span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-check text-[7px]"></i> Live</span></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 font-semibold" style="color:var(--fg);">DU</td>
+                  <td class="px-3 py-3 font-medium" style="color:var(--fg);">SRCC</td>
+                  <td class="px-3 py-3" style="color:var(--fg);">B.Com (Hons)</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#EEF2FF;color:var(--primary);">General</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">756</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">741</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--muted);" contenteditable="true">—</span></td>
+                  <td class="px-3 py-3 text-center"><span class="w-5 h-5 rounded-full inline-flex items-center justify-center" style="background:#FEE2E2;"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--destructive);"></span></span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-check text-[7px]"></i> Live</span></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 font-semibold" style="color:var(--fg);">BHU</td>
+                  <td class="px-3 py-3 font-medium" style="color:var(--fg);">Faculty of Science</td>
+                  <td class="px-3 py-3" style="color:var(--fg);">B.Sc. Mathematics</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#F0FDF4;color:var(--secondary);">OBC</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">618</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">602</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">589</span></td>
+                  <td class="px-3 py-3 text-center"><span class="w-5 h-5 rounded-full inline-flex items-center justify-center" style="background:#FEF9C3;"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--accent);"></span></span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-check text-[7px]"></i> Live</span></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 font-semibold" style="color:var(--fg);">JNU</td>
+                  <td class="px-3 py-3 font-medium" style="color:var(--fg);">School of Languages</td>
+                  <td class="px-3 py-3" style="color:var(--fg);">B.A. (Hons) Hindi</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FFFBEB;color:#92400E;">SC</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">485</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--muted);" contenteditable="true">—</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--muted);" contenteditable="true">—</span></td>
+                  <td class="px-3 py-3 text-center"><span class="w-5 h-5 rounded-full inline-flex items-center justify-center" style="background:#DCFCE7;"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--secondary);"></span></span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FFFBEB;color:#92400E;"><i class="fa-solid fa-clock text-[7px]"></i> Partial</span></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 font-semibold" style="color:var(--fg);">DU</td>
+                  <td class="px-3 py-3 font-medium" style="color:var(--fg);">Miranda House</td>
+                  <td class="px-3 py-3" style="color:var(--fg);">B.A. (Hons) English</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#EEF2FF;color:var(--primary);">General</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">721</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--fg);" contenteditable="true">708</span></td>
+                  <td class="px-3 py-3 text-center"><span class="editable-cell mono font-bold" style="color:var(--muted);" contenteditable="true">—</span></td>
+                  <td class="px-3 py-3 text-center"><span class="w-5 h-5 rounded-full inline-flex items-center justify-center" style="background:#FEE2E2;"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--destructive);"></span></span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-check text-[7px]"></i> Live</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-5 py-3 border-t flex items-center justify-between" style="border-color:var(--border);background:#FAFBFC;">
+            <div class="flex items-center gap-4">
+              <span class="text-[10px] font-semibold" style="color:var(--muted);">48 colleges &middot; 156 programmes tracked</span>
+              <div class="flex items-center gap-2 text-[10px] font-medium" style="color:var(--muted);">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--destructive);"></span>Red: >700</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--accent);"></span>Yellow: 550–700</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full" style="background:var(--secondary);"></span>Green: <550</span>
+              </div>
+            </div>
+            <button class="btn-g px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-file-import text-[9px]"></i> Import Merit List CSV</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: DPDP Consent Log + Right to Erasure -->
+      <div class="grid grid-cols-12 gap-6">
+
+        <!-- DPDP Consent Log -->
+        <div id="card-dpdp-consent" class="col-span-7 card overflow-hidden">
+          <div class="px-5 py-4 border-b flex items-center justify-between" style="border-color:var(--border);">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center shield-glow" style="background:linear-gradient(135deg,#059669,#34D399);">
+                <i class="fa-solid fa-file-shield text-white text-sm"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">DPDP Act 2023 — Consent Log</h3>
+                <p class="text-[10px]" style="color:var(--muted);">Digital Personal Data Protection &middot; Parental consent for minors</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <i class="fa-solid fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px]" style="color:var(--muted);"></i>
+                <input type="search" placeholder="Search student..." class="pl-7 pr-3 py-1.5 rounded-lg border text-xs w-40 transition-all" style="border-color:var(--border);">
+              </div>
+              <button class="btn-g px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-file-export text-[9px]"></i> Export Audit</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto [&::-webkit-scrollbar]:hidden" style="scrollbar-width:none;">
+            <table id="table-dpdp" class="w-full text-xs">
+              <thead>
+                <tr style="background:#F8FAFC;">
+                  <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Student Name</th>
+                  <th class="text-left px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Guardian</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Parental Consent</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Date of Consent</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Notice Ver.</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Age</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3"><div class="flex items-center gap-2.5"><img src="https://i.pravatar.cc/150?u=aarav" class="w-7 h-7 rounded-full"><div><p class="font-semibold" style="color:var(--fg);">Aarav Sharma</p><p class="text-[10px] mono" style="color:var(--muted);">STU-00412</p></div></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Rajesh Sharma</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-circle-check text-[7px]"></i> Verified</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">12 Mar 2025</td>
+                  <td class="px-3 py-3 text-center"><span class="pill mono" style="background:#EEF2FF;color:var(--primary);">v2.3</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--fg);">17</td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3"><div class="flex items-center gap-2.5"><img src="https://i.pravatar.cc/150?u=priya" class="w-7 h-7 rounded-full"><div><p class="font-semibold" style="color:var(--fg);">Priya Patel</p><p class="text-[10px] mono" style="color:var(--muted);">STU-00819</p></div></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Meena Patel</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-circle-check text-[7px]"></i> Verified</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">08 Apr 2025</td>
+                  <td class="px-3 py-3 text-center"><span class="pill mono" style="background:#EEF2FF;color:var(--primary);">v2.3</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--fg);">18</td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);background:#FFFBFB;">
+                  <td class="px-4 py-3"><div class="flex items-center gap-2.5"><img src="https://i.pravatar.cc/150?u=rohan" class="w-7 h-7 rounded-full"><div><p class="font-semibold" style="color:var(--fg);">Rohan Gupta</p><p class="text-[10px] mono" style="color:var(--muted);">STU-01204</p></div></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">—</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FEF2F2;color:var(--destructive);"><i class="fa-solid fa-xmark text-[7px]"></i> Pending</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">—</td>
+                  <td class="px-3 py-3 text-center"><span class="pill mono" style="background:#F1F5F9;color:var(--muted);">v2.3</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--destructive);">16</td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3"><div class="flex items-center gap-2.5"><img src="https://i.pravatar.cc/150?u=ananya" class="w-7 h-7 rounded-full"><div><p class="font-semibold" style="color:var(--fg);">Ananya Singh</p><p class="text-[10px] mono" style="color:var(--muted);">STU-00567</p></div></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Vikram Singh</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-circle-check text-[7px]"></i> Verified</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">22 Feb 2025</td>
+                  <td class="px-3 py-3 text-center"><span class="pill mono" style="background:#FFFBEB;color:#92400E;">v2.1</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--fg);">17</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-5 py-2.5 border-t flex items-center justify-between" style="border-color:var(--border);background:#FAFBFC;">
+            <span class="text-[10px] font-semibold" style="color:var(--muted);">14,832 students &middot; 14,691 consented &middot; 141 pending</span>
+            <span class="text-[10px] font-semibold" style="color:var(--secondary);"><i class="fa-solid fa-shield-halved mr-1"></i>AES-256 Encrypted</span>
+          </div>
+        </div>
+
+        <!-- Right to Erasure Queue -->
+        <div id="card-erasure-queue" class="col-span-5 card overflow-hidden">
+          <div class="px-5 py-4 border-b flex items-center justify-between" style="border-color:var(--border);">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#EF4444,#F87171);">
+                <i class="fa-solid fa-eraser text-white text-sm"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">Right to Erasure Queue</h3>
+                <p class="text-[10px]" style="color:var(--muted);">DPDP Sec. 12 &middot; Post-exam data deletion</p>
+              </div>
+            </div>
+            <span class="pill mono" style="background:#FEF2F2;color:var(--destructive);">7 Requests</span>
+          </div>
+          <div class="divide-y" style="border-color:var(--border);">
+            <div class="px-5 py-3 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/150?u=karan" class="w-7 h-7 rounded-full">
+                <div><p class="text-xs font-semibold" style="color:var(--fg);">Karan Mehta</p><p class="text-[10px] mono" style="color:var(--muted);">STU-00983 &middot; 10 Jun 2025</p></div>
+              </div>
+              <button class="btn-d px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-trash text-[8px]"></i> Purge Data</button>
+            </div>
+            <div class="px-5 py-3 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/150?u=sneha" class="w-7 h-7 rounded-full">
+                <div><p class="text-xs font-semibold" style="color:var(--fg);">Sneha Reddy</p><p class="text-[10px] mono" style="color:var(--muted);">STU-01456 &middot; 11 Jun 2025</p></div>
+              </div>
+              <button class="btn-d px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-trash text-[8px]"></i> Purge Data</button>
+            </div>
+            <div class="px-5 py-3 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/150?u=amit" class="w-7 h-7 rounded-full">
+                <div><p class="text-xs font-semibold" style="color:var(--fg);">Amit Verma</p><p class="text-[10px] mono" style="color:var(--muted);">STU-00231 &middot; 13 Jun 2025</p></div>
+              </div>
+              <button class="btn-d px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-trash text-[8px]"></i> Purge Data</button>
+            </div>
+            <div class="px-5 py-3 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/150?u=divya" class="w-7 h-7 rounded-full">
+                <div><p class="text-xs font-semibold" style="color:var(--fg);">Divya Nair</p><p class="text-[10px] mono" style="color:var(--muted);">STU-02108 &middot; 14 Jun 2025</p></div>
+              </div>
+              <button class="btn-d px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-trash text-[8px]"></i> Purge Data</button>
+            </div>
+          </div>
+          <div class="px-5 py-2.5 border-t flex items-center justify-between" style="border-color:var(--border);background:#FAFBFC;">
+            <span class="text-[10px] font-semibold" style="color:var(--muted);">7 pending &middot; 30-day compliance window</span>
+            <span class="text-[10px] font-semibold" style="color:var(--destructive);"><i class="fa-solid fa-clock mr-1"></i>Irreversible action</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Grievance Officer Portal -->
+      <section id="section-grievance-portal">
+        <div class="card overflow-hidden">
+          <div class="px-5 py-4 border-b flex items-center justify-between" style="border-color:var(--border);">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center shield-glow" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);">
+                <i class="fa-solid fa-gavel text-white text-sm"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold" style="color:var(--fg);">Grievance Officer Portal</h3>
+                <p class="text-[10px]" style="color:var(--muted);">IT Act 2000, Sec. 79 &middot; Intermediary Guidelines &middot; 72-hour SLA mandate</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="pill mono" style="background:#FEF2F2;color:var(--destructive);">5 Open</span>
+              <span class="pill mono" style="background:#FFFBEB;color:#92400E;">2 Nearing SLA</span>
+              <span class="pill mono" style="background:#ECFDF5;color:var(--secondary);">12 Resolved</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto [&::-webkit-scrollbar]:hidden" style="scrollbar-width:none;">
+            <table id="table-grievance" class="w-full text-xs">
+              <thead>
+                <tr style="background:#F8FAFC;">
+                  <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Ticket ID</th>
+                  <th class="text-left px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Complainant</th>
+                  <th class="text-left px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Subject</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Category</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Status</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">72-Hr Timer</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Filed On</th>
+                  <th class="text-center px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider" style="color:var(--muted);">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 mono font-semibold" style="color:var(--primary);">GRV-0047</td>
+                  <td class="px-3 py-3"><div class="flex items-center gap-2"><img src="https://i.pravatar.cc/150?u=neha" class="w-6 h-6 rounded-full"><span class="font-medium" style="color:var(--fg);">Neha Kapoor</span></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Incorrect score displayed after Mock #14</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#EEF2FF;color:var(--primary);">Score Dispute</span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FFFBEB;color:#92400E;"><i class="fa-solid fa-clock text-[7px]"></i> Acknowledged</span></td>
+                  <td class="px-3 py-3 text-center"><span class="mono font-bold text-[11px] timer-urgent">08h 14m left</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">13 Jun 25</td>
+                  <td class="px-3 py-3 text-center"><button class="btn-p px-2.5 py-1 text-[10px]">Respond</button></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 mono font-semibold" style="color:var(--primary);">GRV-0046</td>
+                  <td class="px-3 py-3"><div class="flex items-center gap-2"><img src="https://i.pravatar.cc/150?u=ravi" class="w-6 h-6 rounded-full"><span class="font-medium" style="color:var(--fg);">Ravi Kumar</span></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Unable to access paid content after subscription</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FEF2F2;color:var(--destructive);">Billing</span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FFFBEB;color:#92400E;"><i class="fa-solid fa-clock text-[7px]"></i> Acknowledged</span></td>
+                  <td class="px-3 py-3 text-center"><span class="mono font-bold text-[11px]" style="color:#92400E;">22h 41m left</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">13 Jun 25</td>
+                  <td class="px-3 py-3 text-center"><button class="btn-p px-2.5 py-1 text-[10px]">Respond</button></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 mono font-semibold" style="color:var(--primary);">GRV-0045</td>
+                  <td class="px-3 py-3"><div class="flex items-center gap-2"><img src="https://i.pravatar.cc/150?u=meera" class="w-6 h-6 rounded-full"><span class="font-medium" style="color:var(--fg);">Meera Joshi</span></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Request for personal data access under DPDP</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#F0FDF4;color:var(--secondary);">Data Access</span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-circle-check text-[7px]"></i> Resolved</span></td>
+                  <td class="px-3 py-3 text-center"><span class="mono font-bold text-[11px]" style="color:var(--secondary);">✓ Closed</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">10 Jun 25</td>
+                  <td class="px-3 py-3 text-center"><button class="btn-g px-2.5 py-1 text-[10px]">View</button></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);">
+                  <td class="px-4 py-3 mono font-semibold" style="color:var(--primary);">GRV-0044</td>
+                  <td class="px-3 py-3"><div class="flex items-center gap-2"><img src="https://i.pravatar.cc/150?u=sanjay" class="w-6 h-6 rounded-full"><span class="font-medium" style="color:var(--fg);">Sanjay Tiwari</span></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Question MCQ-00891 has wrong answer key</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FFFBEB;color:#92400E;">Content Error</span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#ECFDF5;color:var(--secondary);"><i class="fa-solid fa-circle-check text-[7px]"></i> Resolved</span></td>
+                  <td class="px-3 py-3 text-center"><span class="mono font-bold text-[11px]" style="color:var(--secondary);">✓ Closed</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">08 Jun 25</td>
+                  <td class="px-3 py-3 text-center"><button class="btn-g px-2.5 py-1 text-[10px]">View</button></td>
+                </tr>
+                <tr class="trow border-t" style="border-color:var(--border);background:#FFFBFB;">
+                  <td class="px-4 py-3 mono font-semibold" style="color:var(--primary);">GRV-0048</td>
+                  <td class="px-3 py-3"><div class="flex items-center gap-2"><img src="https://i.pravatar.cc/150?u=pooja" class="w-6 h-6 rounded-full"><span class="font-medium" style="color:var(--fg);">Pooja Desai</span></div></td>
+                  <td class="px-3 py-3" style="color:var(--fg);">Account locked without explanation</td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FEF2F2;color:var(--destructive);">Account Issue</span></td>
+                  <td class="px-3 py-3 text-center"><span class="pill" style="background:#FEF2F2;color:var(--destructive);"><i class="fa-solid fa-exclamation text-[7px]"></i> Open</span></td>
+                  <td class="px-3 py-3 text-center"><span class="mono font-bold text-[11px] timer-urgent">02h 08m left</span></td>
+                  <td class="px-3 py-3 text-center mono" style="color:var(--muted);">14 Jun 25</td>
+                  <td class="px-3 py-3 text-center"><button class="btn-d px-2.5 py-1 text-[10px]">Urgent</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-5 py-3 border-t flex items-center justify-between" style="border-color:var(--border);background:#FAFBFC;">
+            <div class="flex items-center gap-4">
+              <span class="text-[10px] font-semibold" style="color:var(--muted);">17 total tickets &middot; 5 open &middot; 12 resolved</span>
+              <div class="flex items-center gap-2 text-[10px] font-medium" style="color:var(--muted);">
+                <span class="flex items-center gap-1"><span class="pill" style="background:#FFFBEB;color:#92400E;">Acknowledged</span> = Under review</span>
+                <span class="flex items-center gap-1"><span class="pill" style="background:#ECFDF5;color:var(--secondary);">Resolved</span> = Closed within SLA</span>
+              </div>
+            </div>
+            <button class="btn-g px-3 py-1.5 text-[10px] flex items-center gap-1.5"><i class="fa-solid fa-file-export text-[9px]"></i> Export Compliance Report</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>

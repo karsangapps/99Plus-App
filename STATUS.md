@@ -1,6 +1,6 @@
 # 99Plus — Memory Anchor
-**Date:** Thursday, 12 March 2026
-**Session:** Phase 1 complete → Phase 2 started (Eligibility Guardian)
+**Date:** Friday, 13 March 2026
+**Session:** Eligibility Guardian §8.4 complete → Phase 2 (NTA-Mirror Engine) is next
 
 ---
 
@@ -8,128 +8,94 @@
 
 | Field          | Value                                          |
 |----------------|------------------------------------------------|
-| Status         | ✅ Connected and verified                      |
+| Status         | Connected and verified                      |
 | Project Name   | 99Plus                                         |
 | Project ID     | `5ef73f5a-235e-4b26-acfe-3345e5dbd682`         |
 | App Key        | `s23f7sag`                                     |
 | Region         | `ap-southeast`                                 |
 | OSS Host       | `https://s23f7sag.ap-southeast.insforge.app`   |
 | Auth User      | `banashripegu@gmail.com`                       |
-| CLI command    | `npx @insforge/cli current`                    |
+| CLI command    | `insforge current`                             |
 
 ---
 
-## 2. Database Tables (8 total in `public` schema)
+## 2. Database Tables (10 total in `public` schema)
 
-| # | Table               | Columns | Records | Notes                                     |
-|---|---------------------|---------|---------|-------------------------------------------|
-| 1 | `users`             | 9       | 0       | RLS ON — `users_insert_own` policy added  |
-| 2 | `student_profiles`  | 19      | 0       | RLS OFF                                   |
-| 3 | `consent_logs`      | 16      | 0       | RLS OFF — DPDP audit trail                |
-| 4 | `user_targets`      | 12      | 0       | RLS OFF                                   |
-| 5 | `universities`      | 7       | 1       | DU seeded (`short_code = 'DU'`)           |
-| 6 | `colleges`          | 7       | 2       | SRCC, LSR seeded                          |
-| 7 | `programs`          | 8       | 2       | B.Com (Hons) @ SRCC, B.A. Pol Sci @ LSR  |
-| 8 | `eligibility_rules` | 17      | 2       | DU rules seeded — see Section 4 below     |
+| #  | Table                        | Notes                                                         |
+|----|------------------------------|---------------------------------------------------------------|
+| 1  | `users`                      | RLS ON — `users_insert_own` policy                           |
+| 2  | `student_profiles`           | `account_state` transitions through onboarding stages        |
+| 3  | `consent_logs`               | DPDP guardian consent audit trail                            |
+| 4  | `user_targets`               | Student's selected university/college/program targets        |
+| 5  | `universities`               | DU seeded — `short_code = 'DU'`, `id = 00000001-...`        |
+| 6  | `colleges`                   | SRCC, LSR seeded under DU                                     |
+| 7  | `programs`                   | B.Com (Hons) @ SRCC, B.A. Political Science (Hons) @ LSR    |
+| 8  | `eligibility_rules`          | 2 active rules, fully seeded — see Section 4                 |
+| 9  | `eligibility_lock_snapshots` | Immutable lock events — RLS owner-only                       |
+| 10 | `student_subject_locks`      | One row per locked subject per student — RLS owner-only      |
 
-### Seeded Eligibility Rules
+### Seeded Eligibility Rules (DU 2026)
 
-| Program                       | Mandatory  | Alternative Group            | Min Domains |
-|-------------------------------|------------|------------------------------|-------------|
-| B.Com (Hons) — SRCC           | English    | Mathematics OR Accountancy   | 2           |
-| B.A. Political Science (Hons) — LSR | English | —                       | 3           |
+| Program                             | Mandatory | Alternative Group                                              | Min Domains |
+|-------------------------------------|-----------|----------------------------------------------------------------|-------------|
+| B.Com (Hons) — SRCC                 | English   | Mathematics OR Accountancy (pick 1)                           | 2           |
+| B.A. Political Science (Hons) — LSR | English   | Pol Sci / History / Sociology / Economics / Geography / Psychology (pick 3) | 3 |
 
 ---
 
-## 3. Current State of `/onboarding/eligibility`
+## 3. Eligibility Guardian §8.4 — STABLE
 
 **Route:** `http://localhost:3000/onboarding/eligibility`
-**Status:** ✅ Scaffold complete — UI renders, Lock CTA disabled (next sprint)
+**Status:** Fully operational — subject picker live, hard-lock CTA wired, SHA-256 receipt permanent
 
-### Files created today
+### Files shipped this session
 
 ```
 src/app/onboarding/eligibility/
-└── page.tsx                         ← server component, fetches rules by student target
+└── page.tsx                    ← server component, fetches rules by student target
+
+src/app/onboarding/battle/
+└── page.tsx                    ← placeholder (404 fix) — Battle Plan landing
+
+src/app/api/eligibility/
+└── validate/route.ts           ← POST — rule engine + lock snapshot writer
 
 src/components/eligibility/
-├── EligibilityShell.tsx             ← sticky header (shield + "HARD-LOCK VERIFICATION PROTOCOL"), hex-pattern bg
-├── EligibilityStepper.tsx           ← 3-step: Dream Mapping ✓ → Eligibility Lock (active) → Battle Plan
-└── EligibilityRuleCard.tsx          ← per-program rule display: Mandatory / Alternative / Recommended tags
+├── EligibilityShell.tsx        ← sticky header, hex-pattern bg (unchanged)
+├── EligibilityStepper.tsx      ← 3-step progress bar (unchanged)
+├── EligibilityRuleCard.tsx     ← upgraded: checkboxes for optional subjects
+└── EligibilityClient.tsx       ← new client wrapper — state, CTA guard, lock action
 ```
 
-### What the page does right now
+### What the page does now
 - Reads `uid` cookie → looks up student's `user_targets` → fetches matching `eligibility_rules`
 - Falls back to DU seed data if no target set yet
-- Renders rule cards with subject rows and lock icons
-- Green "Confirmed Locked" state shown for mandatory subjects
-- **Lock CTA button is rendered but disabled** — wired in next sprint
+- Mandatory subjects (English) are permanently locked — no toggle
+- Optional/recommended subjects render interactive checkboxes
+- "Lock Eligibility" CTA is **disabled** until all optional group minimums are satisfied (client-side guard)
+- On successful lock: inserts `eligibility_lock_snapshots` + `student_subject_locks`, sets `account_state = eligibility_locked`
+- Displays full SHA-256 tamper-proof hash receipt — user must click "Continue to Battle Plan" to proceed (no auto-redirect)
 
-### What is NOT built yet (next sprint)
-- `POST /api/eligibility/validate` — rule engine + tamper-proof lock hash
-- `eligibility_lock_snapshots` table
-- `student_subject_locks` table
-- Subject picker UI (student selects their CUET subjects)
-- `account_state = eligibility_locked` transition on `student_profiles`
+### Key fixes applied
+- **404 eliminated** — `/onboarding/battle` now exists and returns 200
+- **Receipt stays on screen** — removed `setTimeout` auto-redirect; user controls navigation after reviewing the lock hash
 
 ---
 
-## 4. Critical Bug Fixed Today — The 500 Lock Error
+## 4. Historical Bug Fixes (Phase 1)
 
-### Root cause
-`requireEmailVerification` was `true` in InsForge auth config.
+### 500 Lock Error — Root cause & fix
+`requireEmailVerification` was `true` in InsForge auth config — `signUp()` returned no `accessToken`, all DB inserts ran as `anon` and were blocked by RLS.
 
-After `insforge.auth.signUp()`, when email verification is required, **no `accessToken` is returned** — the SDK client has no authenticated session. Every subsequent `database.insert()` ran as the `anon` role. The `public.users` table has RLS enabled with **no INSERT policy for `anon`** → insert silently blocked → API returned 500.
-
-### Fix 1 — Disable email verification (admin HTTP API)
-```powershell
-Invoke-RestMethod `
-  -Uri "https://s23f7sag.ap-southeast.insforge.app/api/auth/config" `
-  -Method PUT `
-  -Headers @{ "Authorization" = "Bearer ik_1d681ab8a2174104863d70ef60bf4811"; "Content-Type" = "application/json" } `
-  -Body '{"requireEmailVerification": false, "passwordMinLength": 6}'
-```
-Result: `requireEmailVerification: false` — `signUp()` now returns `accessToken` immediately.
-
-### Fix 2 — Add RLS INSERT policy for `authenticated` role
-```sql
-CREATE POLICY "users_insert_own" ON public.users
-FOR INSERT TO authenticated
-WITH CHECK (auth.uid() = id);
-```
-Run via: `npx @insforge/cli db import <sql-file>` or `db query`.
-
-### Fix 3 — Await `cookies()` and `headers()` (Next.js 16)
-In `src/app/api/auth/signup/route.ts`:
-```ts
-// WRONG (crashes in Next.js 15/16):
-cookies().set(...)
-const h = headers()
-
-// CORRECT:
-const cookieStore = await cookies()
-cookieStore.set(...)
-const h = await headers()
-```
-
-### Fix 4 — SignupForm toggle (silent validation block)
-```ts
-// WRONG: raw setter preserves old field value on toggle
-onConsentMethodChange={setConsentMethod}
-
-// CORRECT: clear opposite field when switching SMS ↔ Email
-function handleConsentMethodChange(method: ConsentMethod) {
-  setConsentMethod(method)
-  if (method === 'sms') setGuardianEmail('')
-  if (method === 'email') setGuardianPhone('')
-}
-```
+**Fix 1** — Disabled email verification via admin HTTP API
+**Fix 2** — Added `CREATE POLICY "users_insert_own"` for authenticated role on `public.users`
+**Fix 3** — Awaited `cookies()` and `headers()` (Next.js 16 requirement)
+**Fix 4** — SignupForm toggle clears opposite guardian contact field when switching SMS ↔ Email
 
 ---
 
 ## 5. InsForge MCP Server (Cursor Sidebar)
 
-The InsForge MCP dot was red. Fix applied to `~/.cursor/mcp.json`:
 ```json
 "insforge": {
   "command": "npx",
@@ -146,23 +112,26 @@ Toggle the server off/on in Cursor Settings → Agents to activate.
 
 ## 6. GitHub
 
-| Field    | Value                                              |
-|----------|----------------------------------------------------|
-| Remote   | `https://github.com/karsangapps/99Plus-App.git`    |
-| Branch   | `master`                                           |
-| Latest   | `7ce6f85` — Phase 1: Database tables created and Onboarding scaffolded |
-| Previous | `4aa4808` — Phase 1: Signup, Login, and Branding cleanup complete |
+| Field    | Value                                                              |
+|----------|--------------------------------------------------------------------|
+| Remote   | `https://github.com/karsangapps/99Plus-App.git`                    |
+| Branch   | `master`                                                           |
+| Latest   | `dd9ac86` — Fixed Eligibility redirect and 404 bug                 |
+| Previous | `dccd4e0` — Finished Eligibility Guardian §8.4                     |
 
 ---
 
-## 7. Tomorrow's Goal — Eligibility Guardian §8.4 (continue)
+## 7. Next Session — Phase 2: NTA-Mirror Engine
 
-1. **Subject Picker UI** — student selects their CUET subjects from a list
-2. **Rule Engine API** — `POST /api/eligibility/validate` validates subjects against `eligibility_rules`
-3. **Lock Snapshot** — on valid: insert `eligibility_lock_snapshots`, update `user_targets.status = locked`
-4. **New tables** — `eligibility_lock_snapshots`, `student_subject_locks`
-5. **Extend seed data** — add BHU, JNU, Jamia rules (PRD §8.4.2)
+The Eligibility Guardian is stable and pushed. Phase 2 begins with the NTA Mock Simulator:
+
+1. **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
+2. **Question Bank** — `question_bank` table seeded with CUET-pattern questions
+3. **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
+4. **Scoring + Normalization** — raw score → simulated NTA normalization model
+5. **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
+6. **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
 
 ---
 
-*Generated automatically at end of session. Do not commit secrets from `.cursor/rules/.env.local`.*
+*Do not commit secrets from `.env.local` or `.insforge/project.json`. Both are in `.gitignore`.*

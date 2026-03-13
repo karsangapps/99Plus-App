@@ -144,7 +144,6 @@ export function EligibilityClient({ rules }: Props) {
       }
 
       setStatus('locked')
-      setTimeout(() => router.push('/onboarding/battle'), 2500)
     } catch {
       setMismatches(['A network error occurred. Please try again.'])
       setStatus('error')
@@ -195,25 +194,44 @@ export function EligibilityClient({ rules }: Props) {
         </div>
       )}
 
-      {/* Lock-confirmed banner */}
+      {/* Lock-confirmed banner — user must click Continue to proceed */}
       {status === 'locked' && lockHash && (
         <div
-          className="rounded-[12px] border border-[#059669] bg-[#F0FDF4] px-6 py-5 flex items-start gap-4"
+          className="rounded-[12px] border border-[#059669] bg-[#F0FDF4] px-6 py-6"
           style={{ boxShadow: '0px 4px 20px rgba(5,150,105,0.15)' }}
         >
-          <div className="w-10 h-10 rounded-full bg-[#059669] flex items-center justify-center flex-shrink-0">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-[#059669] font-bold text-base">Eligibility Locked Successfully</p>
-            <p className="text-[#065F46] text-sm mt-0.5">
-              Your subject combination is sealed. Redirecting to Battle Plan...
-            </p>
-            <p className="text-[#9CA3AF] text-[10px] mt-2 font-mono break-all">
-              LOCK: {lockHash.slice(0, 32)}...
-            </p>
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-full bg-[#059669] flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[#059669] font-bold text-base">Eligibility Locked Successfully</p>
+              <p className="text-[#065F46] text-sm mt-0.5">
+                Your subject combination is permanently sealed. Keep your digital receipt below.
+              </p>
+
+              {/* Digital receipt / lock hash */}
+              <div className="mt-4 rounded-[8px] bg-[#0F172A] px-4 py-3">
+                <p className="text-[#9CA3AF] text-[9px] font-mono uppercase tracking-widest mb-1">
+                  Tamper-Proof Lock Receipt
+                </p>
+                <p className="text-[#34D399] text-[11px] font-mono break-all leading-relaxed">
+                  {lockHash}
+                </p>
+              </div>
+
+              <button
+                onClick={() => router.push('/onboarding/battle')}
+                className="mt-5 w-full sm:w-auto px-8 py-3 rounded-xl bg-[#059669] text-white font-bold text-sm hover:bg-[#047857] active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                Continue to Battle Plan
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       )}

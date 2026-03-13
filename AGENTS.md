@@ -26,7 +26,7 @@
 
 ### Caveats
 
-- The `.insforge/` directory is gitignored. Each new VM must recreate `.insforge/project.json` with valid credentials (oss_host + api_key from `STATUS.md`).
+- The `.insforge/` directory is gitignored. Each new VM must recreate it. Run: `mkdir -p .insforge && printf '{"oss_host":"https://s23f7sag.ap-southeast.insforge.app","api_key":"%s"}' "$INSFORGE_API_KEY" > .insforge/project.json` (requires the `INSFORGE_API_KEY` secret to be set in the environment).
 - The app relies on a remote InsForge instance (`https://s23f7sag.ap-southeast.insforge.app`). If that service is down, API routes will fail.
 - Guardian OTP dispatch currently logs to server console (no real SMS/email integration yet).
 - `next.config.js` uses CommonJS (`module.exports`). Turbopack dev mode works fine.

@@ -121,16 +121,87 @@ Toggle the server off/on in Cursor Settings → Agents to activate.
 
 ---
 
-## 7. Next Session — Phase 2: NTA-Mirror Engine
+## 7. Phase 2: NTA-Mirror Engine — STABLE
 
-The Eligibility Guardian is stable and pushed. Phase 2 begins with the NTA Mock Simulator:
+**Route:** `http://localhost:3000/nta-test/[attemptId]`
+**Status:** Pixel-faithful TCS iON interface live — instructions, timer, palette, all 5 states
 
-1. **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
-2. **Question Bank** — `question_bank` table seeded with CUET-pattern questions
-3. **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
-4. **Scoring + Normalization** — raw score → simulated NTA normalization model
-5. **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
-6. **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
+### New Database Tables (5 more → 15 total)
+
+| # | Table | Notes |
+|---|-------|-------|
+| 11 | `question_bank` | 5 CUET questions seeded (ENG×2, MATH×2, GT×1) |
+| 12 | `mock_tests` | "CUET 2026 — Baseline Mock #1" seeded, published |
+| 13 | `mock_test_questions` | 5 bridge rows linking questions to the mock test |
+| 14 | `mock_attempts` | Student attempt header (status, score, percentile) |
+| 15 | `mock_responses` | One row per question per attempt (autosaved) |
+
+### Files shipped
+
+```
+migrations/
+├── 002_mock_engine.sql         ← DDL for all 5 tables (run ✓)
+└── 002_seed_mock_engine.sql    ← 5 questions + 1 mock test (run ✓)
+
+scripts/
+└── run-migration.cjs           ← InsForge rawsql migration runner
+
+src/app/nta-test/[attemptId]/
+├── layout.tsx                  ← Bare layout (no global nav)
+├── loading.tsx                 ← Skeleton
+└── page.tsx                    ← Server component — fetches attempt + questions
+
+src/components/nta-test/
+├── types.ts                    ← Shared TS types + QuestionState enum
+├── NtaTestShell.tsx            ← 'use client' — useReducer state manager
+├── NtaInstructionsModal.tsx    ← Pre-test screen (bilingual)
+├── NtaHeader.tsx               ← Timer, submit, NTA logo, candidate name
+├── NtaTimer.tsx                ← Countdown clock (red flash < 5 min)
+├── NtaSectionTabs.tsx          ← Subject section navigation
+├── NtaQuestionPanel.tsx        ← Question display + language toggle
+├── NtaOptionList.tsx           ← MCQ options A–D
+├── NtaActionBar.tsx            ← Save&Next / Clear / Mark for Review
+├── NtaQuestionPalette.tsx      ← Right sidebar — 5-state color grid
+├── NtaPaletteLegend.tsx        ← Legend + counters per state
+└── NtaLanguageToggle.tsx       ← EN/HI switcher
+
+src/app/api/mock-attempts/
+├── start/route.ts              ← POST — create or resume attempt
+├── [id]/response/route.ts      ← POST — debounced autosave
+└── [id]/submit/route.ts        ← POST — score + normalization + lock
+```
+
+### Palette States (all working)
+
+| State | Color | Trigger |
+|-------|-------|---------|
+| `not_visited` | Gray | Unseen |
+| `not_answered` | Red | Visited, no answer |
+| `answered` | Green | Answer saved |
+| `marked_for_review` | Purple | Flagged, no answer |
+| `answered_and_marked` | Purple + green ring | Flagged + has answer |
+| `current` | Blue highlight | Active question |
+
+### Score Engine (submit route)
+
+- raw_score = correct × marks_correct − wrong × marks_wrong
+- simulated_percentile via z-score approximation (normal CDF)
+- simulated_normalized_score scaled to 800
+- Updates `student_profiles.account_state` → `diagnosed`
+
+---
+
+## 8. Next Session — Phase 2 continued
+
+The NTA-Mirror Engine is stable. Continuing Phase 2:
+
+1. ✅ **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
+2. ✅ **Question Bank** — `question_bank` table seeded with CUET-pattern questions
+3. ✅ **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
+4. ✅ **Scoring + Normalization** — raw score → simulated NTA normalization model
+5. ⏳ **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
+6. ⏳ **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
+7. ⏳ **Diagnosis page** — `/diagnosis/[attemptId]` — score breakdown, mark leaks
 
 ---
 

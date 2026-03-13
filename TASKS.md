@@ -2,6 +2,8 @@
 
 - [x] Next.js Scaffold (DONE)
 - [x] Database Tables (DONE)
+- [x] Setup (DONE)
+- [x] Build Fixes (DONE)
 
 # Tasks / Progress Log
 
@@ -17,12 +19,12 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - [x] Google OAuth entry wired via InsForge SDK
 - [x] Legal Gatekeeper (DOB minor check + guardian OTP hard gate)
 - [x] Consent audit trail (`consent_logs`) for guardian verification
-- [ ] **Eligibility Guardian §8.4** ← IN PROGRESS
-  - [ ] DB: `universities`, `colleges`, `programs`, `eligibility_rules` tables
-  - [ ] Seed: DU — B.Com (Hons) + B.A. Pol Science (Hons) rules
-  - [ ] UI: `/onboarding/eligibility` — rule display, subject picker, hard-lock CTA
-  - [ ] API: `POST /api/eligibility/validate` — rule engine + lock snapshot
-  - [ ] DB: `eligibility_lock_snapshots`, `student_subject_locks` tables
+- [x] **Eligibility Guardian §8.4** ← DONE
+  - [x] DB: `universities`, `colleges`, `programs`, `eligibility_rules` tables
+  - [x] Seed: DU — B.Com (Hons) + B.A. Pol Science (Hons) rules
+  - [x] UI: `/onboarding/eligibility` — rule display, subject picker, hard-lock CTA
+  - [x] API: `POST /api/eligibility/validate` — rule engine + lock snapshot
+  - [x] DB: `eligibility_lock_snapshots`, `student_subject_locks` tables
 
 ## Notes
 

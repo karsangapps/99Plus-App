@@ -20,10 +20,6 @@
 | Lint | `npx eslint .` |
 | Build | `npm run build` |
 
-### Known issues
-
-- `npm run build` fails with a pre-existing TypeScript error in `src/app/api/auth/forgot-password/route.ts` (`headers()` returns a Promise in Next.js 16 and must be awaited). Dev server (`npm run dev`) is unaffected.
-
 ### Caveats
 
 - The `.insforge/` directory is gitignored. Each new VM must recreate it. Run: `mkdir -p .insforge && printf '{"oss_host":"https://s23f7sag.ap-southeast.insforge.app","api_key":"%s"}' "$INSFORGE_API_KEY" > .insforge/project.json` (requires the `INSFORGE_API_KEY` secret to be set in the environment).

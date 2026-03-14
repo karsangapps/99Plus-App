@@ -1,0 +1,1421 @@
+[
+  {
+    "id": "TC001",
+    "title": "Create a student account successfully and reach Eligibility onboarding",
+    "description": "Verifies that a new student can sign up with valid details and is routed to the eligibility onboarding page.",
+    "category": "Student Signup & Onboarding",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create Account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Student\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"test.student+e2e@invalid-example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"9999999999\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2004-05-15\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on a target university option to select it"
+      },
+      {
+        "type": "action",
+        "description": "Click on the terms/privacy acceptance checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Subject\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Signup form validates required fields when submitted empty",
+    "description": "Verifies inline required-field validation errors are shown when attempting to create an account without filling mandatory inputs.",
+    "category": "Student Signup & Onboarding",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/signup"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create Account\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Minor DOB triggers DPDP minor notice and guardian-pending messaging",
+    "description": "Verifies that signing up with a DOB indicating age under 18 shows the DPDP minor notice and indicates guardian pending state.",
+    "category": "Student Signup & Onboarding",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Minor Student\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"minor.student+e2e@invalid-example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"8888888888\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2012-06-01\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the terms/privacy acceptance checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"DPDP\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"guardian\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Terms/privacy must be accepted before account creation",
+    "description": "Verifies that the user cannot create an account without accepting terms/privacy and sees an inline error or blocking message.",
+    "category": "Student Signup & Onboarding",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Terms Block\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"terms.block+e2e@invalid-example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"7777777777\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2003-01-10\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"terms\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/signup\""
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Invalid email format is rejected on signup",
+    "description": "Verifies that client-side validation rejects an improperly formatted email and prevents submission.",
+    "category": "Student Signup & Onboarding",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Email Format\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-an-email\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"6666666666\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2002-11-20\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the terms/privacy acceptance checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/signup\""
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Password policy enforcement prevents weak passwords",
+    "description": "Verifies that a weak password is rejected and an inline password error is shown.",
+    "category": "Student Signup & Onboarding",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Weak Password\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"weak.password+e2e@invalid-example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"5555555555\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2001-09-09\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"123\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the terms/privacy acceptance checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"password\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/signup\""
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Already-registered email shows a visible signup error",
+    "description": "Verifies that attempting to sign up with an email that already exists results in a visible error message and no redirect.",
+    "category": "Student Signup & Onboarding",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Existing Email\" into the full name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"existing.user@invalid-example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"4444444444\" into the phone field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2000-02-02\" into the date of birth field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the terms/privacy acceptance checkbox"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Create Account\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"already\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/signup\""
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Signup page provides a path to Login page",
+    "description": "Verifies that a user can navigate from the signup page to the login page via a visible link.",
+    "category": "Student Signup & Onboarding",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Login\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Password\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Minor signup page shows DPDP notice and guardian consent entry point",
+    "description": "Verifies that a minor can reach the signup page and see DPDP/guardian consent messaging and an option to request guardian consent.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"Signup\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"DPDP\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Request Guardian Consent\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Request guardian consent form accepts guardian name, phone, and email",
+    "description": "Verifies that the guardian details form can be opened and all required fields are present for submission.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian Name\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian Phone\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian Email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Send OTP\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Send OTP shows confirmation that OTP/link was sent",
+    "description": "Verifies that submitting guardian details results in a visible success/confirmation state indicating the OTP or secure link was sent.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Guardian\" into the \"Guardian Name\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"9999999999\" into the \"Guardian Phone\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"guardian@example.com\" into the \"Guardian Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send OTP\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"OTP\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"sent\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Validation: cannot send OTP with missing guardian fields",
+    "description": "Verifies client-side or server-side validation prevents sending OTP when required guardian details are incomplete.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Guardian\" into the \"Guardian Name\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send OTP\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian Phone\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardian Email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Validation: invalid guardian email format blocks sending OTP",
+    "description": "Verifies that an invalid email format triggers a visible error and prevents progression to OTP-sent state.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Guardian\" into the \"Guardian Name\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"9999999999\" into the \"Guardian Phone\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-an-email\" into the \"Guardian Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send OTP\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"invalid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "OTP entry UI appears after requesting consent and supports verification attempt",
+    "description": "Verifies that after an OTP request, the UI provides a place to enter OTP and a Verify action for the guardian consent step.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Guardian\" into the \"Guardian Name\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"9999999999\" into the \"Guardian Phone\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"guardian@example.com\" into the \"Guardian Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send OTP\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Enter OTP\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Verify OTP\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Invalid OTP shows a visible error and remains on OTP entry state",
+    "description": "Verifies that entering an obviously incorrect OTP results in a visible error message without marking consent as verified.",
+    "category": "Guardian Consent (DPDP) Flow",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Request Guardian Consent\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test Guardian\" into the \"Guardian Name\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"9999999999\" into the \"Guardian Phone\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"guardian@example.com\" into the \"Guardian Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send OTP\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"000000\" into the \"OTP\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify OTP\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"invalid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"OTP\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Lock eligibility snapshot for a valid subject combination",
+    "description": "Verifies that a valid eligibility selection can be verified and results in an immutable locked state with visible lock details.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Verify Eligibility\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the class 12 stream selector"
+      },
+      {
+        "type": "action",
+        "description": "Select an available stream option from the stream selector"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Complete selections and verify eligibility transitions to locked state",
+    "description": "Verifies that completing all required selections and verifying eligibility results in a locked UI state showing immutable locked subject tags.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Select an available stream option from the class 12 stream control"
+      },
+      {
+        "type": "action",
+        "description": "Select an available board option from the board control"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Locked state shows lock hash after a successful verification",
+    "description": "Verifies that after successful verification the page displays a visible lock hash (or equivalent lock identifier) indicating an immutable snapshot.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Locked\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Lock\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Invalid subject selection shows explicit mismatch reasons and does not lock",
+    "description": "Verifies that an invalid combination produces visible, specific mismatch reasons and does not show any locked state indicators.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Select a CUET subject option that is likely to violate program requirements (choose a subject that seems unrelated to the target program, if available)"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Mismatch\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Mismatch reasons remain visible after invalid verification attempt",
+    "description": "Verifies that once an invalid result is returned, the mismatch reason text remains visible on the page for the user to correct selections.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Mismatch\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"reason\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Verify Eligibility button prevents locking when required selections are missing",
+    "description": "Verifies that attempting to verify without completing required fields does not produce a locked state and shows a visible validation prompt or error.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Locked\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Locked state shows lock hash after a successful verification",
+    "description": "Verifies that after successful verification the page displays a visible lock hash (or equivalent lock identifier) indicating an immutable snapshot.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Locked\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Lock\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Invalid subject selection shows explicit mismatch reasons and does not lock",
+    "description": "Verifies that an invalid combination produces visible, specific mismatch reasons and does not show any locked state indicators.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Select a CUET subject option that is likely to violate program requirements (choose a subject that seems unrelated to the target program, if available)"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Mismatch\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Mismatch reasons remain visible after invalid verification attempt",
+    "description": "Verifies that once an invalid result is returned, the mismatch reason text remains visible on the page for the user to correct selections.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Mismatch\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"reason\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Verify Eligibility button prevents locking when required selections are missing",
+    "description": "Verifies that attempting to verify without completing required fields does not produce a locked state and shows a visible validation prompt or error.",
+    "category": "Hard-Locked Eligibility Guardian",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Verify Eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Locked\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Autosave success shows Saved indicator after answering",
+    "description": "Verifies that selecting an option updates the UI immediately and then shows a visible Saved confirmation after autosave completes.",
+    "category": "Autosave, Local State & Offline Retry",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Saved\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Local state updates immediately on option selection (before save confirmation)",
+    "description": "Verifies that the selected option appears chosen immediately after click, indicating local client state updates without waiting for backend.",
+    "category": "Autosave, Local State & Offline Retry",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Selected answer option\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Saved indicator persists after navigating to another question and back",
+    "description": "Verifies that once an answer is saved, returning to the question still shows the answer selection and saved state, preventing perceived data loss.",
+    "category": "Autosave, Local State & Offline Retry",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on answer option \"A\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Saved\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Save & Next\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Previous\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Answer option A selected\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Clear Response removes the selected answer and returns to unanswered state",
+    "description": "Verifies that clearing an answer updates the local UI immediately and the question is shown as having no selected option.",
+    "category": "Autosave, Local State & Offline Retry",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on answer option \"A\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Clear Response\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"No answer option selected\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "Rapid answer changes still end in a single stable saved state",
+    "description": "Verifies that after quickly changing the selected option multiple times, the UI stabilizes with the final selection and shows Saved.",
+    "category": "Autosave, Local State & Offline Retry",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on answer option \"A\""
+      },
+      {
+        "type": "action",
+        "description": "Click on answer option \"B\""
+      },
+      {
+        "type": "action",
+        "description": "Click on answer option \"C\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Answer option C selected\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Saved\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "Start Gap-Remedy session from diagnosis leak (happy path visibility only)",
+    "description": "Verifies that a user can initiate a Gap-Remedy session from a diagnosis leak and the UI transitions to a loaded practice session state.",
+    "category": "Surgical Practice Sessions (Gap-Remedy / Topic Mastery / PYQ / Full Mock)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Start Gap-Remedy\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "Attempt to start Gap-Remedy when blocked by entitlement shows paywall CTA",
+    "description": "Verifies that starting Gap-Remedy can show a paywall state with a visible \"Buy Sachet\" call-to-action when entitlement is insufficient.",
+    "category": "Surgical Practice Sessions (Gap-Remedy / Topic Mastery / PYQ / Full Mock)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Buy Sachet\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "Paywall path exposes payment checkout entry point after clicking Buy Sachet",
+    "description": "Verifies that clicking \"Buy Sachet\" from the paywall progresses the UI to a checkout/processing state (without validating external Razorpay flow).",
+    "category": "Surgical Practice Sessions (Gap-Remedy / Topic Mastery / PYQ / Full Mock)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Buy Sachet\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Buy Sachet\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Checkout\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Practice completion shows completion confirmation (UI-level)",
+    "description": "Verifies that after completing a practice session, the UI shows a completion confirmation state indicating the session is finished.",
+    "category": "Surgical Practice Sessions (Gap-Remedy / Topic Mastery / PYQ / Full Mock)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Practice\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Complete\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Session completed\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Buy flow shows Razorpay checkout entry point from paywall",
+    "description": "Verifies a user can start the Buy flow from the paywall and is taken into the Razorpay checkout initiation experience.",
+    "category": "Payments, Entitlements & Webhook Processing",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/onboarding/eligibility\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Buy\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Razorpay\" is visible"
+      }
+    ]
+  }
+]

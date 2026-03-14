@@ -1,0 +1,115 @@
+version: "2"
+type: frontend
+tech_stack:
+  - language: TypeScript
+  - framework: Next.js 16 (App Router)
+  - ui_library: Tailwind CSS
+  - database: InsForge (PostgreSQL, Supabase-compatible)
+  - auth: Session cookies (uid cookie)
+  - other: React 19, useReducer state management
+
+routes:
+  - path: /
+    file: src/app/page.tsx
+    auth_required: false
+    description: Landing page
+
+  - path: /login
+    file: src/app/login/page.tsx
+    auth_required: false
+    description: Login form
+
+  - path: /signup
+    file: src/app/signup/page.tsx
+    auth_required: false
+    description: Student signup with guardian detection
+
+  - path: /onboarding/eligibility
+    file: src/app/onboarding/eligibility/page.tsx
+    auth_required: true
+    description: Subject eligibility guardian with hard-lock
+
+  - path: /nta-test/[attemptId]
+    file: src/app/nta-test/[attemptId]/page.tsx
+    auth_required: true
+    description: "NTA/TCS iON pixel-faithful mock exam interface. Requires uid cookie. Main features: instructions modal, countdown timer, section tabs, MCQ question panel with bilingual support, question palette (5 states: not_visited/not_answered/answered/marked_for_review/answered_and_marked), Save&Next, Clear Response, Mark for Review, autosave to API, submit flow."
+
+api_endpoints:
+  - path: /api/auth/login
+    method: POST
+    description: Email/password login, sets uid cookie
+
+  - path: /api/auth/signup
+    method: POST
+    description: Student signup, creates user + profile
+
+  - path: /api/mock-attempts/start
+    method: POST
+    description: Create or resume a mock attempt
+
+  - path: /api/mock-attempts/[id]/response
+    method: POST
+    description: Autosave answer response (debounced, upsert)
+
+  - path: /api/mock-attempts/[id]/submit
+    method: POST
+    description: Submit attempt, compute score, NTA normalization
+
+  - path: /api/eligibility/validate
+    method: POST
+    description: Validate and lock subject eligibility
+
+key_components:
+  - name: NtaTestShell
+    file: src/components/nta-test/NtaTestShell.tsx
+    description: Root client component managing test state via useReducer
+
+  - name: NtaInstructionsModal
+    file: src/components/nta-test/NtaInstructionsModal.tsx
+    description: Pre-test instructions screen with marking scheme and palette legend
+
+  - name: NtaHeader
+    file: src/components/nta-test/NtaHeader.tsx
+    description: Dark blue NTA-branded header with countdown timer and submit button
+
+  - name: NtaSectionTabs
+    file: src/components/nta-test/NtaSectionTabs.tsx
+    description: Subject section navigation tabs
+
+  - name: NtaQuestionPanel
+    file: src/components/nta-test/NtaQuestionPanel.tsx
+    description: Question display with bilingual content and option list
+
+  - name: NtaOptionList
+    file: src/components/nta-test/NtaOptionList.tsx
+    description: MCQ radio options A-D with selection highlighting
+
+  - name: NtaActionBar
+    file: src/components/nta-test/NtaActionBar.tsx
+    description: Save & Next, Clear Response, Mark for Review buttons
+
+  - name: NtaQuestionPalette
+    file: src/components/nta-test/NtaQuestionPalette.tsx
+    description: Right sidebar numbered grid with 5 color states
+
+  - name: NtaPaletteLegend
+    file: src/components/nta-test/NtaPaletteLegend.tsx
+    description: Color legend with live counters per state
+
+  - name: NtaLanguageToggle
+    file: src/components/nta-test/NtaLanguageToggle.tsx
+    description: English/Hindi language switcher
+
+  - name: NtaTimer
+    file: src/components/nta-test/NtaTimer.tsx
+    description: HH:MM:SS countdown, red flash under 5 minutes
+
+authentication:
+  type: cookie
+  cookie_name: uid
+  description: httpOnly session cookie containing the student user_id UUID
+
+test_credentials:
+  uid_cookie: da159e75-0fad-4a07-a054-dfe0df47b972
+  test_attempt_id: a42f598e-3b1e-436c-bf00-136450f839c5
+  test_url: "http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5"

@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
     const uid = signInRes.data.user.id as string
 
-    cookies().set(uidCookieName(), uid, {
+    (await cookies()).set(uidCookieName(), uid, {
       httpOnly: true,
       sameSite: 'lax',
       secure: false,

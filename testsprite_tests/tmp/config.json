@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5",
+  "executionArgs": {
+    "projectName": "99plus-app",
+    "projectPath": "/workspace",
+    "testIds": [],
+    "additionalInstruction": "Set a browser cookie: name=uid value=da159e75-0fad-4a07-a054-dfe0df47b972 to authenticate all tests. The NTA test URL is http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5. For signup tests, use test email addresses like test+{random}@example.com. Focus heavily on TC016-TC025 (Eligibility Guardian) and TC026-TC030 (Autosave).",
+    "serverMode": "production",
+    "envs": {
+      "API_KEY": "sk-user-wAyRGLrp3VUP2yGDhoQOm60THsi_A58dYurBmTr-bl4j4cO3Cs4mbBx86B7k7NE-M9YLCO7X_hvfdekl364v9sWfPm9sA2D6O2nfFiSHKgyAEeoczKlSE49R6clXHo4j2Q4"
+    }
+  },
+  "serverPort": 37583,
+  "proxy": "http://1e9d4ef4-4812-4338-bc8f-a940ec6a2b83:m9wKnuAPqIVKFqvjAoAkWOPe1hDYwdT3@tun.testsprite.com:8080"
+}

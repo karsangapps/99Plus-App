@@ -257,3 +257,19 @@ The NTA-Mirror Engine is stable. Continuing Phase 2:
 ---
 
 *Do not commit secrets from `.env.local` or `.insforge/project.json`. Both are in `.gitignore`.*
+
+---
+
+## 10. Phase 3: Surgical Practice System — STABLE
+
+**Routes:**
+- `/surgical-drill` — S15 Drill Hub (4 mode cards, Active Leak banner)
+- `/surgical-drill/[sessionId]` — S19 Drill Engine (Conceptual Bridge)
+
+**The Conceptual Bridge:** Instant slide-up panel after every answer. Gold gradient header, One-Line Logic Fix, Pattern to Remember, NCERT page reference. Zero debounce.
+
+**Seal/Reduce loop:** accuracy ≥70% → `mark_leaks.is_resolved=true` (Sealed) · 40-69% → severity × 0.5 (Reduced) · <40% → unchanged.
+
+**New tables (2 more → 20 total):** `practice_sessions`, `practice_session_items`
+
+**Conceptual Bridge seeded for:** CUET-ENG-001/002, CUET-MATH-001/002, CUET-GT-001

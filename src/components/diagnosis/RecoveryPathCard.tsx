@@ -1,17 +1,49 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import type { DiagnosisPayload, SeatRow } from '@/app/diagnosis/[attemptId]/actions'
 
 interface RecoveryPathCardProps {
   prescription: DiagnosisPayload['prescription']
   currentPercentile: number
   seatHeatmap: SeatRow[]
+  topLeakId?: string | null
+  attemptId?: string
 }
 
 export function RecoveryPathCard({
   prescription,
   currentPercentile,
   seatHeatmap,
+  topLeakId,
+  attemptId,
 }: RecoveryPathCardProps) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  async function handleStartDrill() {
+    setLoading(true)
+    try {
+      const body: Record<string, string> = { mode: 'gap_remedy' }
+      if (topLeakId) body.mark_leak_id = topLeakId
+      if (attemptId) body.mock_attempt_id = attemptId
+
+      const res = await fetch('/api/drill/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+      const data = await res.json() as { ok: boolean; session_id?: string }
+      if (data.ok && data.session_id) {
+        router.push(`/surgical-drill/${data.session_id}`)
+      } else {
+        setLoading(false)
+      }
+    } catch {
+      setLoading(false)
+    }
+  }
   if (!prescription) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm text-center">
@@ -86,15 +118,19 @@ export function RecoveryPathCard({
       </div>
 
       {/* CTA */}
-      <Link
-        href="/surgical-drill"
-        className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-indigo-700 to-indigo-500 text-white font-bold text-sm rounded-xl transition-all duration-300 hover:from-indigo-800 hover:to-indigo-600 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/30 no-underline"
+      <button
+        onClick={handleStartDrill}
+        disabled={loading}
+        className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-indigo-700 to-indigo-500 text-white font-bold text-sm rounded-xl transition-all duration-300 hover:from-indigo-800 hover:to-indigo-600 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/30 disabled:opacity-70 disabled:cursor-wait"
         aria-label="Start Gap-Remedy surgical drill"
+        style={{ boxShadow: '0 4px 16px rgba(99,102,241,0.3)' }}
       >
-        <i className="fa-solid fa-crosshairs text-base" />
-        <span>Fix Mistakes with Surgical Drill</span>
-        <i className="fa-solid fa-arrow-right text-sm ml-1" />
-      </Link>
+        {loading ? (
+          <><i className="fa-solid fa-circle-notch fa-spin text-base" /><span>Starting drill…</span></>
+        ) : (
+          <><i className="fa-solid fa-crosshairs text-base" /><span>Fix Mistakes with Surgical Drill</span><i className="fa-solid fa-arrow-right text-sm ml-1" /></>
+        )}
+      </button>
     </div>
   )
 }

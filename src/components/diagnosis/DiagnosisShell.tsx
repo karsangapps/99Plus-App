@@ -221,6 +221,8 @@ export function DiagnosisShell({ payload }: DiagnosisShellProps) {
               prescription={prescription}
               currentPercentile={attempt.simulatedPercentile}
               seatHeatmap={seatHeatmap}
+              topLeakId={topLeak?.id ?? null}
+              attemptId={attempt.id}
             />
           </div>
         </div>

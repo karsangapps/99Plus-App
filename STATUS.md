@@ -191,7 +191,58 @@ src/app/api/mock-attempts/
 
 ---
 
-## 8. Next Session — Phase 2 continued
+## 8. Diagnosis Screen §10/§12 — STABLE
+
+**Route:** `http://localhost:3000/diagnosis/[attemptId]`
+**Status:** Fully operational — Percentile gauge, Mark Leak Engine, College Heatmap, Recovery Path
+
+### New Database Tables (3 more → 18 total)
+
+| # | Table | Notes |
+|---|-------|-------|
+| 16 | `mark_leaks` | Per-question wrong-answer → NCERT chapter mapping |
+| 17 | `college_target_analytics` | Seat probability snapshot per mock submission |
+| 18 | `cutoff_benchmarks` | 6 DU colleges seeded (SRCC, Hindu, Hansraj, LSR, Miranda, KMC) |
+
+### Files shipped this session
+
+```
+src/app/diagnosis/[attemptId]/
+├── layout.tsx      ← Student sidebar layout
+├── loading.tsx     ← Skeleton
+├── page.tsx        ← Server Component (calls getDiagnosisAction)
+└── actions.ts      ← 'use server' — full computation pipeline
+
+src/components/diagnosis/
+├── DiagnosisShell.tsx       ← Client wrapper
+├── PercentileGauge.tsx      ← SVG animated circular gauge
+├── LeakBanner.tsx           ← Dark red "N marks away" banner
+├── CollegeHeatmapTable.tsx  ← Probability bars + status chips
+├── GapAnalysisCard.tsx      ← Chapter breakdown + behavioral flags
+└── RecoveryPathCard.tsx     ← 3-step plan + projected impact + CTA
+```
+
+### getDiagnosisAction pipeline
+1. Fetches `mock_responses` + `question_bank` for the attempt
+2. Classifies each wrong answer: guessing (<15s) / careless (changed>1) / speed (2.5x avg) / conceptual (difficulty≥4) / application
+3. Computes severity = lost_marks × (1 + 0.3×difficulty)
+4. Upserts `mark_leaks` with NCERT mapping
+5. Fetches `cutoff_benchmarks` for all DU colleges
+6. Computes seat heatmap: score_gap, probability (logistic), seat_status
+7. Deletes + inserts `college_target_analytics`
+8. Builds Recovery Prescription from top severity leak
+
+### Screen S14 fidelity (5-screen-2.html)
+- ✅ Percentile gauge with `stroke-dashoffset` animation
+- ✅ Mark Leaks card with pulsing red CSS animation
+- ✅ Dark red gradient leak banner with diagonal stripe overlay
+- ✅ College heatmap with hover translateX + probability bars
+- ✅ Gap Analysis with behavioral flag (guessing detected)
+- ✅ Recovery path with 3 steps + projected impact + indigo CTA
+
+---
+
+## 9. Phase 2 Complete — Next: Phase 3 Surgical Drill System
 
 The NTA-Mirror Engine is stable. Continuing Phase 2:
 

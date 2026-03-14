@@ -33,13 +33,13 @@ async def run_test():
         # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
         await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Click the 'Create account' link on the login page to open the signup page.
+        # -> Click the 'Create account' link to open the signup page (use element index 93).
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/p/a').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Fill the signup form starting with typing 'Test Student' into the Full Name field (index 158), then fill Email, Phone, DOB, Password, select Delhi University, accept terms, and submit ('Create account' button). After submit, verify redirect and page content.
+        # -> ASSERTION: Verify 'Create Account' text is visible; then fill the signup form with Test Student / test.student+e2e@invalid-example.com / 9999999999 / 2004-05-15 / ValidPassword123!, select Delhi University, accept terms, and click Create account to submit.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[6]/div/input').nth(0)
@@ -55,7 +55,7 @@ async def run_test():
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[6]/div[3]/input').nth(0)
         await asyncio.sleep(3); await elem.fill('9999999999')
         
-        # -> Enter Date of Birth into the DOB field (index 188) — then fill password, select Delhi University, accept terms, and submit the form.
+        # -> Fill Date of Birth and Password, select Delhi University, accept terms, and submit the form by clicking 'Create account'. Then observe navigation result (the next page) to verify onboarding/eligibility routing.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[6]/div[4]/input').nth(0)
@@ -71,7 +71,7 @@ async def run_test():
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[6]/div[8]/div/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Click the terms/privacy acceptance checkbox (index 230) to accept terms, then click the 'Create account' submit button (index 232) to submit the signup form.
+        # -> Click the terms/privacy acceptance checkbox (index 230) and then click the 'Create account' submit button (index 232). Observe the resulting navigation and page content to verify routing to the onboarding/eligibility flow.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[6]/label/input').nth(0)

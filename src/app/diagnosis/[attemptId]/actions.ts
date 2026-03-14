@@ -193,7 +193,7 @@ export async function getDiagnosisAction(attemptId: string): Promise<DiagnosisPa
     const lostMarks = mt?.marks_wrong ?? 1
     const severityScore = computeSeverity(lostMarks, q.difficulty, 1)
 
-    // Insert mark_leak row (unique per student + attempt + question)
+    // Insert mark_leak row — ignoreDuplicates preserves first_seen_at on refresh
     const now = new Date().toISOString()
     const insertRes = await db.database
       .from('mark_leaks')
@@ -222,7 +222,10 @@ export async function getDiagnosisAction(attemptId: string): Promise<DiagnosisPa
           },
           affected_targets_json: [],
         },
-        { onConflict: 'student_profile_id,mock_attempt_id,question_bank_id' }
+        {
+          onConflict: 'student_profile_id,mock_attempt_id,question_bank_id',
+          ignoreDuplicates: true,  // preserve first_seen_at — never overwrite on refresh
+        }
       )
       .select('id')
       .single()

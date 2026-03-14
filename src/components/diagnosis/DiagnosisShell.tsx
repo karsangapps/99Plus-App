@@ -34,11 +34,11 @@ export function DiagnosisShell({ payload }: DiagnosisShellProps) {
   })
 
   return (
-    <div className="ml-64 min-h-screen bg-[#F8FAFC] pb-20">
+    <div className="lg:ml-64 min-h-screen bg-[#F8FAFC] pb-20">
 
       {/* ── Header ────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#F8FAFC]/90 backdrop-blur-md border-b border-gray-200 px-8 py-5">
-        <div className="flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-[#F8FAFC]/90 backdrop-blur-md border-b border-gray-200 px-4 sm:px-8 py-4 sm:py-5">
+        <div className="flex items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-semibold tracking-widest uppercase text-indigo-500">
@@ -48,34 +48,34 @@ export function DiagnosisShell({ payload }: DiagnosisShellProps) {
                 LIVE
               </span>
             </div>
-            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+            <h1 className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight">
               College Heatmap &amp; Gap Analysis
             </h1>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-xs text-gray-400">{attempt.mockTestTitle}</p>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="text-right hidden sm:block">
+              <p className="text-xs text-gray-400 truncate max-w-[200px]">{attempt.mockTestTitle}</p>
               <p className="text-xs text-gray-400">Completed: {completedDate}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
-              <i className="fa-solid fa-stethoscope text-indigo-500" />
+            <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+              <i className="fa-solid fa-stethoscope text-indigo-500 text-sm" />
             </div>
           </div>
         </div>
       </header>
 
-      <div className="px-8 py-8 space-y-8">
+      <div className="px-4 sm:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
 
         {/* ── Row 1: Percentile Gauge + Stats ───────────────────────── */}
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
           {/* Percentile Gauge */}
-          <div className="col-span-5 bg-white rounded-xl border border-gray-200 shadow-sm">
+          <div className="lg:col-span-5 bg-white rounded-xl border border-gray-200 shadow-sm">
             <PercentileGauge percentile={attempt.simulatedPercentile} />
           </div>
 
           {/* Quick Stats 2×2 */}
-          <div className="col-span-7 grid grid-cols-2 gap-4">
+          <div className="lg:col-span-7 grid grid-cols-2 gap-4">
 
             {/* Raw Score */}
             <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
@@ -191,10 +191,10 @@ export function DiagnosisShell({ payload }: DiagnosisShellProps) {
         )}
 
         {/* ── Row 4: Gap Analysis + Recovery Path ──────────────────── */}
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
           {/* Gap Analysis */}
-          <div className="col-span-7">
+          <div className="lg:col-span-7">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-[10px] bg-red-500/10 flex items-center justify-center">
                 <i className="fa-solid fa-stethoscope text-red-500 text-sm" />
@@ -210,7 +210,7 @@ export function DiagnosisShell({ payload }: DiagnosisShellProps) {
           </div>
 
           {/* Recovery Path */}
-          <div className="col-span-5">
+          <div className="lg:col-span-5">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-[10px] bg-indigo-500/10 flex items-center justify-center">
                 <i className="fa-solid fa-crosshairs text-indigo-500 text-sm" />

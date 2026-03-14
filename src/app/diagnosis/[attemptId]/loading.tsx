@@ -1,6 +1,6 @@
 export default function DiagnosisLoading() {
   return (
-    <div className="ml-64 min-h-screen bg-[#F8FAFC] pb-20 animate-pulse">
+    <div className="lg:ml-64 min-h-screen bg-[#F8FAFC] pb-20 animate-pulse">
       {/* Header skeleton */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between">
         <div className="space-y-2">

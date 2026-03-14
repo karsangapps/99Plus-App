@@ -33,7 +33,7 @@ async def run_test():
         # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
         await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill the email and password fields and click the Sign in button to log in.
+        # -> Type the provided login credentials into the email and password fields, then submit the form (Enter key).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
@@ -44,24 +44,25 @@ async def run_test():
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
         await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div/div/div/div/div').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Sign in' button to submit the login form and proceed to the onboarding/eligibility page.
+        # -> Click the 'Sign in' button (index 86) to submit the login form.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Click the 'Eligibility' step (stepper) to open the eligibility screen so the eligibility selection controls become active (target element index 277).
+        # -> Click the 'Eligibility' navigation item (index 267) to open the onboarding eligibility page and verify the URL changes to include '/onboarding/eligibility'.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Click the Commerce stream option to attempt changing the Class 12 Stream selection and observe whether the selection locks and shows immutable lock details.
+        # -> Click the 'Eligibility' navigation item (index 267) to try to open the /onboarding/eligibility page and trigger the eligibility UI to appear.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the Class 12 stream option for Commerce (input radio index 146) to change the selected stream.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/main/section/div/div/label[2]/input').nth(0)

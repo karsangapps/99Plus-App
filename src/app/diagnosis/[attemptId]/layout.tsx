@@ -17,8 +17,8 @@ export default async function DiagnosisLayout({ children }: { children: React.Re
 
   return (
     <>
-      {/* Sidebar */}
-      <nav className="fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-[#0F172A] to-[#1E293B] border-r border-gray-700 flex flex-col shadow-lg z-50">
+      {/* Sidebar — hidden on mobile, visible lg+ */}
+      <nav className="hidden lg:flex fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-[#0F172A] to-[#1E293B] border-r border-gray-700 flex-col shadow-lg z-50">
         {/* Logo */}
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
@@ -65,6 +65,17 @@ export default async function DiagnosisLayout({ children }: { children: React.Re
           </div>
         </div>
       </nav>
+
+      {/* Mobile top nav */}
+      <header className="lg:hidden sticky top-0 z-40 bg-[#0F172A] text-white px-4 py-3 flex items-center justify-between shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-lg bg-indigo-500/15 flex items-center justify-center">
+            <i className="fa-solid fa-stethoscope text-indigo-400 text-sm" />
+          </div>
+          <span className="text-sm font-bold">99Plus · Diagnosis</span>
+        </div>
+        <span className="text-[10px] uppercase tracking-widest text-white/40">CUET 2026</span>
+      </header>
 
       {/* Page content */}
       {children}

@@ -30,30 +30,28 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill the email and password fields and click the Sign in button to attempt login.
+        # -> Fill the email and password fields, submit the login form, then navigate to the NTA test URL.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div/div/div/div/div').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Sign in' button to attempt login (use element index 88).
+        # -> Click the 'Sign in' button (index 88) to submit the login form.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
         await asyncio.sleep(3); await elem.click()
+        
+        # -> Wait briefly for the login to complete, then navigate to the NTA test URL: http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
         # --> Assertions to verify final state
         frame = context.pages[-1]

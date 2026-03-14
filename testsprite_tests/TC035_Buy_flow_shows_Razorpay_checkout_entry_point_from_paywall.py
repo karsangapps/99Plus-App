@@ -30,25 +30,28 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill the email and password fields and submit the login form (use Enter key to submit since the Sign in button is not present as an interactive element).
+        # -> Input the email address into the Email Address field (index 6).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        # -> Click the 'Sign in' button (interactive element index 88) to submit the login form and trigger the expected redirect to /onboarding/eligibility. After click, check URL and proceed to paywall steps.
+        # -> Click the 'Sign in' button to submit the login form (index 88).
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
         await asyncio.sleep(3); await elem.click()
+        
+        # -> Navigate to the NTA test page at /nta-test/b0b0b0b0-0000-0000-0000-000000000001 so the paywall can be interacted with.
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
         # --> Assertions to verify final state
         frame = context.pages[-1]

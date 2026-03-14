@@ -30,19 +30,19 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill the email and password fields with test credentials, then attempt to submit login. If the login/submit control is not present or not clickable, report the missing feature and finish the test.
+        # -> Fill the email and password fields using indexes 6 and 7, then click the Sign in button. If the Sign in button cannot be located among interactive elements, report the issue and finish the test.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
         # --> Assertions to verify final state
         frame = context.pages[-1]

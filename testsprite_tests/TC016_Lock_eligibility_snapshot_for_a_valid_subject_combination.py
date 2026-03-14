@@ -30,24 +30,41 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill the Email and Password fields and submit the login form (using Enter key). Then wait for the page to load so onboarding/eligibility can be verified.
+        # -> Fill the email and password fields and click the Sign in button to log in.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        # -> Click the visible 'Sign in' button to submit the login form and trigger navigation to onboarding/eligibility (if login not already completed). Then wait for the page to load and verify onboarding/eligibility.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/div/div/div/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Sign in' button to submit the login form and proceed to the onboarding/eligibility page.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Eligibility' step (stepper) to open the eligibility screen so the eligibility selection controls become active (target element index 277).
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the Commerce stream option to attempt changing the Class 12 Stream selection and observe whether the selection locks and shows immutable lock details.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/section/div/div/label[2]/input').nth(0)
         await asyncio.sleep(3); await elem.click()
         
         # --> Assertions to verify final state

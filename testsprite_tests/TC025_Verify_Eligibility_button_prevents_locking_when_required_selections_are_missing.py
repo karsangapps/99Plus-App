@@ -30,29 +30,78 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Fill Email and Password fields and click the Sign in button (attempt click on element index 52) to sign in and reach the onboarding/eligibility page.
+        # -> Fill the email and password fields and submit the login form (use Enter) to reach onboarding/eligibility.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div/div/div/div/div').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Sign in' button (index 88) to submit login and proceed to the onboarding/eligibility page.
+        # -> Click the 'Sign in' button to submit the login form and reach /onboarding/eligibility
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the page control to advance from Dream Target to the Eligibility step (click the 'Confirm' / proceed control) so the URL can be checked for '/onboarding/eligibility'.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[5]/span').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Confirm' control (interactive element [275]) to advance from Dream Target to the Eligibility step so the URL can be checked for '/onboarding/eligibility'.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[5]/span').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Confirm' control to advance from Dream Target to the Eligibility step so the URL and eligibility UI can be checked.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[5]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Eligibility' step header (interactive element [265]) to open the Eligibility UI so the URL can be checked for '/onboarding/eligibility'.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Eligibility' step header (interactive element [265]) to attempt to open the Eligibility UI so the URL can be checked for '/onboarding/eligibility' and the Verify Eligibility control can be used.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Confirm' control to attempt to advance from Dream Target to the Eligibility step so the URL can be checked for '/onboarding/eligibility' and the Verify Eligibility control can be used.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[5]/span').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Eligibility' step header (interactive element index 265) to open the Eligibility UI so the URL can be checked for '/onboarding/eligibility' and the Verify Eligibility control can be used.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Open the Eligibility UI by clicking the 'Eligibility' step header so the URL can be checked for '/onboarding/eligibility' and the Verify Eligibility control can be located.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Confirm' control (interactive element index 275) to attempt to advance from Dream Target to the Eligibility step so the URL can be checked for '/onboarding/eligibility' and the 'Verify Eligibility' control can be located.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[5]/span').nth(0)
         await asyncio.sleep(3); await elem.click()
         
         # --> Assertions to verify final state

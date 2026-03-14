@@ -30,24 +30,48 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5
-        await page.goto("http://localhost:3000/nta-test/a42f598e-3b1e-436c-bf00-136450f839c5")
+        # -> Navigate to http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001
+        await page.goto("http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001")
         
-        # -> Input the test email into the Email Address field (index 6) and the test password into the Password field (index 7), then submit the form (use Enter if no Sign in button index available).
+        # -> Type the provided credentials into the email and password fields and submit the form (use Enter) to attempt login.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('example@gmail.com')
+        await asyncio.sleep(3); await elem.fill('test@99plus.in')
         
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('password123')
+        await asyncio.sleep(3); await elem.fill('SurgicalTest123!')
         
-        # -> Click the 'Sign in' button (interactive element index 88) to submit the login form.
+        # -> Click the 'Sign in' button (index 88) to attempt login and proceed to the onboarding/eligibility page.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/div/div/div[2]/div/div[3]/button').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Open the Eligibility step/page by clicking the Eligibility step indicator (index 269) so the eligibility UI loads and then verify the presence of subject selection.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the Eligibility step indicator (index 269) again to try to load the Eligibility UI so subject selection is visible.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/div/div/div[3]/div').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Open the Target University select (index 151) to try progressing the onboarding flow (choose target/university/course) so the Eligibility step can render.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/section/div[3]/select').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Click the 'Map My Journey' button (index 408) to advance the onboarding flow and load the Eligibility step so the subject selection UI becomes available.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[2]/div/div/main/section[2]/div/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
         # --> Assertions to verify final state

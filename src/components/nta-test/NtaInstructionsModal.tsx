@@ -132,7 +132,7 @@ export function NtaInstructionsModal({
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
             {[
-              { color: 'bg-gray-300',   ring: '', label: language === 'en' ? 'Not Visited' : 'नहीं देखा' },
+              { color: 'bg-gray-500 text-white',   ring: '', label: language === 'en' ? 'Not Visited' : 'नहीं देखा' },
               { color: 'bg-red-500',    ring: '', label: language === 'en' ? 'Not Answered' : 'उत्तर नहीं दिया' },
               { color: 'bg-green-600',  ring: '', label: language === 'en' ? 'Answered' : 'उत्तर दिया' },
               { color: 'bg-purple-600', ring: '', label: language === 'en' ? 'Marked for Review' : 'समीक्षा के लिए चिह्नित' },

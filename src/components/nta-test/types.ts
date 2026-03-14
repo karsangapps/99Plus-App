@@ -119,7 +119,7 @@ export function groupBySection(questions: TestQuestion[]): SectionGroup[] {
 export function paletteColor(state: QuestionState, isCurrent: boolean): string {
   if (isCurrent) return 'bg-blue-500 text-white ring-2 ring-blue-300'
   switch (state) {
-    case 'not_visited':         return 'bg-gray-300 text-gray-700'
+    case 'not_visited':         return 'bg-gray-500 text-white'
     case 'not_answered':        return 'bg-red-500 text-white'
     case 'answered':            return 'bg-green-600 text-white'
     case 'marked_for_review':   return 'bg-purple-600 text-white'

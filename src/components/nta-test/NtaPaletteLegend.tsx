@@ -12,7 +12,7 @@ interface NtaPaletteLegendProps {
 const legendItems = [
   { state: 'answered',            color: 'bg-green-600',  labelEn: 'Answered',                   labelHi: 'उत्तर दिया' },
   { state: 'not_answered',        color: 'bg-red-500',    labelEn: 'Not Answered',                labelHi: 'उत्तर नहीं दिया' },
-  { state: 'not_visited',         color: 'bg-gray-300',   labelEn: 'Not Visited',                 labelHi: 'नहीं देखा' },
+  { state: 'not_visited',         color: 'bg-gray-500',   labelEn: 'Not Visited',                 labelHi: 'नहीं देखा' },
   { state: 'marked_for_review',   color: 'bg-purple-600', labelEn: 'Marked for Review',           labelHi: 'समीक्षा के लिए' },
   { state: 'answered_and_marked', color: 'bg-purple-600', labelEn: 'Answered & Marked for Review',labelHi: 'उत्तरित व चिह्नित' },
 ]

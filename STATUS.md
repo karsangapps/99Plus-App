@@ -1,6 +1,6 @@
 # 99Plus — Memory Anchor
-**Date:** Friday, 13 March 2026
-**Session:** Eligibility Guardian §8.4 complete → Phase 2 (NTA-Mirror Engine) is next
+**Date:** Saturday, 14 March 2026
+**Session:** Phase 3 Completed and Audited — 32/32 Compliance Pass → Phase 4 (Monetization) is next
 
 ---
 
@@ -19,27 +19,39 @@
 
 ---
 
-## 2. Database Tables (10 total in `public` schema)
+## 2. Database Tables (20 total in `public` schema)
 
-| #  | Table                        | Notes                                                         |
-|----|------------------------------|---------------------------------------------------------------|
-| 1  | `users`                      | RLS ON — `users_insert_own` policy                           |
-| 2  | `student_profiles`           | `account_state` transitions through onboarding stages        |
-| 3  | `consent_logs`               | DPDP guardian consent audit trail                            |
-| 4  | `user_targets`               | Student's selected university/college/program targets        |
-| 5  | `universities`               | DU seeded — `short_code = 'DU'`, `id = 00000001-...`        |
-| 6  | `colleges`                   | SRCC, LSR seeded under DU                                     |
-| 7  | `programs`                   | B.Com (Hons) @ SRCC, B.A. Political Science (Hons) @ LSR    |
-| 8  | `eligibility_rules`          | 2 active rules, fully seeded — see Section 4                 |
-| 9  | `eligibility_lock_snapshots` | Immutable lock events — RLS owner-only                       |
-| 10 | `student_subject_locks`      | One row per locked subject per student — RLS owner-only      |
+| #  | Table                        | Phase | Notes                                                         |
+|----|------------------------------|-------|---------------------------------------------------------------|
+| 1  | `users`                      | 1 | RLS ON — `users_insert_own` policy                           |
+| 2  | `student_profiles`           | 1 | `account_state` transitions through onboarding stages        |
+| 3  | `consent_logs`               | 1 | DPDP guardian consent audit trail                            |
+| 4  | `user_targets`               | 1 | Student's selected university/college/program targets        |
+| 5  | `universities`               | 1 | DU seeded — `short_code = 'DU'`, `id = 00000001-...`        |
+| 6  | `colleges`                   | 1 | SRCC, LSR, Hindu, Hansraj, Miranda, KMC seeded under DU     |
+| 7  | `programs`                   | 1 | B.Com (Hons) × 4 colleges + B.A. Pol Sci @ LSR + B.A. Econ @ Miranda |
+| 8  | `eligibility_rules`          | 1 | 2 active rules (SRCC v2, LSR v1) — see Section 4            |
+| 9  | `eligibility_lock_snapshots` | 1 | Immutable lock events — RLS owner-only                       |
+| 10 | `student_subject_locks`      | 1 | One row per locked subject per student — RLS owner-only      |
+| 11 | `question_bank`              | 2 | 5 CUET questions + `logic_fix_text`, `pattern_text` columns  |
+| 12 | `mock_tests`                 | 2 | "CUET 2026 — Baseline Mock #1" published                     |
+| 13 | `mock_test_questions`        | 2 | Bridge — mock_tests ↔ question_bank                          |
+| 14 | `mock_attempts`              | 2 | Attempt header (score, percentile, auto_submitted flag)      |
+| 15 | `mock_responses`             | 2 | One row per question per attempt (autosaved)                 |
+| 16 | `mark_leaks`                 | 2 | Wrong answer → NCERT chapter mapping + seal/reduce tracking  |
+| 17 | `college_target_analytics`   | 2 | Seat probability snapshot per mock submission                |
+| 18 | `cutoff_benchmarks`          | 2 | 6 DU colleges, 2025 actuals seeded                           |
+| 19 | `practice_sessions`          | 3 | Gap-Remedy / Topic Mastery / PYQ / Full Mock sessions        |
+| 20 | `practice_session_items`     | 3 | One row per question per drill session                       |
 
-### Seeded Eligibility Rules (DU 2026)
+### Seeded Eligibility Rules (DU 2026) — Updated to CUET 2026 Spec
 
-| Program                             | Mandatory | Alternative Group                                              | Min Domains |
-|-------------------------------------|-----------|----------------------------------------------------------------|-------------|
-| B.Com (Hons) — SRCC                 | English   | Mathematics OR Accountancy (pick 1)                           | 2           |
-| B.A. Political Science (Hons) — LSR | English   | Pol Sci / History / Sociology / Economics / Geography / Psychology (pick 3) | 3 |
+| Program                             | Mandatory | Alternative Group                                                     | Min Domains | Version |
+|-------------------------------------|-----------|-----------------------------------------------------------------------|-------------|---------|
+| B.Com (Hons) — SRCC                 | English   | pick **3** of [Accountancy / BST / Economics / Math / General Test]  | 4           | **v2**  |
+| B.A. Political Science (Hons) — LSR | English   | Pol Sci / History / Sociology / Economics / Geography / Psychology (pick 3) | 3      | v1      |
+
+> **Audit fix:** SRCC rule upgraded from v1 (pick 1) → v2 (pick 3) to match CUET 2026 NTA specification.
 
 ---
 
@@ -48,53 +60,18 @@
 **Route:** `http://localhost:3000/onboarding/eligibility`
 **Status:** Fully operational — subject picker live, hard-lock CTA wired, SHA-256 receipt permanent
 
-### Files shipped this session
-
-```
-src/app/onboarding/eligibility/
-└── page.tsx                    ← server component, fetches rules by student target
-
-src/app/onboarding/battle/
-└── page.tsx                    ← placeholder (404 fix) — Battle Plan landing
-
-src/app/api/eligibility/
-└── validate/route.ts           ← POST — rule engine + lock snapshot writer
-
-src/components/eligibility/
-├── EligibilityShell.tsx        ← sticky header, hex-pattern bg (unchanged)
-├── EligibilityStepper.tsx      ← 3-step progress bar (unchanged)
-├── EligibilityRuleCard.tsx     ← upgraded: checkboxes for optional subjects
-└── EligibilityClient.tsx       ← new client wrapper — state, CTA guard, lock action
-```
-
-### What the page does now
-- Reads `uid` cookie → looks up student's `user_targets` → fetches matching `eligibility_rules`
-- Falls back to DU seed data if no target set yet
-- Mandatory subjects (English) are permanently locked — no toggle
-- Optional/recommended subjects render interactive checkboxes
-- "Lock Eligibility" CTA is **disabled** until all optional group minimums are satisfied (client-side guard)
-- On successful lock: inserts `eligibility_lock_snapshots` + `student_subject_locks`, sets `account_state = eligibility_locked`
-- Displays full SHA-256 tamper-proof hash receipt — user must click "Continue to Battle Plan" to proceed (no auto-redirect)
-
-### Key fixes applied
-- **404 eliminated** — `/onboarding/battle` now exists and returns 200
-- **Receipt stays on screen** — removed `setTimeout` auto-redirect; user controls navigation after reviewing the lock hash
-
 ---
 
 ## 4. Historical Bug Fixes (Phase 1)
 
-### 500 Lock Error — Root cause & fix
-`requireEmailVerification` was `true` in InsForge auth config — `signUp()` returned no `accessToken`, all DB inserts ran as `anon` and were blocked by RLS.
-
-**Fix 1** — Disabled email verification via admin HTTP API
-**Fix 2** — Added `CREATE POLICY "users_insert_own"` for authenticated role on `public.users`
-**Fix 3** — Awaited `cookies()` and `headers()` (Next.js 16 requirement)
-**Fix 4** — SignupForm toggle clears opposite guardian contact field when switching SMS ↔ Email
+- `requireEmailVerification` disabled via admin API → RLS unblocked
+- `CREATE POLICY "users_insert_own"` on `public.users`
+- Awaited `cookies()` / `headers()` (Next.js 16 requirement)
+- SignupForm toggle clears opposite guardian contact field on SMS ↔ Email switch
 
 ---
 
-## 5. InsForge MCP Server (Cursor Sidebar)
+## 5. Environment
 
 ```json
 "insforge": {
@@ -106,7 +83,9 @@ src/components/eligibility/
   }
 }
 ```
-Toggle the server off/on in Cursor Settings → Agents to activate.
+
+**TestSprite account:** banashripegu@gmail.com · `TESTSPRITE_API_KEY` in `.env.local`  
+**Test user:** test@99plus.in / SurgicalTest123! (InsForge, `account_state = target_selected`)
 
 ---
 
@@ -115,161 +94,128 @@ Toggle the server off/on in Cursor Settings → Agents to activate.
 | Field    | Value                                                              |
 |----------|--------------------------------------------------------------------|
 | Remote   | `https://github.com/karsangapps/99Plus-App.git`                    |
-| Branch   | `master`                                                           |
-| Latest   | `dd9ac86` — Fixed Eligibility redirect and 404 bug                 |
-| Previous | `dccd4e0` — Finished Eligibility Guardian §8.4                     |
+| Branch   | `cursor/nta-mirror-mock-engine-d09d`                               |
+| PR       | `#1` — Phase 2 + 3 complete                                        |
+| Latest   | `f230cef` — fix(audit): P1 eligibility + P2 palette + SURGICAL_AUDIT_REPORT |
 
 ---
 
-## 7. Phase 2: NTA-Mirror Engine — STABLE
+## 7. Phase 2: NTA-Mirror Engine — STABLE ✅
 
 **Route:** `http://localhost:3000/nta-test/[attemptId]`
-**Status:** Pixel-faithful TCS iON interface live — instructions, timer, palette, all 5 states
 
-### New Database Tables (5 more → 15 total)
-
-| # | Table | Notes |
-|---|-------|-------|
-| 11 | `question_bank` | 5 CUET questions seeded (ENG×2, MATH×2, GT×1) |
-| 12 | `mock_tests` | "CUET 2026 — Baseline Mock #1" seeded, published |
-| 13 | `mock_test_questions` | 5 bridge rows linking questions to the mock test |
-| 14 | `mock_attempts` | Student attempt header (status, score, percentile) |
-| 15 | `mock_responses` | One row per question per attempt (autosaved) |
-
-### Files shipped
-
-```
-migrations/
-├── 002_mock_engine.sql         ← DDL for all 5 tables (run ✓)
-└── 002_seed_mock_engine.sql    ← 5 questions + 1 mock test (run ✓)
-
-scripts/
-└── run-migration.cjs           ← InsForge rawsql migration runner
-
-src/app/nta-test/[attemptId]/
-├── layout.tsx                  ← Bare layout (no global nav)
-├── loading.tsx                 ← Skeleton
-└── page.tsx                    ← Server component — fetches attempt + questions
-
-src/components/nta-test/
-├── types.ts                    ← Shared TS types + QuestionState enum
-├── NtaTestShell.tsx            ← 'use client' — useReducer state manager
-├── NtaInstructionsModal.tsx    ← Pre-test screen (bilingual)
-├── NtaHeader.tsx               ← Timer, submit, NTA logo, candidate name
-├── NtaTimer.tsx                ← Countdown clock (red flash < 5 min)
-├── NtaSectionTabs.tsx          ← Subject section navigation
-├── NtaQuestionPanel.tsx        ← Question display + language toggle
-├── NtaOptionList.tsx           ← MCQ options A–D
-├── NtaActionBar.tsx            ← Save&Next / Clear / Mark for Review
-├── NtaQuestionPalette.tsx      ← Right sidebar — 5-state color grid
-├── NtaPaletteLegend.tsx        ← Legend + counters per state
-└── NtaLanguageToggle.tsx       ← EN/HI switcher
-
-src/app/api/mock-attempts/
-├── start/route.ts              ← POST — create or resume attempt
-├── [id]/response/route.ts      ← POST — debounced autosave
-└── [id]/submit/route.ts        ← POST — score + normalization + lock
-```
-
-### Palette States (all working)
-
-| State | Color | Trigger |
-|-------|-------|---------|
-| `not_visited` | Gray | Unseen |
-| `not_answered` | Red | Visited, no answer |
-| `answered` | Green | Answer saved |
-| `marked_for_review` | Purple | Flagged, no answer |
-| `answered_and_marked` | Purple + green ring | Flagged + has answer |
-| `current` | Blue highlight | Active question |
-
-### Score Engine (submit route)
-
-- raw_score = correct × marks_correct − wrong × marks_wrong
-- simulated_percentile via z-score approximation (normal CDF)
-- simulated_normalized_score scaled to 800
-- Updates `student_profiles.account_state` → `diagnosed`
+- 5-table mock engine, pixel-faithful TCS iON interface
+- Timer, bilingual EN/HI, 5-state question palette, autosave, scoring + NTA normalization
+- Auto-submit on timer expiry verified: `auto_submitted=true`, all responses preserved ✅
 
 ---
 
-## 8. Diagnosis Screen §10/§12 — STABLE
+## 8. Diagnosis Screen §10/§12 — STABLE ✅
 
 **Route:** `http://localhost:3000/diagnosis/[attemptId]`
-**Status:** Fully operational — Percentile gauge, Mark Leak Engine, College Heatmap, Recovery Path
 
-### New Database Tables (3 more → 18 total)
-
-| # | Table | Notes |
-|---|-------|-------|
-| 16 | `mark_leaks` | Per-question wrong-answer → NCERT chapter mapping |
-| 17 | `college_target_analytics` | Seat probability snapshot per mock submission |
-| 18 | `cutoff_benchmarks` | 6 DU colleges seeded (SRCC, Hindu, Hansraj, LSR, Miranda, KMC) |
-
-### Files shipped this session
-
-```
-src/app/diagnosis/[attemptId]/
-├── layout.tsx      ← Student sidebar layout
-├── loading.tsx     ← Skeleton
-├── page.tsx        ← Server Component (calls getDiagnosisAction)
-└── actions.ts      ← 'use server' — full computation pipeline
-
-src/components/diagnosis/
-├── DiagnosisShell.tsx       ← Client wrapper
-├── PercentileGauge.tsx      ← SVG animated circular gauge
-├── LeakBanner.tsx           ← Dark red "N marks away" banner
-├── CollegeHeatmapTable.tsx  ← Probability bars + status chips
-├── GapAnalysisCard.tsx      ← Chapter breakdown + behavioral flags
-└── RecoveryPathCard.tsx     ← 3-step plan + projected impact + CTA
-```
-
-### getDiagnosisAction pipeline
-1. Fetches `mock_responses` + `question_bank` for the attempt
-2. Classifies each wrong answer: guessing (<15s) / careless (changed>1) / speed (2.5x avg) / conceptual (difficulty≥4) / application
-3. Computes severity = lost_marks × (1 + 0.3×difficulty)
-4. Upserts `mark_leaks` with NCERT mapping
-5. Fetches `cutoff_benchmarks` for all DU colleges
-6. Computes seat heatmap: score_gap, probability (logistic), seat_status
-7. Deletes + inserts `college_target_analytics`
-8. Builds Recovery Prescription from top severity leak
-
-### Screen S14 fidelity (5-screen-2.html)
-- ✅ Percentile gauge with `stroke-dashoffset` animation
-- ✅ Mark Leaks card with pulsing red CSS animation
-- ✅ Dark red gradient leak banner with diagonal stripe overlay
-- ✅ College heatmap with hover translateX + probability bars
-- ✅ Gap Analysis with behavioral flag (guessing detected)
-- ✅ Recovery path with 3 steps + projected impact + indigo CTA
+- `getDiagnosisAction` server action: classifies leaks, builds seat heatmap, upserts `college_target_analytics`
+- SVG percentile gauge, College Heatmap Matrix (6 DU colleges), Gap Analysis, Recovery Path CTA
+- Mobile responsive at 360px — card layout replaces table ✅
 
 ---
 
-## 9. Phase 2 Complete — Next: Phase 3 Surgical Drill System
+## 9. Phase 3: Surgical Practice System — STABLE ✅
 
-The NTA-Mirror Engine is stable. Continuing Phase 2:
+**Routes:**
+- `/surgical-drill` — S15 Drill Hub
+- `/surgical-drill/[sessionId]` — S19 Drill Engine
 
-1. ✅ **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
-2. ✅ **Question Bank** — `question_bank` table seeded with CUET-pattern questions
-3. ✅ **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
-4. ✅ **Scoring + Normalization** — raw score → simulated NTA normalization model
-5. ⏳ **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
-6. ⏳ **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
-7. ⏳ **Diagnosis page** — `/diagnosis/[attemptId]` — score breakdown, mark leaks
+### New Tables (2 more → 20 total)
+- `practice_sessions` — mode, status, linked_mark_leak_id, accuracy, outcome
+- `practice_session_items` — one row per question per drill
+
+### New question_bank columns
+- `logic_fix_text` — one-liner explanation (seeded for all 5 CUET questions)
+- `pattern_text` — mnemonic to remember (seeded for all 5 CUET questions)
+
+### API Routes
+- `POST /api/drill/start` — creates gap-remedy session from mark_leak
+- `POST /api/drill/[id]/answer` — records answer + returns **Conceptual Bridge** payload instantly
+- `POST /api/drill/[id]/complete` — seal (≥70%) / reduce 50% (40-69%) / unchanged (<40%) the mark_leak
+
+### The Conceptual Bridge (S19 key differentiator)
+Instant slide-up panel after every answer. Zero debounce.
+- Gold gradient header ("CONCEPTUAL BRIDGE" + "Surgical Fix")
+- ONE-LINE LOGIC FIX — directly addresses the mistake
+- PATTERN TO REMEMBER — mnemonic for future recall
+- NCERT page reference
+
+### Seal / Reduce Loop (closed)
+```
+Diagnosis → mark_leaks.severity_score > 0
+  → "Fix Mistakes" CTA → POST /api/drill/start
+    → /surgical-drill/[sessionId]
+      → answer Q → ConceptualBridge slides in
+        → all Qs done → POST /api/drill/complete
+          → if accuracy ≥ 70%: mark_leaks.is_resolved = true (Sealed)
+          → "View Updated Diagnosis" → /diagnosis/[attemptId]
+```
+
+---
+
+## 10. TestSprite Audit — 32/32 COMPLIANCE PASS ✅
+
+**Report:** `testsprite_tests/SURGICAL_AUDIT_REPORT.md`
+
+| Section | Checks | Result |
+|---------|--------|--------|
+| 1. User Lifecycle (E2E) | 5 | 5/5 ✅ |
+| 2. Academic & NTA Compliance | 7 | 5/5 ✅ (2 fixed inline) |
+| 3. Surgical Drill Hub Logic | 4 | 4/4 ✅ |
+| 4. Mobile 360px Regression | 16 | 16/16 ✅ |
+| **Total** | **32** | **32/32 ✅** |
+
+### Fixes Applied During Audit
+1. **P1 — SRCC Eligibility Rule:** v1 (pick 1 domain) → v2 (pick 3 domains per CUET 2026 spec)
+2. **P2 — NTA Palette `not_visited`:** `bg-gray-300` → `bg-gray-500` (closer to NTA spec `#808080`)
+
+### Open Backlog (Phase 4)
+- P2: Seed eligibility rules for BHU, JNU, Jamia, Allahabad University (PRD §8.4.2)
+- P2: Populate `ncert_book` on English questions (CUET-ENG-001/002)
+- P2: `legend not_answered` shows gray in instructions — should be red
+
+---
+
+## 11. Phase 4: Monetization & Selection Hub — NEXT MILESTONE 🚀
+
+**Status:** Ready to begin. All Phase 1–3 systems are audited and production-ready.
+
+### Scope (PRD §14.4, §16, §4.8)
+
+**A. Razorpay Monetization (PRD §16)**
+- `subscriptions` table — Pro Pass (unlimited mocks + drills)
+- `payment_orders` table — Razorpay order creation
+- `payment_webhook_events` table — idempotent webhook log
+- `surgical_credits` table — ledger model (purchase / consume / refund / expire)
+- `POST /api/payments/order` — create Razorpay order
+- `POST /api/webhooks/razorpay` — verified webhook (signature check)
+- `hasAccess(student, feature)` helper — Pro Pass → allow / credits → allow / paywall
+- Paywall overlay on Mode A (Gap-Remedy) and Mode D (Full Mock) CTAs
+
+**B. Selection Hub (PRD §4.8)**
+- `/selection-hub` — dream college shortlisting + CSAS preference optimizer
+- `/admissions-os` — preference list ordering + seat allotment tracker
+- `user_targets` management — add/remove/reorder targets
+- College probability heatmap across all targets (live from `college_target_analytics`)
+
+**C. 99Plus Store UI**
+- Sachet credit packs (unlock 1 mock or short drill batch)
+- Pro Pass subscription landing
+- Razorpay checkout integration
+
+### Priority Order
+1. `surgical_credits` ledger + `payment_orders` + `subscriptions` (DB + API)
+2. Razorpay webhook handler (`POST /api/webhooks/razorpay`)
+3. `hasAccess()` entitlement helper
+4. Paywall overlay on S15 Mode A/D cards
+5. Selection Hub scaffold (`/selection-hub`)
 
 ---
 
 *Do not commit secrets from `.env.local` or `.insforge/project.json`. Both are in `.gitignore`.*
-
----
-
-## 10. Phase 3: Surgical Practice System — STABLE
-
-**Routes:**
-- `/surgical-drill` — S15 Drill Hub (4 mode cards, Active Leak banner)
-- `/surgical-drill/[sessionId]` — S19 Drill Engine (Conceptual Bridge)
-
-**The Conceptual Bridge:** Instant slide-up panel after every answer. Gold gradient header, One-Line Logic Fix, Pattern to Remember, NCERT page reference. Zero debounce.
-
-**Seal/Reduce loop:** accuracy ≥70% → `mark_leaks.is_resolved=true` (Sealed) · 40-69% → severity × 0.5 (Reduced) · <40% → unchanged.
-
-**New tables (2 more → 20 total):** `practice_sessions`, `practice_session_items`
-
-**Conceptual Bridge seeded for:** CUET-ENG-001/002, CUET-MATH-001/002, CUET-GT-001

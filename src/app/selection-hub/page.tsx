@@ -35,14 +35,14 @@ export default async function SelectionHubPage() {
   // ── Student profile ────────────────────────────────────────────────────────
   const { data: profiles } = await db.database
     .from('student_profiles')
-    .select('account_state, dream_university, dream_program')
+    .select('account_state, dream_college, dream_course')
     .eq('id', uid)
     .limit(1)
 
   const profile = (profiles as Array<{
     account_state: string
-    dream_university: string | null
-    dream_program: string | null
+    dream_college: string | null
+    dream_course: string | null
   }> | null)?.[0]
 
   if (!profile) redirect('/login')
@@ -161,8 +161,8 @@ export default async function SelectionHubPage() {
         isEligibilityLocked={isEligibilityLocked}
         hasProPass={hasProPass}
         accountState={profile.account_state}
-        targetUniversity={target?.universities?.name ?? null}
-        targetProgram={target?.programs?.name ?? null}
+      targetUniversity={target?.universities?.name ?? profile.dream_college ?? null}
+      targetProgram={target?.programs?.name ?? profile.dream_course ?? null}
         studentStats={studentStats}
         cutoffRows={cutoffRows}
       />

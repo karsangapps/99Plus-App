@@ -121,16 +121,45 @@ Toggle the server off/on in Cursor Settings → Agents to activate.
 
 ---
 
-## 7. Next Session — Phase 2: NTA-Mirror Engine
+## 7. Phase 4 — Monetization & Selection Hub (Current Sprint)
 
-The Eligibility Guardian is stable and pushed. Phase 2 begins with the NTA Mock Simulator:
+**Branch:** `cursor/phase-4-database-initialization-bfd0`
 
-1. **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
-2. **Question Bank** — `question_bank` table seeded with CUET-pattern questions
-3. **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
-4. **Scoring + Normalization** — raw score → simulated NTA normalization model
-5. **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
-6. **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
+### 7.1 What was built this session
+
+| Deliverable | File | Status |
+|---|---|---|
+| Commerce DB Migration | `scripts/create_commerce_tables.sql` | Written — needs `insforge db run` |
+| Razorpay Webhook Handler | `src/app/api/payments/webhook/route.ts` | Scaffolded |
+| Surgical Store UI | `src/app/store/page.tsx` + `src/components/store/` | Scaffolded |
+| Selection Hub UI | `src/app/selection-hub/page.tsx` + `src/components/selection-hub/` | Scaffolded |
+
+### 7.2 New DB Tables (run migration to activate)
+
+```bash
+insforge db run scripts/create_commerce_tables.sql
+```
+
+Tables added:
+- `surgical_credits` — immutable credit ledger (PRD §14.3.6)
+- `subscriptions` — Pro Pass lifecycle (PRD §14.4.1)
+- `payment_orders` — Razorpay order record (PRD §14.4.2)
+- `payment_webhook_events` — idempotent webhook log (PRD §14.4.3)
+
+### 7.3 Env var required before going live
+
+```
+RAZORPAY_WEBHOOK_SECRET=<your_razorpay_webhook_secret>
+RAZORPAY_KEY_ID=<your_key>
+RAZORPAY_KEY_SECRET=<your_secret>
+```
+
+### 7.4 Phase 4 Step 2 (next session)
+
+- `POST /api/payments/create-order` — creates Razorpay order + internal `payment_orders` row
+- Wire `StorePricingCards.tsx` CTA buttons to the above API
+- `hasAccess(studentId, feature)` utility — Pro Pass check + credit balance check
+- Razorpay checkout JS integration (client-side)
 
 ---
 

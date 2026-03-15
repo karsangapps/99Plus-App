@@ -133,7 +133,7 @@ export async function POST(req: Request) {
     const otpReference = `otp_${crypto.randomUUID()}`
     const tokenHash = await sha256Hex(`${otpReference}:${otp}`)
 
-    const h = headers()
+    const h = await headers()
     const ua = h.get('user-agent')
     const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || null
 

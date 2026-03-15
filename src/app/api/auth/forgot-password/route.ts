@@ -37,14 +37,12 @@ export async function POST(req: Request) {
     const { baseUrl, key } = getProjectConfig()
     const insforge = createClient({ baseUrl, anonKey: key })
 
-    const h = headers()
+    const h = await headers()
     const origin = h.get('origin') || ''
     const redirectTo = origin ? `${origin}/login` : undefined
 
     // InsForge SDK is Supabase-compatible; this triggers a secure reset email.
-    const resetRes = await insforge.auth.resetPasswordForEmail(email, {
-      redirectTo
-    })
+    const resetRes = await insforge.auth.sendResetPasswordEmail({ email })
 
     if (resetRes?.error) {
       return NextResponse.json(

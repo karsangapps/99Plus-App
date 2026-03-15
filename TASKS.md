@@ -44,3 +44,37 @@ Build the hard-lock subject validation engine:
 2. UI at `/onboarding/eligibility` showing rule card + subject picker stepper
 3. API route that validates subject selection against rules and writes lock snapshot
 
+
+---
+
+## Phase 4 — Monetization & Selection Hub (IN PROGRESS)
+
+- [x] **Task 1 — DB: Commerce Tables** (`scripts/create_commerce_tables.sql`)
+  - [x] `payment_product_type` ENUM
+  - [x] `surgical_credits` — immutable ledger model (PRD §14.3.6)
+  - [x] `subscriptions` — Pro Pass lifecycle (PRD §14.4.1)
+  - [x] `payment_orders` — Razorpay order record (PRD §14.4.2)
+  - [x] `payment_webhook_events` — idempotent webhook log (PRD §14.4.3)
+  - [x] Indexes + RLS policies on all tables
+  - [ ] **TODO: Run migration** via `insforge db run scripts/create_commerce_tables.sql`
+
+- [x] **Task 2 — Security: Razorpay Webhook Handler**
+  - [x] `src/app/api/payments/webhook/route.ts`
+  - [x] HMAC-SHA256 signature verification (constant-time)
+  - [x] Idempotency via `external_event_id UNIQUE` constraint
+  - [x] Handles: `payment.captured`, `order.paid`, `subscription.activated`, `subscription.charged`, `subscription.cancelled`, `refund.processed`
+  - [ ] **TODO: Set `RAZORPAY_WEBHOOK_SECRET` in `.env.local`**
+
+- [x] **Task 3 — Frontend: Surgical Store** (`/store`)
+  - [x] `src/app/store/page.tsx` — server component (fetches credit balance + Pro status)
+  - [x] `src/components/store/StoreSidebar.tsx`
+  - [x] `src/components/store/StoreHeader.tsx` (live credit balance widget)
+  - [x] `src/components/store/StorePricingCards.tsx` (3-column pricing grid)
+  - [ ] **TODO: Wire to `POST /api/payments/create-order` (Phase 4 Step 2)**
+
+- [x] **Task 4 — Frontend: Selection Hub** (`/selection-hub`)
+  - [x] `src/app/selection-hub/page.tsx` — server component with eligibility gate
+  - [x] `src/components/selection-hub/SelectionHubClient.tsx`
+  - [x] Preference list, Cutoff Analysis, Allotment Tracker tabs
+  - [x] Pro Pass gate for preference optimiser
+  - [ ] **TODO: Connect to live cutoff benchmarks table (Phase 5)**

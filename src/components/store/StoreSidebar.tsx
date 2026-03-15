@@ -18,8 +18,9 @@ const NAV_ITEMS = [
 export function StoreSidebar({ activePath }: StoreSidebarProps) {
   return (
     <aside
-      className="w-[260px] min-w-[260px] h-full flex flex-col justify-between border-r bg-white flex-shrink-0"
+      className="hidden md:flex w-[260px] min-w-[260px] h-full flex-col justify-between border-r bg-white flex-shrink-0"
       style={{ borderColor: '#E5E7EB' }}
+      aria-label="App sidebar"
     >
       <div>
         {/* Logo */}
@@ -41,13 +42,15 @@ export function StoreSidebar({ activePath }: StoreSidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="px-3 py-4 flex flex-col gap-1">
+        <nav className="px-3 py-4 flex flex-col gap-1" aria-label="Main navigation">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const isActive = activePath === href
             return (
               <Link
                 key={href}
                 href={href}
+                aria-label={label}
+                aria-current={isActive ? 'page' : undefined}
                 className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-50"
                 style={{ color: isActive ? '#6366F1' : '#9CA3AF' }}
               >
@@ -62,6 +65,8 @@ export function StoreSidebar({ activePath }: StoreSidebarProps) {
           {/* 99Plus Store — active highlight */}
           <Link
             href="/store"
+            aria-label="99Plus Store"
+            aria-current={activePath === '/store' ? 'page' : undefined}
             className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
             style={
               activePath === '/store'

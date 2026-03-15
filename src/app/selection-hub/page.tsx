@@ -156,6 +156,7 @@ export default async function SelectionHubPage() {
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#F8FAFC' }}>
       <StoreSidebar activePath="/selection-hub" />
+      {/* min-w-0 prevents flex child from overflowing on mobile */}
       <SelectionHubClient
         isEligibilityLocked={isEligibilityLocked}
         hasProPass={hasProPass}

@@ -52,7 +52,7 @@ export default async function StorePage() {
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#F8FAFC' }}>
       <StoreSidebar activePath="/store" />
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="flex-1 flex flex-col h-full overflow-hidden min-w-0">
         <StoreHeader creditBalance={balance} />
         <main
           className="flex-1 overflow-y-auto p-8"

@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useCallback } from 'react'
 
 // ── Types exported for the server component ────────────────────────────────
 
@@ -60,7 +61,21 @@ export function SelectionHubClient({
   studentStats,
   cutoffRows,
 }: SelectionHubClientProps) {
-  const [activeTab, setActiveTab] = useState<'heatmap' | 'preferences' | 'allotment'>('heatmap')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const rawTab = searchParams.get('tab')
+  const activeTab: 'heatmap' | 'preferences' | 'allotment' =
+    rawTab === 'preferences' || rawTab === 'allotment' ? rawTab : 'heatmap'
+
+  const setActiveTab = useCallback(
+    (tab: 'heatmap' | 'preferences' | 'allotment') => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('tab', tab)
+      router.push(`${pathname}?${params.toString()}`, { scroll: false })
+    },
+    [router, pathname, searchParams]
+  )
 
   const topTarget = cutoffRows[0] ?? null
 
@@ -182,9 +197,16 @@ export function SelectionHubClient({
 
             {/* Tabs */}
             <div className="flex items-center gap-1 bg-white border rounded-xl p-1"
+              role="tablist"
+              aria-label="Selection Hub sections"
               style={{ borderColor: '#E5E7EB' }}>
               {(['heatmap', 'preferences', 'allotment'] as const).map(tab => (
-                <button key={tab} onClick={() => setActiveTab(tab)}
+                <button key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  role="tab"
+                  aria-selected={activeTab === tab}
+                  aria-controls={`panel-${tab}`}
+                  id={`tab-${tab}`}
                   className="flex-1 py-2.5 rounded-lg text-sm font-semibold capitalize transition-all"
                   style={activeTab === tab
                     ? { background: '#6366F1', color: '#FFFFFF' }

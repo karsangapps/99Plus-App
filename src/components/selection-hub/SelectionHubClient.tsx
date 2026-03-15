@@ -3,52 +3,52 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
+// ── Types exported for the server component ────────────────────────────────
+
+export type GapStatus = 'safe' | 'possible' | 'close' | 'reach'
+
+export type CutoffRow = {
+  id: string
+  rank: number
+  college: string
+  program: string
+  category: string
+  cutoffScore: number
+  cutoffPercentile: number
+  scoreGap: number
+  percentileGap: number
+  gapStatus: GapStatus
+}
+
+export type StudentStats = {
+  projectedScore: number
+  projectedPercentile: number
+  creditBalance: number
+  lastUpdated: string
+}
+
 type SelectionHubClientProps = {
   isEligibilityLocked: boolean
   hasProPass: boolean
   accountState: string
   targetUniversity: string | null
   targetProgram: string | null
+  studentStats: StudentStats
+  cutoffRows: CutoffRow[]
 }
 
-type CollegePreference = {
-  id: string
-  rank: number
-  university: string
-  program: string
-  category: string
-  lastYearCutoff: number
-  yourProjected: number
-  gap: number
-  gapDirection: 'above' | 'below' | 'at'
+// PRD §11.3 status config
+const STATUS_CONFIG: Record<GapStatus, { label: string; color: string; bg: string; bar: string }> = {
+  safe:     { label: 'Safe',     color: '#059669', bg: '#ECFDF5', bar: '#059669' },
+  possible: { label: 'Possible', color: '#6366F1', bg: '#EEF2FF', bar: '#6366F1' },
+  close:    { label: 'Close',    color: '#D97706', bg: '#FEF3C7', bar: '#D97706' },
+  reach:    { label: 'Reach',    color: '#EF4444', bg: '#FEF2F2', bar: '#EF4444' },
 }
-
-// Placeholder data — seeded once real mock/drill data flows in
-const DEMO_PREFERENCES: CollegePreference[] = [
-  {
-    id: '1', rank: 1,
-    university: 'SRCC, University of Delhi', program: 'B.Com (Hons)',
-    category: 'General', lastYearCutoff: 98.5, yourProjected: 96.2,
-    gap: -2.3, gapDirection: 'below',
-  },
-  {
-    id: '2', rank: 2,
-    university: 'LSR, University of Delhi', program: 'B.A. Political Science (Hons)',
-    category: 'General', lastYearCutoff: 97.0, yourProjected: 96.2,
-    gap: -0.8, gapDirection: 'below',
-  },
-  {
-    id: '3', rank: 3,
-    university: 'Gargi College, University of Delhi', program: 'B.Com (Hons)',
-    category: 'General', lastYearCutoff: 94.0, yourProjected: 96.2,
-    gap: 2.2, gapDirection: 'above',
-  },
-]
 
 const ALLOTMENT_ROUNDS = [
   { round: 1, status: 'upcoming', date: 'Jul 10, 2026', label: 'Round 1 — Initial Allotment' },
   { round: 2, status: 'upcoming', date: 'Jul 24, 2026', label: 'Round 2 — Spot Allotment' },
-  { round: 3, status: 'upcoming', date: 'Aug 5, 2026', label: 'Round 3 — Final Allotment' },
+  { round: 3, status: 'upcoming', date: 'Aug 5, 2026',  label: 'Round 3 — Final Allotment' },
 ]
 
 export function SelectionHubClient({
@@ -57,12 +57,16 @@ export function SelectionHubClient({
   accountState,
   targetUniversity,
   targetProgram,
+  studentStats,
+  cutoffRows,
 }: SelectionHubClientProps) {
-  const [activeTab, setActiveTab] = useState<'preferences' | 'cutoffs' | 'allotment'>('preferences')
+  const [activeTab, setActiveTab] = useState<'heatmap' | 'preferences' | 'allotment'>('heatmap')
+
+  const topTarget = cutoffRows[0] ?? null
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
-      {/* Header */}
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header
         className="h-16 min-h-[64px] flex items-center justify-between px-8 bg-white border-b flex-shrink-0"
         style={{ borderColor: '#E5E7EB' }}
@@ -71,253 +75,224 @@ export function SelectionHubClient({
           <h1 className="text-xl font-bold tracking-tight" style={{ color: '#0F172A' }}>
             Selection Hub
           </h1>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Admissions OS · CUET 2026</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>
+            Admissions OS · CUET 2026 · Score-Gap Engine active
+          </p>
         </div>
         <div className="flex items-center gap-3">
           {hasProPass && (
-            <span
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
-              style={{ background: '#FEF3C7', color: '#D97706' }}
-            >
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+              style={{ background: '#FEF3C7', color: '#D97706' }}>
               ★ Pro Pass Active
             </span>
           )}
-          <span
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold capitalize"
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold capitalize"
             style={{
               background: isEligibilityLocked ? 'rgba(5,150,105,0.1)' : 'rgba(99,102,241,0.1)',
               color: isEligibilityLocked ? '#059669' : '#6366F1',
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: isEligibilityLocked ? '#059669' : '#6366F1' }}
-            />
+            }}>
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: isEligibilityLocked ? '#059669' : '#6366F1' }} />
             {accountState.replace(/_/g, ' ')}
           </span>
         </div>
       </header>
 
-      {/* Eligibility not locked — gate screen */}
+      {/* ── Eligibility gate ───────────────────────────────────────────────── */}
       {!isEligibilityLocked && (
         <div className="flex-1 flex items-center justify-center p-8">
-          <div
-            className="max-w-md text-center p-10 bg-white rounded-2xl border"
-            style={{ borderColor: '#E5E7EB', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}
-          >
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
-              style={{ background: '#EEF2FF' }}
-            >
-              <LockIcon />
+          <div className="max-w-md text-center p-10 bg-white rounded-2xl border"
+            style={{ borderColor: '#E5E7EB', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+              style={{ background: '#EEF2FF' }}>
+              <LockSvg />
             </div>
             <h2 className="text-xl font-extrabold mb-2" style={{ color: '#0F172A' }}>
               Complete Eligibility Lock First
             </h2>
             <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>
-              The Selection Hub activates after you lock your subject eligibility. This ensures your preference list is curated to programs you actually qualify for.
+              The Selection Hub and Score-Gap Engine activate after you lock your subject eligibility.
             </p>
-            <Link
-              href="/onboarding/eligibility"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:shadow-md"
-              style={{ background: '#6366F1' }}
-            >
+            <Link href="/onboarding/eligibility"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
+              style={{ background: '#6366F1' }}>
               Go to Eligibility Guardian →
             </Link>
           </div>
         </div>
       )}
 
-      {/* Main content — eligibility locked */}
+      {/* ── Main content ───────────────────────────────────────────────────── */}
       {isEligibilityLocked && (
         <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="max-w-5xl mx-auto px-8 py-6 space-y-6">
 
             {/* Mission banner */}
-            <div
-              className="p-5 relative overflow-hidden"
-              style={{
-                background: 'linear-gradient(135deg, #6366F1, #818CF8)',
-                borderRadius: '16px',
-              }}
-            >
-              <div className="absolute top-0 right-0 opacity-10 text-white" style={{ fontSize: 120 }}>
-                🏛
-              </div>
+            <div className="p-5 relative overflow-hidden" style={{
+              background: 'linear-gradient(135deg, #6366F1, #818CF8)',
+              borderRadius: '16px',
+            }}>
               <div className="relative z-10 flex items-center justify-between flex-wrap gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span
-                      className="px-2.5 py-1 bg-white/20 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm"
-                      style={{ borderRadius: '6px' }}
-                    >
-                      Phase 4 · Admissions OS
+                    <span className="px-2.5 py-1 bg-white/20 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm"
+                      style={{ borderRadius: '6px' }}>
+                      PRD §11 · Score-Gap Engine
                     </span>
                   </div>
                   <h2 className="text-xl font-extrabold text-white mb-1">
-                    {targetProgram ?? 'Your Dream Program'} ·{' '}
-                    {targetUniversity ?? 'Target University'}
+                    {targetProgram ?? 'Your Dream Program'} · {targetUniversity ?? 'Target University'}
                   </h2>
                   <p className="text-sm text-white/70">
-                    Build your preference list, compare cutoffs, and track seat allotment rounds.
+                    {studentStats.lastUpdated}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <StatChip label="Preferences" value={DEMO_PREFERENCES.length} />
-                  <StatChip label="Rounds" value={ALLOTMENT_ROUNDS.length} />
+                  <StatChip label="Projected" value={`${studentStats.projectedPercentile}%ile`} />
+                  <StatChip label="Benchmarks" value={String(cutoffRows.length)} />
                 </div>
               </div>
             </div>
 
-            {/* Distance-to-Seat card */}
+            {/* Distance-to-Seat metric cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <SeatMetricCard
-                icon={<TargetIcon />}
+              <MetricCard
                 label="Projected Percentile"
-                value="96.2"
+                value={`${studentStats.projectedPercentile}`}
                 unit="%ile"
-                color="#6366F1"
-                bg="#EEF2FF"
-                note="Based on last mock"
+                color="#6366F1" bg="#EEF2FF"
+                note={`Score: ${studentStats.projectedScore}/200`}
               />
-              <SeatMetricCard
-                icon={<CutoffIcon />}
+              <MetricCard
                 label="Dream College Cutoff"
-                value="98.5"
+                value={topTarget ? `${topTarget.cutoffPercentile}` : '—'}
                 unit="%ile"
-                color="#EF4444"
-                bg="#FEF2F2"
-                note="SRCC 2025 — Gen"
+                color="#EF4444" bg="#FEF2F2"
+                note={topTarget ? `${topTarget.college} Gen 2025` : 'Loading…'}
               />
-              <SeatMetricCard
-                icon={<GapIcon />}
+              <MetricCard
                 label="Distance to Seat"
-                value="-2.3"
+                value={topTarget ? `${topTarget.percentileGap > 0 ? '+' : ''}${topTarget.percentileGap.toFixed(1)}` : '—'}
                 unit="%ile"
-                color="#D97706"
-                bg="#FEF3C7"
-                note="Gap to close"
+                color={topTarget ? STATUS_CONFIG[topTarget.gapStatus].color : '#9CA3AF'}
+                bg={topTarget ? STATUS_CONFIG[topTarget.gapStatus].bg : '#F1F5F9'}
+                note={topTarget ? STATUS_CONFIG[topTarget.gapStatus].label : '—'}
               />
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-1 bg-white border rounded-xl p-1" style={{ borderColor: '#E5E7EB' }}>
-              {(['preferences', 'cutoffs', 'allotment'] as const).map(tab => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
+            <div className="flex items-center gap-1 bg-white border rounded-xl p-1"
+              style={{ borderColor: '#E5E7EB' }}>
+              {(['heatmap', 'preferences', 'allotment'] as const).map(tab => (
+                <button key={tab} onClick={() => setActiveTab(tab)}
                   className="flex-1 py-2.5 rounded-lg text-sm font-semibold capitalize transition-all"
-                  style={
-                    activeTab === tab
-                      ? { background: '#6366F1', color: '#FFFFFF' }
-                      : { color: '#9CA3AF' }
-                  }
-                >
-                  {tab === 'preferences' ? 'My Preferences' : tab === 'cutoffs' ? 'Cutoff Analysis' : 'Allotment Tracker'}
+                  style={activeTab === tab
+                    ? { background: '#6366F1', color: '#FFFFFF' }
+                    : { color: '#9CA3AF' }}>
+                  {tab === 'heatmap' ? '🌡 Distance Heatmap' : tab === 'preferences' ? 'My Preferences' : 'Allotment Tracker'}
                 </button>
               ))}
             </div>
 
-            {/* Tab: Preferences */}
+            {/* ── Tab: Distance-to-Seat Heatmap (PRD §11) ───────────────────── */}
+            {activeTab === 'heatmap' && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#9CA3AF' }}>
+                    Score-Gap Heatmap · CUET 2025 · General Category
+                  </p>
+                  <div className="flex items-center gap-2 text-xs" style={{ color: '#9CA3AF' }}>
+                    {(['safe', 'possible', 'close', 'reach'] as GapStatus[]).map(s => (
+                      <span key={s} className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full inline-block"
+                          style={{ background: STATUS_CONFIG[s].color }} />
+                        {STATUS_CONFIG[s].label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {cutoffRows.map(row => <HeatmapRow key={row.id} row={row} studentStats={studentStats} />)}
+
+                <div className="mt-4 p-4 rounded-xl flex items-start gap-3"
+                  style={{ background: '#EEF2FF' }}>
+                  <InfoSvg />
+                  <div>
+                    <p className="text-xs font-semibold mb-1" style={{ color: '#4338CA' }}>
+                      How the Score-Gap is computed (PRD §11.2)
+                    </p>
+                    <p className="text-xs" style={{ color: '#6366F1' }}>
+                      <strong>score_gap</strong> = your projected score − college cutoff score. 
+                      <strong> percentile_gap</strong> = your percentile − cutoff percentile. 
+                      Thresholds: Safe ≥+15, Possible +1 to +14, Close −1 to −10, Reach &lt;−10.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Tab: Preferences ───────────────────────────────────────────── */}
             {activeTab === 'preferences' && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#9CA3AF' }}>
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#9CA3AF' }}>
                     Ranked Preference List
                   </p>
-                  {!hasProPass && (
-                    <ProGate feature="Preference Optimiser" />
-                  )}
+                  {!hasProPass && <ProGate feature="Preference Optimiser" />}
                 </div>
-                {DEMO_PREFERENCES.map(pref => (
-                  <PreferenceRow key={pref.id} pref={pref} locked={!hasProPass} />
+                {cutoffRows.slice(0, 3).map((row, i) => (
+                  <div key={row.id}
+                    className="flex items-center justify-between p-5 bg-white border rounded-xl hover:shadow-sm transition-all"
+                    style={{ borderColor: '#E5E7EB', opacity: !hasProPass ? 0.65 : 1 }}>
+                    <div className="flex items-center gap-4">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0"
+                        style={{ background: '#EEF2FF', color: '#6366F1' }}>
+                        {i + 1}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{row.college}</p>
+                        <p className="text-xs" style={{ color: '#9CA3AF' }}>{row.program} · {row.category}</p>
+                      </div>
+                    </div>
+                    <GapPill gap={row.percentileGap} status={row.gapStatus} />
+                  </div>
                 ))}
                 <button
-                  className="w-full mt-2 py-3 rounded-xl text-sm font-bold border-2 border-dashed transition-all hover:border-solid"
+                  className="w-full mt-2 py-3 rounded-xl text-sm font-bold border-2 border-dashed transition-all"
                   style={{ borderColor: '#6366F1', color: '#6366F1' }}
-                  disabled={!hasProPass}
-                >
-                  {hasProPass ? '+ Add College Preference' : '🔒 Unlock with Pro Pass to add preferences'}
+                  disabled={!hasProPass}>
+                  {hasProPass ? '+ Add College Preference' : '🔒 Unlock with Pro Pass'}
                 </button>
               </div>
             )}
 
-            {/* Tab: Cutoff Analysis */}
-            {activeTab === 'cutoffs' && (
-              <div className="bg-white border rounded-xl overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
-                <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: '#E5E7EB' }}>
-                  <p className="text-sm font-bold" style={{ color: '#0F172A' }}>Cutoff vs. Projected Percentile</p>
-                  <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: '#EEF2FF', color: '#6366F1' }}>CUET 2025 Data</span>
-                </div>
-                <div className="divide-y" style={{ borderColor: '#E5E7EB' }}>
-                  {DEMO_PREFERENCES.map(pref => (
-                    <div key={pref.id} className="px-6 py-4 flex items-center justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate" style={{ color: '#0F172A' }}>{pref.university}</p>
-                        <p className="text-xs" style={{ color: '#9CA3AF' }}>{pref.program} · {pref.category}</p>
-                      </div>
-                      <div className="flex items-center gap-6 text-right flex-shrink-0">
-                        <div>
-                          <p className="text-xs" style={{ color: '#9CA3AF' }}>Cutoff</p>
-                          <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{pref.lastYearCutoff}%ile</p>
-                        </div>
-                        <div>
-                          <p className="text-xs" style={{ color: '#9CA3AF' }}>Yours</p>
-                          <p className="text-sm font-bold" style={{ color: '#6366F1' }}>{pref.yourProjected}%ile</p>
-                        </div>
-                        <GapBadge gap={pref.gap} direction={pref.gapDirection} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Tab: Allotment Tracker */}
+            {/* ── Tab: Allotment Tracker ─────────────────────────────────────── */}
             {activeTab === 'allotment' && (
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs font-bold uppercase tracking-widest mb-4"
+                  style={{ color: '#9CA3AF' }}>
                   CSAS 2026 — Seat Allotment Rounds
                 </p>
-                {ALLOTMENT_ROUNDS.map(round => (
-                  <div
-                    key={round.round}
+                {ALLOTMENT_ROUNDS.map(r => (
+                  <div key={r.round}
                     className="flex items-center justify-between p-5 bg-white border rounded-xl"
-                    style={{ borderColor: '#E5E7EB' }}
-                  >
+                    style={{ borderColor: '#E5E7EB' }}>
                     <div className="flex items-center gap-4">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg flex-shrink-0"
-                        style={{ background: '#EEF2FF', color: '#6366F1' }}
-                      >
-                        {round.round}
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg flex-shrink-0"
+                        style={{ background: '#EEF2FF', color: '#6366F1' }}>
+                        {r.round}
                       </div>
                       <div>
-                        <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{round.label}</p>
-                        <p className="text-xs" style={{ color: '#9CA3AF' }}>Expected: {round.date}</p>
+                        <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{r.label}</p>
+                        <p className="text-xs" style={{ color: '#9CA3AF' }}>Expected: {r.date}</p>
                       </div>
                     </div>
-                    <span
-                      className="px-3 py-1.5 rounded-full text-xs font-bold uppercase"
-                      style={{ background: '#F1F5F9', color: '#64748B' }}
-                    >
+                    <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase"
+                      style={{ background: '#F1F5F9', color: '#64748B' }}>
                       Upcoming
                     </span>
                   </div>
                 ))}
-
-                <div
-                  className="mt-4 p-4 rounded-xl flex items-start gap-3"
-                  style={{ background: '#FEFCE8' }}
-                >
-                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="#D97706" strokeWidth="1.5" />
-                    <path d="M12 8v4M12 16h.01" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                  <p className="text-xs font-medium" style={{ color: '#92400E' }}>
-                    Allotment round dates are indicative. Check the official NTA/CSAS portal for confirmed schedules. 99Plus will push notifications when rounds open.
-                  </p>
-                </div>
               </div>
             )}
 
@@ -328,36 +303,88 @@ export function SelectionHubClient({
   )
 }
 
-// ── Sub-components ─────────────────────────────────────────────────────────
+// ── HeatmapRow component ───────────────────────────────────────────────────
 
-function StatChip({ label, value }: { label: string; value: number }) {
+function HeatmapRow({ row, studentStats }: { row: CutoffRow; studentStats: StudentStats }) {
+  const cfg = STATUS_CONFIG[row.gapStatus]
+  // Bar width: 0–100% representing how close the student is to the cutoff
+  // 100% = student score ≥ cutoff, proportionally reduced below
+  const barPct = Math.min(100, Math.max(4,
+    (studentStats.projectedScore / row.cutoffScore) * 100
+  ))
+
   return (
-    <div className="text-center px-5 py-3 bg-white/10 backdrop-blur-sm" style={{ borderRadius: '12px' }}>
-      <p className="text-2xl font-black text-white">{value}</p>
-      <p className="text-xs text-white/60 font-semibold">{label}</p>
+    <div className="bg-white border rounded-xl overflow-hidden transition-all hover:shadow-md"
+      style={{ borderColor: '#E5E7EB' }}>
+      <div className="px-5 pt-4 pb-3">
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0"
+              style={{ background: cfg.bg, color: cfg.color }}>
+              {row.rank}
+            </div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{row.college}</p>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>{row.program}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 flex-shrink-0 text-right">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Cutoff</p>
+              <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{row.cutoffPercentile}%ile</p>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>Score: {row.cutoffScore}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Yours</p>
+              <p className="text-sm font-bold" style={{ color: '#6366F1' }}>{studentStats.projectedPercentile}%ile</p>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>Score: {studentStats.projectedScore}</p>
+            </div>
+            <GapPill gap={row.percentileGap} status={row.gapStatus} />
+          </div>
+        </div>
+
+        {/* Score bar — visual distance indicator */}
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-semibold" style={{ color: '#9CA3AF' }}>
+              Score Gap: {row.scoreGap > 0 ? '+' : ''}{row.scoreGap} marks
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ background: cfg.bg, color: cfg.color }}>
+              {cfg.label}
+            </span>
+          </div>
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: '#F1F5F9' }}>
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${barPct}%`, background: cfg.bar }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
 
-function SeatMetricCard({
-  icon, label, value, unit, color, bg, note,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  unit: string
-  color: string
-  bg: string
-  note: string
+// ── Sub-components ─────────────────────────────────────────────────────────
+
+function StatChip({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="text-center px-5 py-3 bg-white/10 backdrop-blur-sm" style={{ borderRadius: '12px' }}>
+      <p className="text-lg font-black text-white">{value}</p>
+      <p className="text-[10px] text-white/60 font-semibold">{label}</p>
+    </div>
+  )
+}
+
+function MetricCard({ label, value, unit, color, note }: {
+  label: string; value: string; unit: string
+  color: string; bg?: string; note: string
 }) {
   return (
     <div className="bg-white border rounded-xl p-5" style={{ borderColor: '#E5E7EB' }}>
-      <div className="flex items-start justify-between mb-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: bg }}>
-          {icon}
-        </div>
-      </div>
-      <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: '#9CA3AF' }}>{label}</p>
+      <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#9CA3AF' }}>{label}</p>
       <div className="flex items-baseline gap-1">
         <span className="text-3xl font-extrabold tracking-tight" style={{ color }}>{value}</span>
         <span className="text-sm font-medium" style={{ color: '#9CA3AF' }}>{unit}</span>
@@ -367,82 +394,27 @@ function SeatMetricCard({
   )
 }
 
-function PreferenceRow({
-  pref,
-  locked,
-}: {
-  pref: CollegePreference
-  locked: boolean
-}) {
+function GapPill({ gap, status }: { gap: number; status: GapStatus }) {
+  const cfg = STATUS_CONFIG[status]
   return (
-    <div
-      className="flex items-center justify-between p-5 bg-white border rounded-xl transition-all hover:shadow-sm"
-      style={{ borderColor: '#E5E7EB', opacity: locked ? 0.6 : 1 }}
-    >
-      <div className="flex items-center gap-4">
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0"
-          style={{ background: '#EEF2FF', color: '#6366F1' }}
-        >
-          {pref.rank}
-        </div>
-        <div>
-          <p className="text-sm font-bold" style={{ color: '#0F172A' }}>{pref.university}</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>{pref.program} · {pref.category}</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <GapBadge gap={pref.gap} direction={pref.gapDirection} />
-        {!locked && (
-          <button className="w-7 h-7 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#9CA3AF" strokeWidth="1.5">
-              <path d="M12 5v.01M12 12v.01M12 19v.01" strokeLinecap="round" />
-            </svg>
-          </button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function GapBadge({
-  gap,
-  direction,
-}: {
-  gap: number
-  direction: 'above' | 'below' | 'at'
-}) {
-  const config = {
-    above: { bg: '#ECFDF5', color: '#059669', prefix: '+' },
-    below: { bg: '#FEF2F2', color: '#EF4444', prefix: '' },
-    at: { bg: '#EEF2FF', color: '#6366F1', prefix: '±' },
-  }[direction]
-
-  return (
-    <span
-      className="px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
-      style={{ background: config.bg, color: config.color }}
-    >
-      {config.prefix}{gap > 0 ? `+${gap}` : gap}%ile
+    <span className="px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0"
+      style={{ background: cfg.bg, color: cfg.color }}>
+      {gap > 0 ? '+' : ''}{gap.toFixed(1)}%ile
     </span>
   )
 }
 
 function ProGate({ feature }: { feature: string }) {
   return (
-    <Link
-      href="/store"
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:shadow-sm"
-      style={{ background: '#FEF3C7', color: '#D97706' }}
-    >
+    <Link href="/store"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+      style={{ background: '#FEF3C7', color: '#D97706' }}>
       🔒 Unlock {feature} — Get Pro
     </Link>
   )
 }
 
-// ── Icon helpers ───────────────────────────────────────────────────────────
-
-function LockIcon() {
+function LockSvg() {
   return (
     <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#6366F1" strokeWidth="1.5">
       <rect x="5" y="11" width="14" height="10" rx="2" />
@@ -450,28 +422,12 @@ function LockIcon() {
     </svg>
   )
 }
-function TargetIcon() {
+
+function InfoSvg() {
   return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#6366F1" strokeWidth="1.5">
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="6" />
-      <circle cx="12" cy="12" r="2" />
-    </svg>
-  )
-}
-function CutoffIcon() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#EF4444" strokeWidth="1.5">
-      <path d="M3 3v18h18" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M21 9H3" strokeLinecap="round" strokeDasharray="4 2" />
-    </svg>
-  )
-}
-function GapIcon() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#D97706" strokeWidth="1.5">
-      <path d="M12 2v20M2 12h4M18 12h4" strokeLinecap="round" />
-      <path d="M8 8l4-4 4 4M8 16l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+    <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" stroke="#6366F1" strokeWidth="1.5" />
+      <path d="M12 8v4M12 16h.01" stroke="#6366F1" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }

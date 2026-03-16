@@ -67,6 +67,21 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - [x] API routes: `/api/command-center`, `/api/surgical-drill`, `POST /api/practice-sessions/start`
 - [x] StudentDashboardLayout + nav config (Command Center → /command-center)
 
+### Final Master Audit ✅ DONE
+- [x] Pillar 1: Redirection & Navigation — Root redirect gaps; 7/9 nav links 404
+- [x] Pillar 2: Compliance & Surgical Journey — Guardian flow ✅; Mock-to-Money blocked (no Store)
+- [x] Pillar 3: UI Integrity & Performance — 360px responsive ✅; skeleton loaders ✅; purple/green palette ✅
+- [x] Pillar 4: Security & Financial — surgical_credits webhook-only verified; Selection Hub gate N/A (404)
+- [x] Deliverables: FINAL_MASTER_AUDIT_REPORT.md, audit-screenshots/, screen recording
+
+### Surgical Completion Sprint — CURRENT PRIORITY
+- [ ] Root redirects: logged-out → landing/signup; logged-in → /command-center
+- [ ] Resolve 7 dead nav links: /pre-test, /nta-test, /diagnosis, /analytics, /selection-hub, /settings, /store
+- [ ] Implement Store page (Mock-to-Money)
+- [ ] Add middleware or server-side auth check on `/`
+
+---
+
 ### Previous milestone: Eligibility Guardian (§8.4)
 
 Build the hard-lock subject validation engine:

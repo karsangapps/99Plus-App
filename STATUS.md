@@ -1,97 +1,69 @@
 # 99Plus — Memory Anchor
 **Date:** Monday, 16 March 2026
-**Status:** PHASE 5 COMPLETE — PRODUCTION LOCKED
+**Status:** PHASE 5 COMPLETE — SURGICAL COMPLETION SPRINT PENDING
 
 ---
 
-## 1. InsForge Connection
+## 1. What Was Built Today
+
+| Item | Status |
+|------|--------|
+| **Mobile Navigation** | Hamburger menu for 360px; MobileNavDrawer, MobileHeaderBar, NavLinks, navConfig |
+| **Build Fixes** | Next.js 16 `await headers()`, `await cookies()`; InsForge `sendResetPasswordEmail` |
+| **Final Master Audit** | Full regression across 4 pillars; audit report, 360px screenshots, Mock-to-Money recording |
+| **Cutoff Seeding** | `round` column fix; `npm run seed:verify` confirms SRCC, Hindu, LSR |
+| **Master Merge** | cursor/mobile-navigation-menu-8afa merged into master |
+
+---
+
+## 2. Current Blockers (Pre-Launch)
+
+1. **Root redirects** — `/` shows generic links for both logged-out and logged-in users. Expected: logged-out → landing/signup; logged-in → `/command-center`.
+2. **7 screens return 404** — Pre-Test, NTA Test, Diagnosis, Analytics, Selection Hub, Settings, Store (78% of nav links are dead ends).
+3. **Store wiring** — `/store` page missing; Mock-to-Money flow cannot complete (purchase sachet → unlock Mode A).
+
+---
+
+## 3. First Line of Code on Resume
+
+**Implement `middleware.ts`** in the project root:
+
+- For `/`: if logged-out → redirect to `/signup` (or landing); if logged-in → redirect to `/command-center`.
+- Optionally protect `/selection-hub` with guardian + eligibility checks when that page exists.
+
+Example starting point:
+
+```ts
+// src/middleware.ts (or middleware.ts at root)
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  // ...
+}
+```
+
+---
+
+## 4. InsForge Connection
 
 | Field          | Value                                          |
 |----------------|------------------------------------------------|
-| Status         | Connected and verified                      |
-| Project Name   | 99Plus                                         |
-| Project ID     | `5ef73f5a-235e-4b26-acfe-3345e5dbd682`         |
-| App Key        | `s23f7sag`                                     |
-| Region         | `ap-southeast`                                 |
-| OSS Host       | `https://s23f7sag.ap-southeast.insforge.app`   |
-| Auth User      | `banashripegu@gmail.com`                       |
-| CLI command    | `insforge current`                             |
+| Status         | Connected and verified                         |
+| OSS Host       | `https://s23f7sag.ap-southeast.insforge.app`    |
+| CLI            | `insforge current`                             |
 
 ---
 
-## 2. Database Tables (24 total in `public` schema)
+## 5. Database (24 Tables Live)
 
-| #  | Table                        | Notes                                                         |
-|----|------------------------------|---------------------------------------------------------------|
-| 1  | `users`                      | RLS ON — `users_insert_own` policy                           |
-| 2  | `student_profiles`           | `account_state` transitions through onboarding stages        |
-| 3  | `consent_logs`               | DPDP guardian consent audit trail                            |
-| 4  | `user_targets`               | Student's selected university/college/program targets        |
-| 5  | `universities`               | DU, BHU seeded                                                |
-| 6  | `colleges`                   | SRCC, LSR, Hindu, Hansraj (DU), BHU colleges                 |
-| 7  | `programs`                   | B.Com (Hons), B.A. Pol Sci, etc.                             |
-| 8  | `eligibility_rules`          | 2 active rules, fully seeded — see Section 4                 |
-| 9  | `eligibility_lock_snapshots` | Immutable lock events — RLS owner-only                       |
-| 10 | `student_subject_locks`      | One row per locked subject per student — RLS owner-only      |
-| 11 | `syllabus_hierarchy`        | NCERT syllabus graph                                          |
-| 12 | `question_bank`              | Questions for mocks and drills                                |
-| 13 | `mock_tests`                 | Mock test templates                                           |
-| 14 | `mock_test_questions`        | Bridge mock_tests ↔ question_bank                             |
-| 15 | `mock_attempts`              | Student attempt headers                                       |
-| 16 | `mock_responses`             | Per-question responses                                        |
-| 17 | `mark_leaks`                 | Recoverable score loss by syllabus node                       |
-| 18 | `college_target_analytics`   | Distance-to-Seat heatmap data                                 |
-| 19 | `practice_sessions`          | Drill sessions (gap_remedy, topic_mastery, pyq, full_mock)    |
-| 20 | `practice_session_items`     | Questions per practice session                                |
-| 21 | `surgical_credits`           | Credit ledger                                                 |
-| 22 | `cutoff_benchmarks`          | DU/BHU historical cutoffs                                    |
-| 23 | `payment_orders`             | Razorpay orders                                               |
-| 24 | `payment_webhook_events`     | Idempotent webhook log                                        |
+Tables 1–24 in `public` schema. See `FINAL_MASTER_AUDIT_REPORT.md` for full audit.
 
 ---
 
-## 3. Phase 5 — Production Lock (COMPLETE)
+## 6. Build Status
 
-### Task 1: Mobile Navigation ✅
-- Hamburger menu for 360px breakpoint
-- MobileNavDrawer, MobileHeaderBar, NavLinks, navConfig
-
-### Task 2: Surgical Swap ✅
-- Command Center (/command-center): heatmap, proficiency, mastery trend
-- Surgical Drill (/surgical-drill): mark leak banner, Gap-Remedy Start
-
-### Task 3: Data Hardening ✅
-- Zod validation: signup, POST /api/payments/order
-
-### Task 4: Founder Console ✅
-- /admin dashboard: North Star ASI, Seat Success Funnel, Cohort Mark Leak Heatmap
-
-### Build Repair ✅
-- Next.js 16: await headers(), await cookies()
-- InsForge SDK: sendResetPasswordEmail({ email })
-
----
-
-## 4. Deployment Readiness
-
-- Build: `npm run build` — green
-- Migrations: 002 + 003 applied
-- Seed: `npm run seed:cutoffs` (run after `NOTIFY pgrst, 'reload schema'` if PGRST204)
-- Verify: `npm run seed:verify` — confirms SRCC, Hindu College, LSR in cutoff_benchmarks
-
----
-
-## 5. Vercel Readiness — Final Summary
-
-| Check             | Status                                          |
-|-------------------|-------------------------------------------------|
-| **Total Tables Live** | 24 (InsForge confirmed)                         |
-| **Mobile Status**  | Verified (360px viewport — hamburger, drawer, nav) |
-| **Next.js Build**  | Green (16.1.6 Turbopack)                        |
-| **Cutoff Data**    | SRCC, Hindu College, LSR seeded in cutoff_benchmarks |
-| **Production Branch** | `master` (merged from cursor/mobile-navigation-menu-8afa) |
-
-**99Plus is ready for traffic.**
+Run `npm run build` — must be green before shipping.
 
 ---
 

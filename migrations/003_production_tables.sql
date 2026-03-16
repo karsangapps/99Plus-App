@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS cutoff_benchmarks (
   college_id UUID REFERENCES colleges(id),
   program_id UUID REFERENCES programs(id),
   category TEXT,
-  round_label TEXT NOT NULL,
+  round TEXT NOT NULL,
   exam_year INT NOT NULL,
   cutoff_score NUMERIC NOT NULL,
   cutoff_percentile NUMERIC,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS cutoff_benchmarks (
 );
 CREATE INDEX IF NOT EXISTS idx_cutoff_university ON cutoff_benchmarks(university_id);
 CREATE INDEX IF NOT EXISTS idx_cutoff_program ON cutoff_benchmarks(program_id);
-CREATE INDEX IF NOT EXISTS idx_cutoff_year_round ON cutoff_benchmarks(exam_year, round_label);
+CREATE INDEX IF NOT EXISTS idx_cutoff_year_round ON cutoff_benchmarks(exam_year, round);
 
 -- 2. subscriptions (PRD 14.4.1)
 CREATE TABLE IF NOT EXISTS subscriptions (

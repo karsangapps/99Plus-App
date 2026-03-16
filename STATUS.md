@@ -77,6 +77,21 @@
 - Build: `npm run build` — green
 - Migrations: 002 + 003 applied
 - Seed: `npm run seed:cutoffs` (run after `NOTIFY pgrst, 'reload schema'` if PGRST204)
+- Verify: `npm run seed:verify` — confirms SRCC, Hindu College, LSR in cutoff_benchmarks
+
+---
+
+## 5. Vercel Readiness — Final Summary
+
+| Check             | Status                                          |
+|-------------------|-------------------------------------------------|
+| **Total Tables Live** | 24 (InsForge confirmed)                         |
+| **Mobile Status**  | Verified (360px viewport — hamburger, drawer, nav) |
+| **Next.js Build**  | Green (16.1.6 Turbopack)                        |
+| **Cutoff Data**    | SRCC, Hindu College, LSR seeded in cutoff_benchmarks |
+| **Production Branch** | `master` (merged from cursor/mobile-navigation-menu-8afa) |
+
+**99Plus is ready for traffic.**
 
 ---
 

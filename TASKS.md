@@ -49,6 +49,17 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - [x] Wired in `OnboardingDreamTargetClient`
 - [x] Verified at 360px: drawer opens/closes, backdrop works, no fixed-width breakage
 
+### Build Repair ✅ DONE
+- [x] `headers()` and `cookies()` — await for Next.js 16 Promise API
+- [x] `sendResetPasswordEmail({ email })` — InsForge SDK compatibility
+
+### Task 2: Surgical Swap — DONE
+- [x] Command Center page — live data (heatmap, proficiency, mastery trend)
+- [x] Surgical Drill page — live data (mark leak banner, Gap-Remedy Start)
+- [x] DB migrations SQL — `migrations/002_surgical_swap_tables.sql` (run via InsForge)
+- [x] API routes: `/api/command-center`, `/api/surgical-drill`, `POST /api/practice-sessions/start`
+- [x] StudentDashboardLayout + nav config (Command Center → /command-center)
+
 ### Previous milestone: Eligibility Guardian (§8.4)
 
 Build the hard-lock subject validation engine:

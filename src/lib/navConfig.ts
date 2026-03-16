@@ -11,7 +11,7 @@ export type NavItem = {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Command Center', href: '/onboarding', icon: 'compass' },
+  { label: 'Command Center', href: '/command-center', icon: 'compass' },
   { label: 'Pre-Test', href: '/pre-test', icon: 'clipboard' },
   { label: 'NTA Test', href: '/nta-test', icon: 'rectangle-list' },
   { label: 'Diagnosis', href: '/diagnosis', icon: 'file-lines' },

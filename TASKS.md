@@ -53,6 +53,13 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - [x] `headers()` and `cookies()` — await for Next.js 16 Promise API
 - [x] `sendResetPasswordEmail({ email })` — InsForge SDK compatibility
 
+### Production Lock — DONE
+- [x] migrations/003_production_tables.sql (cutoff_benchmarks, payment_orders, payment_webhook_events, subscriptions)
+- [x] scripts/seed-cutoff-benchmarks.ts (DU + BHU historical cutoffs)
+- [x] Zod validation: signup, POST /api/payments/order
+- [x] /admin dashboard: North Star ASI, Seat Success Funnel, Cohort Mark Leak Heatmap
+- [x] POST /api/payments/order with Zod
+
 ### Task 2: Surgical Swap — DONE
 - [x] Command Center page — live data (heatmap, proficiency, mastery trend)
 - [x] Surgical Drill page — live data (mark leak banner, Gap-Remedy Start)

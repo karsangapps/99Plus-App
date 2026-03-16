@@ -25,7 +25,6 @@ type CutoffRow = {
   exam_year: number
   cutoff_score: number
   cutoff_percentile: number | null
-  confidence_level: number | null
 }
 
 async function main() {
@@ -66,18 +65,23 @@ async function main() {
     for (const prog of colProgs) {
       // SRCC B.Com: high cutoffs
       if (col.short_code?.toLowerCase().includes('srcc') && prog.name?.toLowerCase().includes('com')) {
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 782, cutoff_percentile: 99.5, confidence_level: 0.95 })
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 2', exam_year: 2024, cutoff_score: 775, cutoff_percentile: 99.2, confidence_level: 0.95 })
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'OBC', round_label: 'Round 1', exam_year: 2024, cutoff_score: 770, cutoff_percentile: 98.75, confidence_level: 0.95 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 782, cutoff_percentile: 99.5 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 2', exam_year: 2024, cutoff_score: 775, cutoff_percentile: 99.2 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'OBC', round_label: 'Round 1', exam_year: 2024, cutoff_score: 770, cutoff_percentile: 98.75 })
       }
       // LSR / Miranda House B.A. Pol Sci or similar
       if ((col.short_code?.toLowerCase().includes('lsr') || col.name?.toLowerCase().includes('lady')) && prog.name?.toLowerCase().includes('pol')) {
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 745, cutoff_percentile: 97.8, confidence_level: 0.95 })
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 2', exam_year: 2024, cutoff_score: 738, cutoff_percentile: 97.2, confidence_level: 0.95 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 745, cutoff_percentile: 97.8 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 2', exam_year: 2024, cutoff_score: 738, cutoff_percentile: 97.2 })
       }
       // Hansraj (if exists)
       if (col.short_code?.toLowerCase().includes('hansraj') || col.name?.toLowerCase().includes('Hansraj')) {
-        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 765, cutoff_percentile: 98.9, confidence_level: 0.95 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 765, cutoff_percentile: 98.9 })
+      }
+      // Hindu College
+      if (col.short_code?.toLowerCase().includes('hindu') || col.name?.toLowerCase().includes('Hindu')) {
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 760, cutoff_percentile: 98.5 })
+        rows.push({ university_id: duId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 2', exam_year: 2024, cutoff_score: 752, cutoff_percentile: 98 })
       }
     }
   }
@@ -113,7 +117,7 @@ async function main() {
             is_active: true
           }).select('id').single()
           if (!progIns.error && progIns.data) {
-            rows.push({ university_id: bhuId, college_id: c.id, program_id: (progIns.data as { id: string }).id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 680, cutoff_percentile: 92, confidence_level: 0.9 })
+            rows.push({ university_id: bhuId, college_id: c.id, program_id: (progIns.data as { id: string }).id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 680, cutoff_percentile: 92 })
           }
         }
       }
@@ -121,7 +125,7 @@ async function main() {
       for (const col of bhuCols) {
         const colProgs = progsByCol.get(col.id) ?? []
         for (const prog of colProgs) {
-          rows.push({ university_id: bhuId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 680, cutoff_percentile: 92, confidence_level: 0.9 })
+          rows.push({ university_id: bhuId, college_id: col.id, program_id: prog.id, category: 'General', round_label: 'Round 1', exam_year: 2024, cutoff_score: 680, cutoff_percentile: 92 })
         }
       }
     }

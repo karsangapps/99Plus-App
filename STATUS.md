@@ -1,6 +1,6 @@
 # 99Plus — Memory Anchor
-**Date:** Friday, 13 March 2026
-**Session:** Eligibility Guardian §8.4 complete → Phase 2 (NTA-Mirror Engine) is next
+**Date:** Monday, 16 March 2026
+**Status:** PHASE 5 COMPLETE — PRODUCTION LOCKED
 
 ---
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 2. Database Tables (10 total in `public` schema)
+## 2. Database Tables (24 total in `public` schema)
 
 | #  | Table                        | Notes                                                         |
 |----|------------------------------|---------------------------------------------------------------|
@@ -27,110 +27,56 @@
 | 2  | `student_profiles`           | `account_state` transitions through onboarding stages        |
 | 3  | `consent_logs`               | DPDP guardian consent audit trail                            |
 | 4  | `user_targets`               | Student's selected university/college/program targets        |
-| 5  | `universities`               | DU seeded — `short_code = 'DU'`, `id = 00000001-...`        |
-| 6  | `colleges`                   | SRCC, LSR seeded under DU                                     |
-| 7  | `programs`                   | B.Com (Hons) @ SRCC, B.A. Political Science (Hons) @ LSR    |
+| 5  | `universities`               | DU, BHU seeded                                                |
+| 6  | `colleges`                   | SRCC, LSR, Hindu, Hansraj (DU), BHU colleges                 |
+| 7  | `programs`                   | B.Com (Hons), B.A. Pol Sci, etc.                             |
 | 8  | `eligibility_rules`          | 2 active rules, fully seeded — see Section 4                 |
 | 9  | `eligibility_lock_snapshots` | Immutable lock events — RLS owner-only                       |
 | 10 | `student_subject_locks`      | One row per locked subject per student — RLS owner-only      |
-
-### Seeded Eligibility Rules (DU 2026)
-
-| Program                             | Mandatory | Alternative Group                                              | Min Domains |
-|-------------------------------------|-----------|----------------------------------------------------------------|-------------|
-| B.Com (Hons) — SRCC                 | English   | Mathematics OR Accountancy (pick 1)                           | 2           |
-| B.A. Political Science (Hons) — LSR | English   | Pol Sci / History / Sociology / Economics / Geography / Psychology (pick 3) | 3 |
-
----
-
-## 3. Eligibility Guardian §8.4 — STABLE
-
-**Route:** `http://localhost:3000/onboarding/eligibility`
-**Status:** Fully operational — subject picker live, hard-lock CTA wired, SHA-256 receipt permanent
-
-### Files shipped this session
-
-```
-src/app/onboarding/eligibility/
-└── page.tsx                    ← server component, fetches rules by student target
-
-src/app/onboarding/battle/
-└── page.tsx                    ← placeholder (404 fix) — Battle Plan landing
-
-src/app/api/eligibility/
-└── validate/route.ts           ← POST — rule engine + lock snapshot writer
-
-src/components/eligibility/
-├── EligibilityShell.tsx        ← sticky header, hex-pattern bg (unchanged)
-├── EligibilityStepper.tsx      ← 3-step progress bar (unchanged)
-├── EligibilityRuleCard.tsx     ← upgraded: checkboxes for optional subjects
-└── EligibilityClient.tsx       ← new client wrapper — state, CTA guard, lock action
-```
-
-### What the page does now
-- Reads `uid` cookie → looks up student's `user_targets` → fetches matching `eligibility_rules`
-- Falls back to DU seed data if no target set yet
-- Mandatory subjects (English) are permanently locked — no toggle
-- Optional/recommended subjects render interactive checkboxes
-- "Lock Eligibility" CTA is **disabled** until all optional group minimums are satisfied (client-side guard)
-- On successful lock: inserts `eligibility_lock_snapshots` + `student_subject_locks`, sets `account_state = eligibility_locked`
-- Displays full SHA-256 tamper-proof hash receipt — user must click "Continue to Battle Plan" to proceed (no auto-redirect)
-
-### Key fixes applied
-- **404 eliminated** — `/onboarding/battle` now exists and returns 200
-- **Receipt stays on screen** — removed `setTimeout` auto-redirect; user controls navigation after reviewing the lock hash
+| 11 | `syllabus_hierarchy`        | NCERT syllabus graph                                          |
+| 12 | `question_bank`              | Questions for mocks and drills                                |
+| 13 | `mock_tests`                 | Mock test templates                                           |
+| 14 | `mock_test_questions`        | Bridge mock_tests ↔ question_bank                             |
+| 15 | `mock_attempts`              | Student attempt headers                                       |
+| 16 | `mock_responses`             | Per-question responses                                        |
+| 17 | `mark_leaks`                 | Recoverable score loss by syllabus node                       |
+| 18 | `college_target_analytics`   | Distance-to-Seat heatmap data                                 |
+| 19 | `practice_sessions`          | Drill sessions (gap_remedy, topic_mastery, pyq, full_mock)    |
+| 20 | `practice_session_items`     | Questions per practice session                                |
+| 21 | `surgical_credits`           | Credit ledger                                                 |
+| 22 | `cutoff_benchmarks`          | DU/BHU historical cutoffs                                    |
+| 23 | `payment_orders`             | Razorpay orders                                               |
+| 24 | `payment_webhook_events`     | Idempotent webhook log                                        |
 
 ---
 
-## 4. Historical Bug Fixes (Phase 1)
+## 3. Phase 5 — Production Lock (COMPLETE)
 
-### 500 Lock Error — Root cause & fix
-`requireEmailVerification` was `true` in InsForge auth config — `signUp()` returned no `accessToken`, all DB inserts ran as `anon` and were blocked by RLS.
+### Task 1: Mobile Navigation ✅
+- Hamburger menu for 360px breakpoint
+- MobileNavDrawer, MobileHeaderBar, NavLinks, navConfig
 
-**Fix 1** — Disabled email verification via admin HTTP API
-**Fix 2** — Added `CREATE POLICY "users_insert_own"` for authenticated role on `public.users`
-**Fix 3** — Awaited `cookies()` and `headers()` (Next.js 16 requirement)
-**Fix 4** — SignupForm toggle clears opposite guardian contact field when switching SMS ↔ Email
+### Task 2: Surgical Swap ✅
+- Command Center (/command-center): heatmap, proficiency, mastery trend
+- Surgical Drill (/surgical-drill): mark leak banner, Gap-Remedy Start
 
----
+### Task 3: Data Hardening ✅
+- Zod validation: signup, POST /api/payments/order
 
-## 5. InsForge MCP Server (Cursor Sidebar)
+### Task 4: Founder Console ✅
+- /admin dashboard: North Star ASI, Seat Success Funnel, Cohort Mark Leak Heatmap
 
-```json
-"insforge": {
-  "command": "npx",
-  "args": ["-y", "@insforge/mcp@latest"],
-  "env": {
-    "INSFORGE_PROJECT_URL": "https://s23f7sag.ap-southeast.insforge.app",
-    "INSFORGE_API_KEY": "ik_1d681ab8a2174104863d70ef60bf4811"
-  }
-}
-```
-Toggle the server off/on in Cursor Settings → Agents to activate.
+### Build Repair ✅
+- Next.js 16: await headers(), await cookies()
+- InsForge SDK: sendResetPasswordEmail({ email })
 
 ---
 
-## 6. GitHub
+## 4. Deployment Readiness
 
-| Field    | Value                                                              |
-|----------|--------------------------------------------------------------------|
-| Remote   | `https://github.com/karsangapps/99Plus-App.git`                    |
-| Branch   | `master`                                                           |
-| Latest   | `dd9ac86` — Fixed Eligibility redirect and 404 bug                 |
-| Previous | `dccd4e0` — Finished Eligibility Guardian §8.4                     |
-
----
-
-## 7. Next Session — Phase 2: NTA-Mirror Engine
-
-The Eligibility Guardian is stable and pushed. Phase 2 begins with the NTA Mock Simulator:
-
-1. **NTA Interface** — pixel-faithful mock exam UI (question panel, timer, section nav)
-2. **Question Bank** — `question_bank` table seeded with CUET-pattern questions
-3. **Mock Attempt Engine** — `mock_tests`, `mock_attempts`, `mock_responses` tables
-4. **Scoring + Normalization** — raw score → simulated NTA normalization model
-5. **Mark-Leak Diagnosis** — chapter-level gap analysis after each attempt
-6. **Extend eligibility seed** — add BHU, JNU, Jamia rules (PRD §8.4.2)
+- Build: `npm run build` — green
+- Migrations: 002 + 003 applied
+- Seed: `npm run seed:cutoffs` (run after `NOTIFY pgrst, 'reload schema'` if PGRST204)
 
 ---
 

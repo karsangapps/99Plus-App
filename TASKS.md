@@ -31,13 +31,25 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - Dev server: `npm run dev`
 - First screen: `/onboarding`
 
-## Today’s progress (Phase 1)
+## Today’s progress (Phase 5 - Task 1)
 
-- Implemented `/signup` form with age detection and InsForge-backed signup API
-- Extracted guardian consent + target university chips into modular components
-- Cleaned up layout/branding so the page is screen-agnostic and matches PRD flows
+- Implemented functional Hamburger Menu for 360px mobile breakpoint
+- Created shared navConfig, NavLinks, MobileNavDrawer, MobileHeaderBar
+- Drawer: slide-in animation, backdrop close, nav link close, Escape key, body scroll lock
+- Verified layout at 360px: no fixed widths breaking layout
 
-## Current milestone: Eligibility Guardian (§8.4)
+## Phase 5 — Launch Sequence
+
+### Task 1: Mobile Navigation ✅ DONE
+- [x] Hamburger menu for mobile breakpoint (360px)
+- [x] `src/lib/navConfig.ts` — shared nav items
+- [x] `OnboardingSidebar` refactored to use `NavLinks` + navConfig
+- [x] `MobileNavDrawer` — slide-in drawer with backdrop, Escape key, scroll lock
+- [x] `MobileHeaderBar` — hamburger + title + badges (lg:hidden)
+- [x] Wired in `OnboardingDreamTargetClient`
+- [x] Verified at 360px: drawer opens/closes, backdrop works, no fixed-width breakage
+
+### Previous milestone: Eligibility Guardian (§8.4)
 
 Build the hard-lock subject validation engine:
 1. Reference tables (universities / colleges / programs / eligibility_rules) seeded with DU data

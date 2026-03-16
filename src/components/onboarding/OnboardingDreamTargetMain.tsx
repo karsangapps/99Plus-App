@@ -53,7 +53,7 @@ export function OnboardingDreamTargetMain() {
 
   return (
     <div className="flex-1 min-w-0">
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
+      <header className="hidden lg:block sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-lg font-bold text-[#0F172A] tracking-tight">Command Center</h1>

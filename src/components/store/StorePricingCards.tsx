@@ -8,9 +8,8 @@
  *   Pack of 5   ₹100 / 5 credits → sachet_drill_pack
  *   Pro Pass    ₹999 / unlimited → pro_pass_seasonal
  *
- * Payment initiation (Razorpay order creation + checkout) is wired via
- * /api/payments/create-order in Phase 4 Step 2. These buttons currently
- * show a "Coming Soon" toast while the payment API is scaffolded.
+ * Flow: user clicks Buy → POST /api/payments/order (creates payment_orders row)
+ * → Razorpay webhook (payment.captured) → grants surgical_credits (PRD §16.4)
  */
 
 import { useState } from 'react'
@@ -22,22 +21,46 @@ type StorePricingCardsProps = {
 
 type ProductId = 'sachet_mock' | 'sachet_drill_pack' | 'pro_pass_seasonal'
 
+const PRODUCT_PRICES: Record<ProductId, number> = {
+  sachet_mock: 2500,         // ₹25 in paise
+  sachet_drill_pack: 10000,  // ₹100 in paise
+  pro_pass_seasonal: 99900,  // ₹999 in paise
+}
+
 export function StorePricingCards({ proPassActive }: StorePricingCardsProps) {
   const [loading, setLoading] = useState<ProductId | null>(null)
-  const [toast, setToast] = useState<string | null>(null)
+  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null)
 
-  function showToast(msg: string) {
-    setToast(msg)
-    setTimeout(() => setToast(null), 3000)
+  function showToast(msg: string, type: 'success' | 'error' = 'success') {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 4000)
   }
 
   async function handleBuy(productId: ProductId) {
     setLoading(productId)
     try {
-      // Phase 4 Step 2: wire to POST /api/payments/create-order
-      // For now, signal intent and display a placeholder message
-      await new Promise(r => setTimeout(r, 500))
-      showToast('Payment gateway coming soon. Your selection has been noted!')
+      const res = await fetch('/api/payments/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_type: productId,
+          amount_paise: PRODUCT_PRICES[productId],
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        showToast(data.error ?? 'Order creation failed. Please try again.', 'error')
+        return
+      }
+      // Order created successfully — in production this would open Razorpay checkout.
+      // The webhook (payment.captured) grants credits once payment is confirmed.
+      showToast(
+        `Order #${data.orderId.slice(0, 8).toUpperCase()} created! ` +
+        `Complete payment via Razorpay to unlock credits.`,
+        'success'
+      )
+    } catch {
+      showToast('Network error. Please check your connection.', 'error')
     } finally {
       setLoading(null)
     }
@@ -48,10 +71,15 @@ export function StorePricingCards({ proPassActive }: StorePricingCardsProps) {
       {/* Toast */}
       {toast && (
         <div
-          className="fixed top-6 right-6 z-50 px-5 py-3 rounded-xl text-sm font-semibold shadow-lg transition-all"
-          style={{ background: '#0F172A', color: '#FFFFFF' }}
+          className="fixed top-6 right-6 z-50 px-5 py-3 rounded-xl text-sm font-semibold shadow-lg transition-all max-w-xs"
+          style={{
+            background: toast.type === 'success' ? '#0F172A' : '#EF4444',
+            color: '#FFFFFF',
+          }}
+          role="status"
+          aria-live="polite"
         >
-          {toast}
+          {toast.msg}
         </div>
       )}
 

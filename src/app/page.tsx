@@ -1,19 +1,9 @@
-import Link from 'next/link'
+/**
+ * Root page — middleware handles the redirect:
+ * logged-out → /signup | logged-in → /command-center
+ */
+import { redirect } from 'next/navigation'
 
 export default function HomePage() {
-  return (
-    <main className="min-h-dvh p-6">
-      <div className="space-y-3">
-        <Link className="underline" href="/signup">
-          Create your account
-        </Link>
-        <div>
-          <Link className="underline" href="/onboarding">
-            Go to Command Center
-          </Link>
-        </div>
-      </div>
-    </main>
-  )
+  redirect('/signup')
 }
-

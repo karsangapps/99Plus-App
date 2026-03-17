@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { headers } from 'next/headers'
 import { createClient } from '@insforge/sdk'
 import fs from 'node:fs'
 import path from 'node:path'

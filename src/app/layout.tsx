@@ -5,8 +5,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: '99Plus',
-  description: '99Plus onboarding'
+  title: {
+    default: '99Plus — Surgical CUET Selection Engine',
+    template: '%s — 99Plus',
+  },
+  description: '99Plus: India\'s surgical CUET prep platform. Score → Diagnosis → Drill → Seat.',
+  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({

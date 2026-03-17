@@ -1,0 +1,27 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000/nta-test/b0b0b0b0-0000-0000-0000-000000000001",
+  "loginUser": "test@99plus.in",
+  "loginPassword": "SurgicalTest123!",
+  "executionArgs": {
+    "projectName": "99plus-app",
+    "projectPath": "/workspace",
+    "testIds": [
+      "TC001",
+      "TC016",
+      "TC018",
+      "TC019",
+      "TC023",
+      "TC025"
+    ],
+    "additionalInstruction": "GLOBAL: Login at http://localhost:3000/login with email=test@99plus.in password=SurgicalTest123!.  TC001 (Create account): Navigate to http://localhost:3000/signup. Use UNIQUE email = test.new.1773476225998@99plus.in. Fill Full Name=Test Student, DOB=2004-05-15, Phone=9999999998, Password=ValidPassword123!, select DU (Delhi University) as target, accept terms, click Create Account button. After successful signup, assert URL contains /onboarding (not /onboarding/eligibility — signup goes to onboarding first).  TC016/TC018/TC019/TC023/TC025 (Eligibility tests): First login at http://localhost:3000/login. Then navigate DIRECTLY to http://localhost:3000/onboarding/eligibility (do NOT go through /onboarding dream target step — the test user already has a target set). The eligibility page shows checkboxes for subjects. Select subjects (English is mandatory, select Mathematics or Accountancy from the optional group). Look for Lock Eligibility or Verify Eligibility button. After locking, the page should show a SHA-256 lock hash string.  For TC016: Verify that after clicking Lock Eligibility, a lock hash (long hex string) is displayed and the lock is permanent. For TC018: Same as TC016 but also check the lock hash text is visible. For TC019: Try submitting with MISSING required subjects. Verify the button stays disabled or an error message shows mismatch reason. For TC023: Select wrong subjects (e.g. only 1 from optional group when 2 required), try to lock, verify mismatch error is visible. For TC025: Leave optional checkboxes unchecked, verify the Lock Eligibility button is disabled (grayed out/not clickable).",
+    "serverMode": "production",
+    "envs": {
+      "API_KEY": "sk-user-wAyRGLrp3VUP2yGDhoQOm60THsi_A58dYurBmTr-bl4j4cO3Cs4mbBx86B7k7NE-M9YLCO7X_hvfdekl364v9sWfPm9sA2D6O2nfFiSHKgyAEeoczKlSE49R6clXHo4j2Q4"
+    }
+  },
+  "serverPort": 41155,
+  "proxy": "http://45139ff0-a228-41ee-8716-25dd646ff98b:tWYbFtxYyhbcjUxqNdDhzk07GDKEaKJu@tun.testsprite.com:8080"
+}

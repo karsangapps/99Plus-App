@@ -1,25 +1,61 @@
 # 99Plus — Memory Anchor
-**Date:** Saturday, 14 March 2026
-**Session:** Phase 3 Completed and Audited — 32/32 Compliance Pass → Phase 4 (Monetization) is next
+**Date:** Monday, 16 March 2026
+**Status:** PHASE 5 COMPLETE — SURGICAL COMPLETION SPRINT PENDING
 
 ---
 
-## 1. InsForge Connection
+## 1. What Was Built Today
+
+| Item | Status |
+|------|--------|
+| **Mobile Navigation** | Hamburger menu for 360px; MobileNavDrawer, MobileHeaderBar, NavLinks, navConfig |
+| **Build Fixes** | Next.js 16 `await headers()`, `await cookies()`; InsForge `sendResetPasswordEmail` |
+| **Final Master Audit** | Full regression across 4 pillars; audit report, 360px screenshots, Mock-to-Money recording |
+| **Cutoff Seeding** | `round` column fix; `npm run seed:verify` confirms SRCC, Hindu, LSR |
+| **Master Merge** | cursor/mobile-navigation-menu-8afa merged into master |
+
+---
+
+## 2. Current Blockers (Pre-Launch)
+
+1. **Root redirects** — `/` shows generic links for both logged-out and logged-in users. Expected: logged-out → landing/signup; logged-in → `/command-center`.
+2. **7 screens return 404** — Pre-Test, NTA Test, Diagnosis, Analytics, Selection Hub, Settings, Store (78% of nav links are dead ends).
+3. **Store wiring** — `/store` page missing; Mock-to-Money flow cannot complete (purchase sachet → unlock Mode A).
+
+---
+
+## 3. First Line of Code on Resume
+
+**Implement `middleware.ts`** in the project root:
+
+- For `/`: if logged-out → redirect to `/signup` (or landing); if logged-in → redirect to `/command-center`.
+- Optionally protect `/selection-hub` with guardian + eligibility checks when that page exists.
+
+Example starting point:
+
+```ts
+// src/middleware.ts (or middleware.ts at root)
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  // ...
+}
+```
+
+---
+
+## 4. InsForge Connection
 
 | Field          | Value                                          |
 |----------------|------------------------------------------------|
-| Status         | Connected and verified                      |
-| Project Name   | 99Plus                                         |
-| Project ID     | `5ef73f5a-235e-4b26-acfe-3345e5dbd682`         |
-| App Key        | `s23f7sag`                                     |
-| Region         | `ap-southeast`                                 |
-| OSS Host       | `https://s23f7sag.ap-southeast.insforge.app`   |
-| Auth User      | `banashripegu@gmail.com`                       |
-| CLI command    | `insforge current`                             |
+| Status         | Connected and verified                         |
+| OSS Host       | `https://s23f7sag.ap-southeast.insforge.app`    |
+| CLI            | `insforge current`                             |
 
 ---
 
-## 2. Database Tables (20 total in `public` schema)
+## 2. Database Tables (24 total in `public` schema)
 
 | #  | Table                        | Phase | Notes                                                         |
 |----|------------------------------|-------|---------------------------------------------------------------|
@@ -43,6 +79,12 @@
 | 18 | `cutoff_benchmarks`          | 2 | 6 DU colleges, 2025 actuals seeded                           |
 | 19 | `practice_sessions`          | 3 | Gap-Remedy / Topic Mastery / PYQ / Full Mock sessions        |
 | 20 | `practice_session_items`     | 3 | One row per question per drill session                       |
+| 21 | `subscriptions`              | 4 | Pro Pass — unlimited mocks + drills                          |
+| 22 | `payment_orders`             | 4 | Razorpay order creation ledger                               |
+| 23 | `payment_webhook_events`     | 4 | Idempotent webhook log                                       |
+| 24 | `surgical_credits`           | 4 | Credit ledger (purchase / consume / refund / expire)         |
+
+See `FINAL_MASTER_AUDIT_REPORT.md` for full audit.
 
 ### Seeded Eligibility Rules (DU 2026) — Updated to CUET 2026 Spec
 
@@ -55,10 +97,12 @@
 
 ---
 
-## 3. Eligibility Guardian §8.4 — STABLE
+## 6. Build Status
 
 **Route:** `http://localhost:3000/onboarding/eligibility`
 **Status:** Fully operational — subject picker live, hard-lock CTA wired, SHA-256 receipt permanent
+
+Run `npm run build` — must be green before shipping.
 
 ---
 
@@ -96,7 +140,7 @@
 | Remote   | `https://github.com/karsangapps/99Plus-App.git`                    |
 | Branch   | `cursor/nta-mirror-mock-engine-d09d`                               |
 | PR       | `#1` — Phase 2 + 3 complete                                        |
-| Latest   | `f230cef` — fix(audit): P1 eligibility + P2 palette + SURGICAL_AUDIT_REPORT |
+| Latest   | `092a01c` — Phase 3 Completed and Audited - 32/32 Compliance Pass  |
 
 ---
 
@@ -175,46 +219,10 @@ Diagnosis → mark_leaks.severity_score > 0
 1. **P1 — SRCC Eligibility Rule:** v1 (pick 1 domain) → v2 (pick 3 domains per CUET 2026 spec)
 2. **P2 — NTA Palette `not_visited`:** `bg-gray-300` → `bg-gray-500` (closer to NTA spec `#808080`)
 
-### Open Backlog (Phase 4)
+### Open Backlog
 - P2: Seed eligibility rules for BHU, JNU, Jamia, Allahabad University (PRD §8.4.2)
 - P2: Populate `ncert_book` on English questions (CUET-ENG-001/002)
 - P2: `legend not_answered` shows gray in instructions — should be red
-
----
-
-## 11. Phase 4: Monetization & Selection Hub — NEXT MILESTONE 🚀
-
-**Status:** Ready to begin. All Phase 1–3 systems are audited and production-ready.
-
-### Scope (PRD §14.4, §16, §4.8)
-
-**A. Razorpay Monetization (PRD §16)**
-- `subscriptions` table — Pro Pass (unlimited mocks + drills)
-- `payment_orders` table — Razorpay order creation
-- `payment_webhook_events` table — idempotent webhook log
-- `surgical_credits` table — ledger model (purchase / consume / refund / expire)
-- `POST /api/payments/order` — create Razorpay order
-- `POST /api/webhooks/razorpay` — verified webhook (signature check)
-- `hasAccess(student, feature)` helper — Pro Pass → allow / credits → allow / paywall
-- Paywall overlay on Mode A (Gap-Remedy) and Mode D (Full Mock) CTAs
-
-**B. Selection Hub (PRD §4.8)**
-- `/selection-hub` — dream college shortlisting + CSAS preference optimizer
-- `/admissions-os` — preference list ordering + seat allotment tracker
-- `user_targets` management — add/remove/reorder targets
-- College probability heatmap across all targets (live from `college_target_analytics`)
-
-**C. 99Plus Store UI**
-- Sachet credit packs (unlock 1 mock or short drill batch)
-- Pro Pass subscription landing
-- Razorpay checkout integration
-
-### Priority Order
-1. `surgical_credits` ledger + `payment_orders` + `subscriptions` (DB + API)
-2. Razorpay webhook handler (`POST /api/webhooks/razorpay`)
-3. `hasAccess()` entitlement helper
-4. Paywall overlay on S15 Mode A/D cards
-5. Selection Hub scaffold (`/selection-hub`)
 
 ---
 

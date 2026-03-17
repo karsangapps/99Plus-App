@@ -4,25 +4,7 @@ import { createClient } from '@insforge/sdk'
 import fs from 'node:fs'
 import path from 'node:path'
 import { uidCookieName } from '@/lib/session'
-
-type Body = {
-  fullName?: string
-  email?: string
-  phone?: string
-  dob?: string // yyyy-mm-dd
-  password?: string
-  preferredLanguage?: string
-  examYear?: number
-  class12Stream?: string
-  boardName?: string
-  targetUniversities?: unknown
-  termsAccepted?: unknown
-  guardian?: null | {
-    method?: 'sms' | 'email'
-    phone?: string | null
-    email?: string | null
-  }
-}
+import { signupBodySchema } from '@/lib/validations/signup'
 
 type ProjectJson = {
   oss_host?: string
@@ -52,68 +34,27 @@ function computeAge(dobIso: string) {
 export async function POST(req: Request) {
   try {
     console.log('[Signup API] Received /api/auth/signup request')
-    const body = (await req.json()) as Body
+    const raw = await req.json()
+    const parsed = signupBodySchema.safeParse(raw)
+    if (!parsed.success) {
+      const issues = parsed.error.issues
+      const first = issues[0]
+      const msg = first ? `${first.path.join('.')}: ${first.message}` : 'Validation failed.'
+      console.log('[Signup API] Validation failed:', issues)
+      return NextResponse.json({ ok: false, error: msg }, { status: 400 })
+    }
+    const body = parsed.data
 
-    const fullName = String(body.fullName || '').trim()
-    const email = String(body.email || '').trim().toLowerCase()
-    const phone = String(body.phone || '').trim()
-    const dob = String(body.dob || '').trim()
-    const password = String(body.password || '')
-
-    const preferredLanguage = String(body.preferredLanguage || 'en').trim()
-    const examYear = Number.isFinite(body.examYear) ? Number(body.examYear) : 2026
-    const class12Stream = String(body.class12Stream || '').trim()
-    const boardName = String(body.boardName || '').trim()
-    const termsAccepted = Boolean(body.termsAccepted)
-    const targetUniversities = Array.isArray(body.targetUniversities)
-      ? body.targetUniversities
-          .filter((x) => typeof x === 'string')
-          .map((x) => x.trim())
-          .filter(Boolean)
-      : []
-
-    if (!fullName || !email || !dob || !password) {
-      console.log('[Signup API] Missing required fields', {
-        fullName: !!fullName,
-        email: !!email,
-        dob: !!dob,
-        password: !!password
-      })
-      return NextResponse.json(
-        { ok: false, error: 'Missing required fields.' },
-        { status: 400 }
-      )
-    }
-    if (password.length < 8) {
-      return NextResponse.json(
-        { ok: false, error: 'Password must be at least 8 characters.' },
-        { status: 400 }
-      )
-    }
-    if (!class12Stream || !boardName) {
-      console.log('[Signup API] Missing class12Stream/boardName', {
-        class12Stream,
-        boardName
-      })
-      return NextResponse.json(
-        { ok: false, error: 'Class 12 stream and board are required.' },
-        { status: 400 }
-      )
-    }
-    if (!termsAccepted) {
-      console.log('[Signup API] Terms not accepted')
-      return NextResponse.json(
-        { ok: false, error: 'You must accept the Terms and Privacy Policy.' },
-        { status: 400 }
-      )
-    }
-    if (!targetUniversities.length) {
-      console.log('[Signup API] No target universities selected')
-      return NextResponse.json(
-        { ok: false, error: 'Pick at least one target university.' },
-        { status: 400 }
-      )
-    }
+    const fullName = body.fullName
+    const email = body.email
+    const phone = body.phone
+    const dob = body.dob
+    const password = body.password
+    const preferredLanguage = body.preferredLanguage
+    const examYear = body.examYear
+    const class12Stream = body.class12Stream
+    const boardName = body.boardName
+    const targetUniversities = body.targetUniversities
 
     const age = computeAge(dob)
     if (typeof age !== 'number') {
@@ -279,7 +220,7 @@ export async function POST(req: Request) {
         status: 'pending',
         consent_purpose: isMinor ? 'dpdp_minor_processing' : 'dpdp_student_notice',
         communication_alerts_opt_in: false,
-        verification_channel: isMinor ? String(body.guardian?.method || 'sms') : 'none',
+        verification_channel: isMinor ? String(body.guardian?.method ?? 'sms') : 'none',
         otp_reference: null,
         token_hash: null,
         ip_address: ip,

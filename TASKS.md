@@ -31,16 +31,95 @@ This repo is tracking work manually (Task Master PRD parsing requires a Perplexi
 - Dev server: `npm run dev`
 - First screen: `/onboarding`
 
-## Today’s progress (Phase 1)
+## Today’s progress (Phase 5 - Task 1)
 
-- Implemented `/signup` form with age detection and InsForge-backed signup API
-- Extracted guardian consent + target university chips into modular components
-- Cleaned up layout/branding so the page is screen-agnostic and matches PRD flows
+- Implemented functional Hamburger Menu for 360px mobile breakpoint
+- Created shared navConfig, NavLinks, MobileNavDrawer, MobileHeaderBar
+- Drawer: slide-in animation, backdrop close, nav link close, Escape key, body scroll lock
+- Verified layout at 360px: no fixed widths breaking layout
 
-## Current milestone: Eligibility Guardian (§8.4)
+## Phase 5 — Launch Sequence
+
+### Task 1: Mobile Navigation ✅ DONE
+- [x] Hamburger menu for mobile breakpoint (360px)
+- [x] `src/lib/navConfig.ts` — shared nav items
+- [x] `OnboardingSidebar` refactored to use `NavLinks` + navConfig
+- [x] `MobileNavDrawer` — slide-in drawer with backdrop, Escape key, scroll lock
+- [x] `MobileHeaderBar` — hamburger + title + badges (lg:hidden)
+- [x] Wired in `OnboardingDreamTargetClient`
+- [x] Verified at 360px: drawer opens/closes, backdrop works, no fixed-width breakage
+
+### Build Repair ✅ DONE
+- [x] `headers()` and `cookies()` — await for Next.js 16 Promise API
+- [x] `sendResetPasswordEmail({ email })` — InsForge SDK compatibility
+
+### Production Lock — DONE
+- [x] migrations/003_production_tables.sql (cutoff_benchmarks, payment_orders, payment_webhook_events, subscriptions)
+- [x] scripts/seed-cutoff-benchmarks.ts (DU + BHU historical cutoffs)
+- [x] Zod validation: signup, POST /api/payments/order
+- [x] /admin dashboard: North Star ASI, Seat Success Funnel, Cohort Mark Leak Heatmap
+- [x] POST /api/payments/order with Zod
+
+### Task 2: Surgical Swap — DONE
+- [x] Command Center page — live data (heatmap, proficiency, mastery trend)
+- [x] Surgical Drill page — live data (mark leak banner, Gap-Remedy Start)
+- [x] DB migrations SQL — `migrations/002_surgical_swap_tables.sql` (run via InsForge)
+- [x] API routes: `/api/command-center`, `/api/surgical-drill`, `POST /api/practice-sessions/start`
+- [x] StudentDashboardLayout + nav config (Command Center → /command-center)
+
+### Final Master Audit ✅ DONE
+- [x] Pillar 1: Redirection & Navigation — Root redirect gaps; 7/9 nav links 404
+- [x] Pillar 2: Compliance & Surgical Journey — Guardian flow ✅; Mock-to-Money blocked (no Store)
+- [x] Pillar 3: UI Integrity & Performance — 360px responsive ✅; skeleton loaders ✅; purple/green palette ✅
+- [x] Pillar 4: Security & Financial — surgical_credits webhook-only verified; Selection Hub gate N/A (404)
+- [x] Deliverables: FINAL_MASTER_AUDIT_REPORT.md, audit-screenshots/, screen recording
+
+### Surgical Completion Sprint — CURRENT PRIORITY
+- [ ] Root redirects: logged-out → landing/signup; logged-in → /command-center
+- [ ] Resolve 7 dead nav links: /pre-test, /nta-test, /diagnosis, /analytics, /selection-hub, /settings, /store
+- [ ] Implement Store page (Mock-to-Money)
+- [ ] Add middleware or server-side auth check on `/`
+
+---
+
+### Previous milestone: Eligibility Guardian (§8.4)
 
 Build the hard-lock subject validation engine:
 1. Reference tables (universities / colleges / programs / eligibility_rules) seeded with DU data
 2. UI at `/onboarding/eligibility` showing rule card + subject picker stepper
 3. API route that validates subject selection against rules and writes lock snapshot
 
+
+---
+
+## Phase 4 — Monetization & Selection Hub (IN PROGRESS)
+
+- [x] **Task 1 — DB: Commerce Tables** (`scripts/create_commerce_tables.sql`)
+  - [x] `payment_product_type` ENUM
+  - [x] `surgical_credits` — immutable ledger model (PRD §14.3.6)
+  - [x] `subscriptions` — Pro Pass lifecycle (PRD §14.4.1)
+  - [x] `payment_orders` — Razorpay order record (PRD §14.4.2)
+  - [x] `payment_webhook_events` — idempotent webhook log (PRD §14.4.3)
+  - [x] Indexes + RLS policies on all tables
+  - [ ] **TODO: Run migration** via `insforge db run scripts/create_commerce_tables.sql`
+
+- [x] **Task 2 — Security: Razorpay Webhook Handler**
+  - [x] `src/app/api/payments/webhook/route.ts`
+  - [x] HMAC-SHA256 signature verification (constant-time)
+  - [x] Idempotency via `external_event_id UNIQUE` constraint
+  - [x] Handles: `payment.captured`, `order.paid`, `subscription.activated`, `subscription.charged`, `subscription.cancelled`, `refund.processed`
+  - [ ] **TODO: Set `RAZORPAY_WEBHOOK_SECRET` in `.env.local`**
+
+- [x] **Task 3 — Frontend: Surgical Store** (`/store`)
+  - [x] `src/app/store/page.tsx` — server component (fetches credit balance + Pro status)
+  - [x] `src/components/store/StoreSidebar.tsx`
+  - [x] `src/components/store/StoreHeader.tsx` (live credit balance widget)
+  - [x] `src/components/store/StorePricingCards.tsx` (3-column pricing grid)
+  - [ ] **TODO: Wire to `POST /api/payments/create-order` (Phase 4 Step 2)**
+
+- [x] **Task 4 — Frontend: Selection Hub** (`/selection-hub`)
+  - [x] `src/app/selection-hub/page.tsx` — server component with eligibility gate
+  - [x] `src/components/selection-hub/SelectionHubClient.tsx`
+  - [x] Preference list, Cutoff Analysis, Allotment Tracker tabs
+  - [x] Pro Pass gate for preference optimiser
+  - [ ] **TODO: Connect to live cutoff benchmarks table (Phase 5)**

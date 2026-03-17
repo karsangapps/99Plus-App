@@ -12,7 +12,6 @@ export default async function SurgicalDrillPage() {
 
   const db = getInsforgeAdminClient()
 
-  // Fetch all unresolved mark leaks, ordered by severity
   const leaksRes = await db.database
     .from('mark_leaks')
     .select('id, subject, chapter_name, lost_marks, severity_score, leak_type, mock_attempt_id')
@@ -34,7 +33,6 @@ export default async function SurgicalDrillPage() {
 
   const activeLeak = allLeaks[0] ?? null
 
-  // Fetch recent practice sessions
   const sessionsRes = await db.database
     .from('practice_sessions')
     .select('id, title, mode, status, accuracy_pct, created_at, completed_at, linked_mark_leak_id, session_meta_json')
@@ -55,7 +53,6 @@ export default async function SurgicalDrillPage() {
     sessionMeta: (r.session_meta_json ?? {}) as DrillSession['sessionMeta'],
   }))
 
-  // Compute stats
   const today = new Date().toISOString().split('T')[0]
   const completedToday = recentSessions.filter(
     s => s.status === 'completed' && s.completedAt?.startsWith(today)
@@ -68,7 +65,6 @@ export default async function SurgicalDrillPage() {
     s => s.sessionMeta?.leak_outcome === 'sealed'
   ).length
 
-  // Fetch candidate name
   const profileRes = await db.database
     .from('student_profiles')
     .select('full_name')

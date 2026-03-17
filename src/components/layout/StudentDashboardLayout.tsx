@@ -2,11 +2,16 @@
 
 import { useState } from 'react'
 import { OnboardingSidebar } from '@/components/onboarding/OnboardingSidebar'
-import { OnboardingDreamTargetMain } from '@/components/onboarding/OnboardingDreamTargetMain'
 import { MobileHeaderBar } from '@/components/onboarding/MobileHeaderBar'
 import { MobileNavDrawer } from '@/components/onboarding/MobileNavDrawer'
 
-export default function OnboardingDreamTargetClient() {
+type Props = {
+  title: string
+  subtitle?: string
+  children: React.ReactNode
+}
+
+export function StudentDashboardLayout({ title, subtitle, children }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
@@ -14,14 +19,14 @@ export default function OnboardingDreamTargetClient() {
       <MobileHeaderBar
         open={drawerOpen}
         onToggle={() => setDrawerOpen((o) => !o)}
-        title="Command Center"
-        subtitle="Set your surgical target — Step 1 of 3"
+        title={title}
+        subtitle={subtitle}
       />
 
       <div className="flex flex-1 min-h-0">
         <OnboardingSidebar />
         <div className="flex-1 min-w-0 overflow-auto">
-          <OnboardingDreamTargetMain />
+          {children}
         </div>
       </div>
 

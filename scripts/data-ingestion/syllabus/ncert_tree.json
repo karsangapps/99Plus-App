@@ -1,0 +1,417 @@
+{
+    "subjects": [
+      {
+        "level": "subject",
+        "code": "BST",
+        "title": "Business Studies",
+        "children": [
+          {
+            "level": "unit",
+            "code": "BST-11-U1",
+            "title": "Foundations of Business",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH1",
+                "title": "Business, Trade and Commerce",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH2",
+                "title": "Forms of Business Organisation",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH3",
+                "title": "Private, Public and Global Enterprises",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH4",
+                "title": "Business Services",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH5",
+                "title": "Emerging Modes of Business",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U1-CH6",
+                "title": "Social Responsibilities of Business and Business Ethics",
+                "ncert_chapter_number": 6,
+                "is_deleted_from_boards": false
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "BST-11-U2",
+            "title": "Corporate Organisation, Finance and Trade",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "BST-11-U2-CH7",
+                "title": "Formation of a Company",
+                "ncert_chapter_number": 7,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U2-CH8",
+                "title": "Sources of Business Finance",
+                "ncert_chapter_number": 8,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U2-CH9",
+                "title": "MSME and Business Entrepreneurship",
+                "ncert_chapter_number": 9,
+                "is_deleted_from_boards": true
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U2-CH10",
+                "title": "Internal Trade",
+                "ncert_chapter_number": 10,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-11-U2-CH11",
+                "title": "International Business",
+                "ncert_chapter_number": 11,
+                "is_deleted_from_boards": false
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "BST-12-U1",
+            "title": "Principles and Functions of Management",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH1",
+                "title": "Nature and Significance of Management",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH2",
+                "title": "Principles of Management",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH3",
+                "title": "Business Environment",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH4",
+                "title": "Planning",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH5",
+                "title": "Organising",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH6",
+                "title": "Staffing",
+                "ncert_chapter_number": 6,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH7",
+                "title": "Directing",
+                "ncert_chapter_number": 7,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U1-CH8",
+                "title": "Controlling",
+                "ncert_chapter_number": 8,
+                "is_deleted_from_boards": false
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "BST-12-U2",
+            "title": "Business Finance and Marketing",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "BST-12-U2-CH9",
+                "title": "Financial Management",
+                "ncert_chapter_number": 9,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U2-CH10",
+                "title": "Marketing",
+                "ncert_chapter_number": 10,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "BST-12-U2-CH11",
+                "title": "Consumer Protection",
+                "ncert_chapter_number": 11,
+                "is_deleted_from_boards": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level": "subject",
+        "code": "ECO",
+        "title": "Economics",
+        "children": [
+          {
+            "level": "unit",
+            "code": "ECO-11-U1",
+            "title": "Statistics for Economics",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH1",
+                "title": "Introduction",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH2",
+                "title": "Collection of Data",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH3",
+                "title": "Organisation of Data",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH4",
+                "title": "Presentation of Data",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH5",
+                "title": "Measures of Central Tendency",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH6",
+                "title": "Correlation",
+                "ncert_chapter_number": 6,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH7",
+                "title": "Index Numbers",
+                "ncert_chapter_number": 7,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U1-CH8",
+                "title": "Use of Statistical Tools",
+                "ncert_chapter_number": 8,
+                "is_deleted_from_boards": false
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "ECO-11-U2",
+            "title": "Introductory Microeconomics",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "ECO-11-U2-CH1",
+                "title": "Introduction",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U2-CH2",
+                "title": "Theory of Consumer Behaviour",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U2-CH3",
+                "title": "Production and Costs",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U2-CH4",
+                "title": "The Theory of the Firm under Perfect Competition",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-11-U2-CH5",
+                "title": "Market Equilibrium",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": true
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "ECO-12-U1",
+            "title": "Introductory Macroeconomics",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH1",
+                "title": "Introduction",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH2",
+                "title": "National Income Accounting",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": true
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH3",
+                "title": "Money and Banking",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": true
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH4",
+                "title": "Determination of Income and Employment",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH5",
+                "title": "Government Budget and the Economy",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": true
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U1-CH6",
+                "title": "Open Economy Macroeconomics",
+                "ncert_chapter_number": 6,
+                "is_deleted_from_boards": false
+              }
+            ]
+          },
+          {
+            "level": "unit",
+            "code": "ECO-12-U2",
+            "title": "Indian Economic Development",
+            "children": [
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH1",
+                "title": "Indian Economy on the Eve of Independence",
+                "ncert_chapter_number": 1,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH2",
+                "title": "Indian Economy 1950-1990",
+                "ncert_chapter_number": 2,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH3",
+                "title": "Liberalisation, Privatisation and Globalisation: An Appraisal",
+                "ncert_chapter_number": 3,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH4",
+                "title": "Human Capital Formation in India",
+                "ncert_chapter_number": 4,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH5",
+                "title": "Rural Development",
+                "ncert_chapter_number": 5,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH6",
+                "title": "Employment: Growth, Informalisation and Other Issues",
+                "ncert_chapter_number": 6,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH7",
+                "title": "Environment and Sustainable Development",
+                "ncert_chapter_number": 7,
+                "is_deleted_from_boards": false
+              },
+              {
+                "level": "chapter",
+                "code": "ECO-12-U2-CH8",
+                "title": "Comparative Development Experiences of India and its Neighbours",
+                "ncert_chapter_number": 8,
+                "is_deleted_from_boards": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

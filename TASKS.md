@@ -123,3 +123,15 @@ Build the hard-lock subject validation engine:
   - [x] Preference list, Cutoff Analysis, Allotment Tracker tabs
   - [x] Pro Pass gate for preference optimiser
   - [ ] **TODO: Connect to live cutoff benchmarks table (Phase 5)**
+
+---
+
+## Phase 6 — Database Provisioning (IN PROGRESS)
+
+- [x] **Create ingestion workspace**: `scripts/data-ingestion/`
+  - [x] Folder structure: `syllabus/`, `benchmarks/`, `question-bank/`
+  - [x] Tracking log: `scripts/data-ingestion/INGESTION_LOG.md`
+- [x] **Ingest syllabus skeleton first**: populate `syllabus_hierarchy`
+  - [x] Define canonical identifiers + natural keys (idempotent upserts via unique `code`)
+  - [x] Load top-down: subject → unit → chapter (BST + ECO)
+  - [x] Verify referential integrity + counts after injection (Subjects=2, Units=8, Chapters=44)
